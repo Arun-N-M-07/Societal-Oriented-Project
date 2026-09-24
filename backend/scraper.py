@@ -2,12 +2,40 @@ import ipaddress
 from urllib.parse import urljoin, urlparse
 
 import httpx
+from bs4 import BeautifulSoup
+from playwright.sync_api import (
+    Error as PlaywrightError,
+    TimeoutError as PlaywrightTimeoutError,
+    sync_playwright,
+)
 
 
 HTTP_TIMEOUT = 20.0
+BROWSER_TIMEOUT_MS = 30_000
+RENDER_WAIT_MS = 1_000
 MAX_REDIRECTS = 10
 USER_AGENT = "ProcedureAssistAI/1.0"
 HTML_CONTENT_TYPES = {"text/html", "application/xhtml+xml"}
+MIN_SOURCE_CHARACTERS = 200
+MIN_SOURCE_WORDS = 20
+PLACEHOLDER_PHRASES = ("enable javascript", "javascript is required", "loading")
+CONTENT_TAGS = (
+    "title",
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6",
+    "p",
+    "li",
+    "th",
+    "td",
+    "dt",
+    "dd",
+    "label",
+    "legend",
+)
 
 
 class ScraperError(Exception):
@@ -106,3 +134,104 @@ def fetch_static_html(
         ) from error
     except httpx.RequestError as error:
         raise ScraperError("Unable to retrieve the source page.") from error
+
+
+def clean_html(html: str) -> str:
+    if not isinstance(html, str) or not html.strip():
+        raise ScraperError("No meaningful page content found.")
+
+    soup = BeautifulSoup(html, "html.parser")
+
+    for tag in soup(
+        ["script", "style", "noscript", "svg", "canvas", "template", "nav"]
+    ):
+        tag.decompose()
+
+    for tag in soup.select("[hidden], [aria-hidden='true']"):
+        tag.decompose()
+
+    for tag in soup.find_all(style=True):
+        style = tag["style"].lower().replace(" ", "")
+        if "display:none" in style or "visibility:hidden" in style:
+            tag.decompose()
+
+    blocks = []
+    for tag in soup.find_all(CONTENT_TAGS):
+        if tag.find_parent(CONTENT_TAGS):
+            continue
+
+        text = " ".join(tag.get_text(" ", strip=True).split())
+        if text and (not blocks or text != blocks[-1]):
+            blocks.append(text)
+
+    source_text = "\n\n".join(blocks)
+    if not source_text:
+        raise ScraperError("No meaningful page content found.")
+
+    return source_text
+
+
+def is_source_text_usable(source_text: str) -> bool:
+    if not isinstance(source_text, str):
+        return False
+
+    normalized = " ".join(source_text.split())
+    words = normalized.split()
+    if any(
+        phrase in normalized.lower() for phrase in PLACEHOLDER_PHRASES
+    ) and len(normalized) < 500:
+        return False
+
+    return (
+        len(normalized) >= MIN_SOURCE_CHARACTERS
+        and len(words) >= MIN_SOURCE_WORDS
+    )
+
+
+def fetch_rendered_html(
+    url: str, timeout_ms: int = BROWSER_TIMEOUT_MS
+) -> tuple[str, str]:
+    validated_url = validate_url(url)
+
+    try:
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch(headless=True)
+            try:
+                page = browser.new_page(user_agent=USER_AGENT)
+
+                def handle_request(route):
+                    request_url = route.request.url
+                    if urlparse(request_url).scheme.lower() in {"http", "https"}:
+                        try:
+                            validate_url(request_url)
+                        except ScraperError:
+                            route.abort()
+                            return
+                    route.continue_()
+
+                page.route("**/*", handle_request)
+                response = page.goto(
+                    validated_url,
+                    wait_until="domcontentloaded",
+                    timeout=timeout_ms,
+                )
+                if response is not None and not response.ok:
+                    raise ScraperError(
+                        f"The rendered page returned HTTP {response.status}."
+                    )
+
+                page.wait_for_timeout(RENDER_WAIT_MS)
+                final_url = validate_url(page.url)
+                html = page.content()
+                if not html.strip():
+                    raise ScraperError("The rendered page returned empty HTML.")
+
+                return final_url, html
+            finally:
+                browser.close()
+    except ScraperError:
+        raise
+    except PlaywrightTimeoutError as error:
+        raise ScraperError("The rendered page timed out.") from error
+    except PlaywrightError as error:
+        raise ScraperError("The rendered page could not be loaded.") from error
