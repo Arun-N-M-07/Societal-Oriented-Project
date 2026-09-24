@@ -9,6 +9,8 @@ from playwright.sync_api import (
     sync_playwright,
 )
 
+from backend.schemas import ScrapeResult
+
 
 HTTP_TIMEOUT = 20.0
 BROWSER_TIMEOUT_MS = 30_000
@@ -235,3 +237,23 @@ def fetch_rendered_html(
         raise ScraperError("The rendered page timed out.") from error
     except PlaywrightError as error:
         raise ScraperError("The rendered page could not be loaded.") from error
+
+
+def scrape_url(url: str) -> ScrapeResult:
+    validated_url = validate_url(url)
+    final_url, html = fetch_static_html(validated_url)
+
+    try:
+        source_text = clean_html(html)
+    except ScraperError:
+        source_text = ""
+
+    if is_source_text_usable(source_text):
+        return ScrapeResult(source_url=final_url, source_text=source_text)
+
+    final_url, html = fetch_rendered_html(validated_url)
+    source_text = clean_html(html)
+    if not is_source_text_usable(source_text):
+        raise ScraperError("No meaningful page content found.")
+
+    return ScrapeResult(source_url=final_url, source_text=source_text)

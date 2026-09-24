@@ -8,6 +8,7 @@ from backend.scraper import (
     clean_html,
     fetch_rendered_html,
     is_source_text_usable,
+    scrape_url,
 )
 
 
@@ -89,6 +90,89 @@ class RenderedHtmlTest(unittest.TestCase):
         with self.assertRaisesRegex(ScraperError, "rendered page timed out"):
             fetch_rendered_html("https://example.gov/start")
         browser.close.assert_called_once()
+
+
+class ScrapeUrlTest(unittest.TestCase):
+    usable_html = """
+    <h1>Passport Renewal Application</h1>
+    <p>
+      Eligible applicants can renew an expired passport through the official
+      government portal. Complete the application form, upload proof of
+      address and date of birth, pay the required fee, and schedule an
+      appointment. Bring the original documents and application receipt to
+      the passport office for verification on the selected date. Applicants
+      should confirm current fees and office hours before attending.
+    </p>
+    """
+
+    @patch("backend.scraper.fetch_rendered_html")
+    @patch("backend.scraper.fetch_static_html")
+    def test_returns_usable_static_content(
+        self, fetch_static_html, fetch_rendered_html
+    ):
+        fetch_static_html.return_value = (
+            "https://example.gov/final",
+            self.usable_html,
+        )
+
+        result = scrape_url("https://example.gov/start")
+
+        self.assertEqual(result.source_url, "https://example.gov/final")
+        self.assertIn("Passport Renewal Application", result.source_text)
+        fetch_rendered_html.assert_not_called()
+
+    @patch("backend.scraper.fetch_rendered_html")
+    @patch("backend.scraper.fetch_static_html")
+    def test_uses_browser_for_insufficient_static_content(
+        self, fetch_static_html, fetch_rendered_html
+    ):
+        fetch_static_html.return_value = (
+            "https://example.gov/start",
+            "<p>Loading...</p>",
+        )
+        fetch_rendered_html.return_value = (
+            "https://example.gov/rendered",
+            self.usable_html,
+        )
+
+        result = scrape_url("https://example.gov/start")
+
+        self.assertEqual(result.source_url, "https://example.gov/rendered")
+        fetch_rendered_html.assert_called_once_with(
+            "https://example.gov/start"
+        )
+
+    @patch("backend.scraper.fetch_rendered_html")
+    @patch("backend.scraper.fetch_static_html")
+    def test_rejects_insufficient_rendered_content(
+        self, fetch_static_html, fetch_rendered_html
+    ):
+        fetch_static_html.return_value = (
+            "https://example.gov/start",
+            "<p>Loading...</p>",
+        )
+        fetch_rendered_html.return_value = (
+            "https://example.gov/start",
+            "<p>Please enable JavaScript.</p>",
+        )
+
+        with self.assertRaisesRegex(
+            ScraperError, "No meaningful page content found"
+        ):
+            scrape_url("https://example.gov/start")
+
+    @patch("backend.scraper.fetch_rendered_html")
+    @patch("backend.scraper.fetch_static_html")
+    def test_does_not_use_browser_for_static_errors(
+        self, fetch_static_html, fetch_rendered_html
+    ):
+        fetch_static_html.side_effect = ScraperError(
+            "Unsupported content type: application/pdf."
+        )
+
+        with self.assertRaisesRegex(ScraperError, "application/pdf"):
+            scrape_url("https://example.gov/document.pdf")
+        fetch_rendered_html.assert_not_called()
 
 
 if __name__ == "__main__":
