@@ -1,3 +1,5 @@
+import AdminPage from "./AdminPage";
+
 export default function App() {
-  return <main>ProcedureAssist</main>;
+  return <AdminPage />;
 }
