@@ -1,0 +1,243 @@
+:root {
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  color: #172033;
+  background: #f4f7fb;
+  font-synthesis: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+.admin-page {
+  width: min(920px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 48px 0 72px;
+}
+
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  margin: 4px 0 8px;
+  font-size: clamp(2rem, 5vw, 3rem);
+  letter-spacing: -0.04em;
+}
+
+.page-header p {
+  margin: 0;
+  color: #5c677d;
+}
+
+.page-header .eyebrow {
+  color: #3157c8;
+  font-size: 0.78rem;
+  font-weight: 750;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.card {
+  padding: 26px;
+  border: 1px solid #dde3ee;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(30, 45, 75, 0.07);
+}
+
+.review-card {
+  margin-top: 24px;
+}
+
+.review-card h2 {
+  margin: 0;
+  font-size: 1.45rem;
+}
+
+.section-intro {
+  margin: 8px 0 24px;
+  color: #667085;
+}
+
+.form-field {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.form-field label,
+.step-row label {
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.form-field small,
+.field-help {
+  color: #667085;
+  font-size: 0.84rem;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #c9d2e2;
+  border-radius: 9px;
+  color: #172033;
+  background: #ffffff;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #466fe5;
+  box-shadow: 0 0 0 3px rgba(70, 111, 229, 0.14);
+  outline: none;
+}
+
+input[readonly] {
+  color: #566176;
+  background: #f4f6fa;
+}
+
+button {
+  padding: 10px 15px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.primary-button {
+  color: #ffffff;
+  background: #3157c8;
+}
+
+.primary-button:hover:not(:disabled) {
+  background: #2748ad;
+}
+
+.secondary-button {
+  border-color: #c9d2e2;
+  color: #344054;
+  background: #ffffff;
+}
+
+.secondary-button:hover:not(:disabled) {
+  background: #f3f5f9;
+}
+
+.danger-button {
+  border-color: #efc5c5;
+  color: #a63838;
+  background: #fff7f7;
+}
+
+.danger-button:hover:not(:disabled) {
+  background: #ffeded;
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.steps-fieldset {
+  margin: 8px 0 22px;
+  padding: 20px;
+  border: 1px solid #d7deea;
+  border-radius: 12px;
+}
+
+.steps-fieldset legend {
+  padding: 0 8px;
+  font-weight: 750;
+}
+
+.field-help {
+  margin: 0 0 18px;
+}
+
+.step-row {
+  display: grid;
+  gap: 7px;
+  margin-bottom: 14px;
+}
+
+.step-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 8px;
+}
+
+.review-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 4px;
+}
+
+.feedback {
+  margin: 18px 0 0;
+  padding: 12px 14px;
+  border-radius: 9px;
+  font-weight: 650;
+}
+
+.feedback.error {
+  border: 1px solid #efc5c5;
+  color: #983232;
+  background: #fff2f2;
+}
+
+.feedback.success {
+  border: 1px solid #b9dec7;
+  color: #25613b;
+  background: #f0fbf4;
+}
+
+@media (max-width: 640px) {
+  .admin-page {
+    width: min(100% - 20px, 920px);
+    padding-top: 28px;
+  }
+
+  .card {
+    padding: 20px;
+    border-radius: 12px;
+  }
+
+  .field-grid,
+  .step-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .step-controls button,
+  .review-actions button {
+    width: 100%;
+  }
+}

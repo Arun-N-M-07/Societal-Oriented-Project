@@ -149,6 +149,22 @@ def clean_html(html: str) -> str:
     ):
         tag.decompose()
 
+    content = soup.select_one("main, [role='main']")
+    if content is None:
+        for tag in soup(["header", "footer", "aside"]):
+            tag.decompose()
+        content = soup
+
+    for tag in content(["footer", "aside"]):
+        tag.decompose()
+
+    for tag in content.select(
+        "[role='navigation'], [role='banner'], [role='contentinfo'], "
+        "[role='complementary'], .breadcrumb, .breadcrumbs, "
+        "#breadcrumb, #breadcrumbs"
+    ):
+        tag.decompose()
+
     for tag in soup.select("[hidden], [aria-hidden='true']"):
         tag.decompose()
 
@@ -158,7 +174,7 @@ def clean_html(html: str) -> str:
             tag.decompose()
 
     blocks = []
-    for tag in soup.find_all(CONTENT_TAGS):
+    for tag in content.find_all(CONTENT_TAGS):
         if tag.find_parent(CONTENT_TAGS):
             continue
 

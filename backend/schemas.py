@@ -37,6 +37,12 @@ class ScrapeResult(BaseModel):
     _validate_source_text = field_validator("source_text")(_required_text)
 
 
+class ExtractRequest(BaseModel):
+    source_url: str
+
+    _validate_source_url = field_validator("source_url")(_http_url)
+
+
 class ProcedureExtraction(BaseModel):
     name: str
     department: str | None = None
@@ -63,6 +69,13 @@ class ProcedureSpine(ProcedureExtraction):
     source_url: str
 
     _validate_source_url = field_validator("source_url")(_http_url)
+
+
+class ExtractionResponse(BaseModel):
+    source_text: str
+    procedure: ProcedureSpine
+
+    _validate_source_text = field_validator("source_text")(_required_text)
 
 
 class ApprovalRequest(BaseModel):

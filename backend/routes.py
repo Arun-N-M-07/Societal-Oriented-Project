@@ -3,8 +3,17 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from backend.database import get_db
+from backend.extractor import ExtractionError, extract_procedure
 from backend.models import Procedure
-from backend.schemas import ApprovalRequest, SavedProcedureResponse
+from backend.scraper import ScraperError, scrape_url
+from backend.schemas import (
+    ApprovalRequest,
+    ExtractionResponse,
+    ExtractRequest,
+    ProcedureSpine,
+    SavedProcedureResponse,
+    ScrapeResult,
+)
 
 
 router = APIRouter()
@@ -13,6 +22,30 @@ router = APIRouter()
 @router.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok"}
+
+
+@router.post("/api/admin/extract", response_model=ExtractionResponse)
+def create_extraction(request: ExtractRequest) -> ExtractionResponse:
+    try:
+        source = scrape_url(request.source_url)
+        procedure = extract_procedure(source.source_text, source.source_url)
+    except ScraperError as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
+    except ExtractionError as error:
+        raise HTTPException(status_code=502, detail=str(error)) from error
+
+    return ExtractionResponse(
+        source_text=source.source_text,
+        procedure=procedure,
+    )
+
+
+@router.post("/api/admin/re-extract", response_model=ProcedureSpine)
+def re_extract_procedure(request: ScrapeResult) -> ProcedureSpine:
+    try:
+        return extract_procedure(request.source_text, request.source_url)
+    except ExtractionError as error:
+        raise HTTPException(status_code=502, detail=str(error)) from error
 
 
 @router.post("/api/admin/procedures", response_model=SavedProcedureResponse)

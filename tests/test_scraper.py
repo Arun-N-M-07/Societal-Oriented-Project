@@ -44,6 +44,52 @@ class CleanHtmlTest(unittest.TestCase):
             "₹1,500",
         )
 
+    def test_keeps_main_content_and_removes_page_chrome(self):
+        html = """
+        <html>
+          <body>
+            <header>
+              <ul><li>Home</li><li>Departments</li><li>Contact</li></ul>
+            </header>
+            <main>
+              <div class="breadcrumbs"><p>Home / Passport Services</p></div>
+              <h1>Apply for a Passport</h1>
+              <p>Complete the application and schedule an appointment.</p>
+              <aside><p>Related government services</p></aside>
+            </main>
+            <footer><p>Privacy policy</p></footer>
+          </body>
+        </html>
+        """
+
+        self.assertEqual(
+            clean_html(html),
+            "Apply for a Passport\n\n"
+            "Complete the application and schedule an appointment.",
+        )
+
+    def test_removes_semantic_chrome_when_main_is_missing(self):
+        html = """
+        <html>
+          <head><title>Passport Service</title></head>
+          <body>
+            <header><p>Government portal menu</p></header>
+            <section>
+              <h1>Passport Renewal</h1>
+              <p>Submit the renewal form with the required documents.</p>
+            </section>
+            <footer><p>Terms and conditions</p></footer>
+          </body>
+        </html>
+        """
+
+        self.assertEqual(
+            clean_html(html),
+            "Passport Service\n\n"
+            "Passport Renewal\n\n"
+            "Submit the renewal form with the required documents.",
+        )
+
 
 class SourceTextUsabilityTest(unittest.TestCase):
     def test_identifies_useful_content(self):

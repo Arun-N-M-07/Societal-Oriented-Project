@@ -1,6 +1,10 @@
+import json
+
 import httpx
+from pydantic import ValidationError
 
 from backend.config import LLM_MODEL, OLLAMA_BASE_URL
+from backend.schemas import ProcedureExtraction, ProcedureSpine, ScrapeResult
 
 
 QWEN_TIMEOUT_SECONDS = 60.0
@@ -73,3 +77,41 @@ def call_qwen(prompt: str) -> str:
         raise ExtractionError("Qwen returned an empty response.")
 
     return raw_output.strip()
+
+
+def parse_extraction(raw_output: str) -> ProcedureExtraction:
+    try:
+        data = json.loads(raw_output)
+    except (json.JSONDecodeError, TypeError) as error:
+        raise ExtractionError(
+            "Qwen returned invalid structured data."
+        ) from error
+
+    if not isinstance(data, dict):
+        raise ExtractionError("Qwen returned invalid structured data.")
+
+    if set(data) - set(ProcedureExtraction.model_fields):
+        raise ExtractionError("Qwen returned invalid structured data.")
+
+    try:
+        return ProcedureExtraction.model_validate(data)
+    except ValidationError as error:
+        raise ExtractionError(
+            "Qwen returned invalid structured data."
+        ) from error
+
+
+def extract_procedure(source_text: str, source_url: str) -> ProcedureSpine:
+    try:
+        source = ScrapeResult(source_url=source_url, source_text=source_text)
+    except ValidationError as error:
+        raise ExtractionError("Source URL or text is invalid.") from error
+
+    extraction = parse_extraction(
+        call_qwen(build_extraction_prompt(source.source_text))
+    )
+
+    return ProcedureSpine(
+        **extraction.model_dump(),
+        source_url=source.source_url,
+    )
