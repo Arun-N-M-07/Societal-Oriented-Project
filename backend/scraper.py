@@ -1,4 +1,5 @@
 import ipaddress
+import re
 from urllib.parse import urljoin, urlparse
 
 import httpx
@@ -20,7 +21,9 @@ USER_AGENT = "ProcedureAssistAI/1.0"
 HTML_CONTENT_TYPES = {"text/html", "application/xhtml+xml"}
 MIN_SOURCE_CHARACTERS = 200
 MIN_SOURCE_WORDS = 20
-PLACEHOLDER_PHRASES = ("enable javascript", "javascript is required", "loading")
+PLACEHOLDER_PATTERN = re.compile(
+    r"\b(enable javascript|javascript is required|loading)\b", re.IGNORECASE
+)
 CONTENT_TAGS = (
     "title",
     "h1",
@@ -205,9 +208,7 @@ def is_source_text_usable(source_text: str) -> bool:
 
     normalized = " ".join(source_text.split())
     words = normalized.split()
-    if any(
-        phrase in normalized.lower() for phrase in PLACEHOLDER_PHRASES
-    ) and len(normalized) < 500:
+    if PLACEHOLDER_PATTERN.search(normalized) and len(normalized) < 500:
         return False
 
     return (

@@ -125,6 +125,15 @@ class SourceTextUsabilityTest(unittest.TestCase):
             is_source_text_usable("Please enable JavaScript to continue.")
         )
 
+    def test_placeholder_words_inside_other_words_are_not_placeholders(self):
+        procedure_text = (
+            "Applicants should complete the form and attach scanned copies "
+            "before uploading documents to the portal. "
+        ) * 3
+
+        self.assertLess(len(procedure_text), 500)
+        self.assertTrue(is_source_text_usable(procedure_text))
+
 
 class StaticFetchTest(unittest.TestCase):
     @patch("backend.scraper.httpx.Client")
