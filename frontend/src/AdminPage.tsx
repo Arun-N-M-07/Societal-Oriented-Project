@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 
 import {
   approveProcedure,
@@ -16,6 +16,15 @@ type EditableTextField =
   | "eligibility";
 
 
+type StepItem = { id: number; text: string };
+
+let nextStepId = 0;
+
+function toStepItems(texts: string[]): StepItem[] {
+  return texts.map((text) => ({ id: nextStepId++, text }));
+}
+
+
 export default function AdminPage() {
   const [sourceUrl, setSourceUrl] = useState("");
   const [extractedSourceText, setExtractedSourceText] = useState("");
@@ -24,6 +33,27 @@ export default function AdminPage() {
   const [savedMessage, setSavedMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [steps, setSteps] = useState<StepItem[]>([]);
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [overIndex, setOverIndex] = useState<number | null>(null);
+  const refocusStepId = useRef<number | null>(null);
+
+  // Messages render at the top of the page; bring them into view after Approve.
+  useEffect(() => {
+    if (error || savedMessage) {
+      document
+        .querySelector(".feedback")
+        ?.scrollIntoView?.({ behavior: "smooth", block: "center" });
+    }
+  }, [error, savedMessage]);
+
+  useEffect(() => {
+    if (refocusStepId.current === null) return;
+    document
+      .querySelector<HTMLElement>(`[data-handle-id="${refocusStepId.current}"]`)
+      ?.focus();
+    refocusStepId.current = null;
+  }, [steps]);
 
   function updateTextField(field: EditableTextField, value: string) {
     setProcedure((current) =>
@@ -31,33 +61,35 @@ export default function AdminPage() {
     );
   }
 
-  function updateStep(index: number, value: string) {
-    setProcedure((current) => {
-      if (!current) return current;
-      const steps = [...current.steps];
-      steps[index] = value;
-      return { ...current, steps };
-    });
+  function updateStep(index: number, text: string) {
+    setSteps((current) =>
+      current.map((step, i) => (i === index ? { ...step, text } : step)),
+    );
   }
 
-  function insertStep(index: number) {
-    setProcedure((current) => {
-      if (!current) return current;
-      const steps = [...current.steps];
-      steps.splice(index, 0, "");
-      return { ...current, steps };
-    });
+  function addStep() {
+    setSteps((current) => [...current, ...toStepItems([""])]);
   }
 
   function removeStep(index: number) {
-    setProcedure((current) =>
-      current && current.steps.length > 1
-        ? {
-            ...current,
-            steps: current.steps.filter((_, stepIndex) => stepIndex !== index),
-          }
-        : current,
+    setSteps((current) =>
+      current.length > 1 ? current.filter((_, i) => i !== index) : current,
     );
+  }
+
+  function moveStep(from: number, to: number) {
+    if (from === to || to < 0 || to >= steps.length) return;
+    setSteps((current) => {
+      const next = [...current];
+      const [moved] = next.splice(from, 1);
+      next.splice(to, 0, moved);
+      return next;
+    });
+  }
+
+  function endDrag() {
+    setDragIndex(null);
+    setOverIndex(null);
   }
 
   async function handleExtract(event: FormEvent<HTMLFormElement>) {
@@ -69,9 +101,11 @@ export default function AdminPage() {
     try {
       const extraction = await extractProcedure(sourceUrl);
       setProcedure(extraction.procedure);
+      setSteps(toStepItems(extraction.procedure.steps));
       setExtractedSourceText(extraction.source_text);
     } catch (requestError) {
       setProcedure(null);
+      setSteps([]);
       setExtractedSourceText("");
       setError(
         requestError instanceof Error
@@ -96,6 +130,7 @@ export default function AdminPage() {
         source_text: extractedSourceText,
       });
       setProcedure(extractedProcedure);
+      setSteps(toStepItems(extractedProcedure.steps));
     } catch (requestError) {
       setError(
         requestError instanceof Error
@@ -113,6 +148,7 @@ export default function AdminPage() {
     setSourceUrl("");
     setExtractedSourceText("");
     setProcedure(null);
+    setSteps([]);
     setError("");
     setSavedMessage("");
   }
@@ -130,7 +166,7 @@ export default function AdminPage() {
       jurisdiction: procedure.jurisdiction?.trim() || null,
       summary: procedure.summary.trim(),
       eligibility: procedure.eligibility?.trim() || null,
-      steps: procedure.steps.map((step) => step.trim()).filter(Boolean),
+      steps: steps.map((step) => step.text.trim()).filter(Boolean),
     };
 
     if (
@@ -266,7 +302,7 @@ export default function AdminPage() {
               <label htmlFor="procedure-summary">Summary</label>
               <textarea
                 id="procedure-summary"
-                rows={4}
+                rows={6}
                 value={procedure.summary}
                 onChange={(event) =>
                   updateTextField("summary", event.target.value)
@@ -279,7 +315,7 @@ export default function AdminPage() {
               <label htmlFor="procedure-eligibility">Eligibility</label>
               <textarea
                 id="procedure-eligibility"
-                rows={3}
+                rows={5}
                 value={procedure.eligibility ?? ""}
                 onChange={(event) =>
                   updateTextField("eligibility", event.target.value)
@@ -290,43 +326,89 @@ export default function AdminPage() {
             <fieldset className="steps-fieldset">
               <legend>Steps</legend>
               <p className="field-help">
-                Insert a new step before any existing step, or add one at the end.
+                Drag a step by its handle to reorder it, or focus the handle and
+                press Arrow Up or Arrow Down.
               </p>
-              {procedure.steps.map((step, index) => (
-                <div className="step-row" key={index}>
-                  <label htmlFor={`procedure-step-${index}`}>
-                    Step {index + 1}
-                  </label>
-                  <div className="step-controls">
-                    <input
-                      id={`procedure-step-${index}`}
-                      value={step}
-                      onChange={(event) => updateStep(index, event.target.value)}
-                    />
-                    <button
-                      className="secondary-button"
-                      type="button"
-                      onClick={() => insertStep(index)}
-                    >
-                      Insert before
-                    </button>
-                    <button
-                      className="danger-button"
-                      type="button"
-                      onClick={() => removeStep(index)}
-                      disabled={procedure.steps.length === 1}
-                    >
-                      Remove
-                    </button>
+              {steps.map((step, index) => {
+                const dropClass =
+                  dragIndex !== null && overIndex === index && dragIndex !== index
+                    ? dragIndex < index
+                      ? " drop-after"
+                      : " drop-before"
+                    : "";
+                return (
+                  <div
+                    className={`step-row${dragIndex === index ? " dragging" : ""}${dropClass}`}
+                    key={step.id}
+                    data-testid="step-row"
+                    onDragOver={(event) => {
+                      if (dragIndex === null) return;
+                      event.preventDefault();
+                      setOverIndex(index);
+                    }}
+                    onDrop={(event) => {
+                      event.preventDefault();
+                      if (dragIndex !== null) moveStep(dragIndex, index);
+                      endDrag();
+                    }}
+                  >
+                    <label htmlFor={`procedure-step-${step.id}`}>
+                      Step {index + 1}
+                    </label>
+                    <div className="step-controls">
+                      <button
+                        className="drag-handle"
+                        type="button"
+                        draggable
+                        data-handle-id={step.id}
+                        aria-label={`Move step ${index + 1}`}
+                        title="Drag to reorder, or press Arrow Up / Arrow Down"
+                        onDragStart={(event) => {
+                          event.dataTransfer.effectAllowed = "move";
+                          event.dataTransfer.setData("text/plain", String(index));
+                          const row = event.currentTarget.closest(".step-row");
+                          if (row) event.dataTransfer.setDragImage(row, 16, 16);
+                          setDragIndex(index);
+                        }}
+                        onDragEnd={endDrag}
+                        onKeyDown={(event) => {
+                          if (event.key !== "ArrowUp" && event.key !== "ArrowDown") {
+                            return;
+                          }
+                          event.preventDefault();
+                          const target = index + (event.key === "ArrowUp" ? -1 : 1);
+                          if (target < 0 || target >= steps.length) return;
+                          refocusStepId.current = step.id;
+                          moveStep(index, target);
+                        }}
+                      >
+                        ⋮⋮
+                      </button>
+                      <textarea
+                        id={`procedure-step-${step.id}`}
+                        className="step-text"
+                        rows={2}
+                        value={step.text}
+                        onChange={(event) => updateStep(index, event.target.value)}
+                      />
+                      <button
+                        className="danger-button"
+                        type="button"
+                        onClick={() => removeStep(index)}
+                        disabled={steps.length === 1}
+                      >
+                        Remove
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
               <button
                 className="secondary-button"
                 type="button"
-                onClick={() => insertStep(procedure.steps.length)}
+                onClick={addStep}
               >
-                Add step at end
+                Add step
               </button>
             </fieldset>
 

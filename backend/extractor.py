@@ -32,6 +32,10 @@ Return only one valid JSON object with exactly these fields and types:
 - steps: array of strings
 
 Use null for an optional field when the source does not support a value.
+For department, use the government body, ministry or portal that publishes or
+operates the service when the text names it.
+For eligibility, summarize any stated conditions for who can apply or what is
+required of applicants; use null only when the text states none.
 Do not add fields, Markdown, explanations, or invented steps.
 
 --- BEGIN SOURCE TEXT ---
@@ -49,6 +53,7 @@ def call_qwen(prompt: str) -> str:
                 "stream": False,
                 "format": "json",
                 "think": False,
+                "options": {"temperature": 0},
             },
             timeout=QWEN_TIMEOUT_SECONDS,
         )

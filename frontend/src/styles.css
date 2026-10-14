@@ -103,7 +103,11 @@ textarea {
 }
 
 textarea {
+  min-height: 5.5em;
+  max-height: 28em;
   resize: vertical;
+  line-height: 1.45;
+  field-sizing: content;
 }
 
 input:focus,
@@ -184,15 +188,64 @@ button:disabled {
 }
 
 .step-row {
+  position: relative;
   display: grid;
   gap: 7px;
   margin-bottom: 14px;
 }
 
+.step-row.dragging {
+  opacity: 0.45;
+}
+
+.step-row.drop-before::before,
+.step-row.drop-after::after {
+  position: absolute;
+  right: 0;
+  left: 0;
+  height: 3px;
+  border-radius: 2px;
+  background: #3157c8;
+  content: "";
+}
+
+.step-row.drop-before::before {
+  top: -8px;
+}
+
+.step-row.drop-after::after {
+  bottom: -8px;
+}
+
 .step-controls {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   gap: 8px;
+  align-items: start;
+}
+
+.step-text {
+  min-height: 3.2em;
+}
+
+.drag-handle {
+  padding: 10px 8px;
+  border-color: #c9d2e2;
+  color: #667085;
+  background: #f7f9fc;
+  cursor: grab;
+  letter-spacing: -0.15em;
+  touch-action: none;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.drag-handle:focus-visible {
+  border-color: #466fe5;
+  box-shadow: 0 0 0 3px rgba(70, 111, 229, 0.14);
+  outline: none;
 }
 
 .review-actions {
@@ -231,12 +284,18 @@ button:disabled {
     border-radius: 12px;
   }
 
-  .field-grid,
-  .step-controls {
+  .field-grid {
     grid-template-columns: 1fr;
   }
 
-  .step-controls button,
+  .step-controls {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .step-controls .danger-button {
+    grid-column: 1 / -1;
+  }
+
   .review-actions button {
     width: 100%;
   }

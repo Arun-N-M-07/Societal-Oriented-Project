@@ -1,11 +1,14 @@
 import unittest
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
+
+import httpx
 
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 
 from backend.scraper import (
     ScraperError,
     clean_html,
+    fetch_static_html,
     fetch_rendered_html,
     is_source_text_usable,
     scrape_url,
@@ -90,6 +93,18 @@ class CleanHtmlTest(unittest.TestCase):
             "Submit the renewal form with the required documents.",
         )
 
+    def test_handles_styled_elements_inside_hidden_styled_parent(self):
+        html = """
+        <body>
+          <div style="display:none"><span style="color:red">Hidden banner</span></div>
+          <p>Apply online through the official portal.</p>
+        </body>
+        """
+
+        self.assertEqual(
+            clean_html(html), "Apply online through the official portal."
+        )
+
 
 class SourceTextUsabilityTest(unittest.TestCase):
     def test_identifies_useful_content(self):
@@ -109,6 +124,26 @@ class SourceTextUsabilityTest(unittest.TestCase):
         self.assertFalse(
             is_source_text_usable("Please enable JavaScript to continue.")
         )
+
+
+class StaticFetchTest(unittest.TestCase):
+    @patch("backend.scraper.httpx.Client")
+    def test_retries_once_after_connection_reset(self, client_class):
+        response = MagicMock(is_redirect=False, text="<p>Hello</p>")
+        response.url = "https://example.gov/page"
+        response.headers = {"content-type": "text/html; charset=utf-8"}
+        client = client_class.return_value.__enter__.return_value
+        client.get.side_effect = [httpx.ConnectError("reset"), response]
+
+        self.assertEqual(
+            fetch_static_html("https://example.gov/page"),
+            ("https://example.gov/page", "<p>Hello</p>"),
+        )
+        self.assertEqual(client.get.call_count, 2)
+
+        client.get.side_effect = httpx.ConnectError("reset")
+        with self.assertRaisesRegex(ScraperError, "Unable to retrieve"):
+            fetch_static_html("https://example.gov/page")
 
 
 class RenderedHtmlTest(unittest.TestCase):

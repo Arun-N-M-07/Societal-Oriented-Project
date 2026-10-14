@@ -80,6 +80,14 @@ def validate_url(url: str) -> str:
     return url
 
 
+def _get_with_retry(client: httpx.Client, url: str) -> httpx.Response:
+    # Some government sites reset the first connection at random; retry once.
+    try:
+        return client.get(url)
+    except (httpx.ConnectError, httpx.ReadError, httpx.RemoteProtocolError):
+        return client.get(url)
+
+
 def fetch_static_html(
     url: str, timeout: float = HTTP_TIMEOUT
 ) -> tuple[str, str]:
@@ -92,7 +100,7 @@ def fetch_static_html(
             headers={"User-Agent": USER_AGENT},
         ) as client:
             for _ in range(MAX_REDIRECTS + 1):
-                response = client.get(current_url)
+                response = _get_with_retry(client, current_url)
 
                 if response.is_redirect:
                     location = response.headers.get("location")
@@ -169,6 +177,8 @@ def clean_html(html: str) -> str:
         tag.decompose()
 
     for tag in soup.find_all(style=True):
+        if tag.decomposed:
+            continue
         style = tag["style"].lower().replace(" ", "")
         if "display:none" in style or "visibility:hidden" in style:
             tag.decompose()
