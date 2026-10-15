@@ -14,7 +14,8 @@ app = FastAPI(title="ProcedureAssist")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[FRONTEND_ORIGIN],
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "DELETE"],
+    allow_headers=["Content-Type"],
 )
 app.include_router(router)

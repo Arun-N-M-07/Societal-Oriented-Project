@@ -105,6 +105,15 @@ class ApprovalRequest(StrictModel):
     _validate_source_text = field_validator("source_text")(_required_text)
 
 
+class LoginRequest(StrictModel):
+    username: str = Field(max_length=100)
+    password: str = Field(max_length=200)
+
+
+class AdminSession(StrictModel):
+    username: str
+
+
 class SavedProcedureResponse(StrictModel):
     id: int
     name: str

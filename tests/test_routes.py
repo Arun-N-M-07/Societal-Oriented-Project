@@ -3,14 +3,11 @@ import db_support  # noqa: F401  (must be first)
 import unittest
 from unittest.mock import patch
 
-from fastapi import FastAPI
-from fastapi.testclient import TestClient
-
 from backend.auth import issue_provenance_token
 from backend.extractor import ExtractionError
-from backend.routes import router
 from backend.schemas import ProcedureSpine, ScrapeResult
 from backend.scraper import ScraperError, SourceUnavailableError
+from db_support import make_client
 
 
 REEXTRACT_BODY = {
@@ -24,9 +21,7 @@ REEXTRACT_BODY = {
 
 class ExtractionRouteTest(unittest.TestCase):
     def setUp(self):
-        app = FastAPI()
-        app.include_router(router)
-        self.client = TestClient(app)
+        self.client = make_client()
 
     @patch("backend.routes.extract_procedure")
     @patch("backend.routes.scrape_url")

@@ -26,3 +26,8 @@ FRONTEND_ORIGIN = _setting("FRONTEND_ORIGIN", "http://localhost:5173")
 SECRET_KEY = _required_setting("SECRET_KEY")
 if len(SECRET_KEY) < 32:
     raise RuntimeError("SECRET_KEY must be at least 32 characters long")
+ADMIN_USERNAME = _setting("ADMIN_USERNAME", "admin")
+ADMIN_PASSWORD_HASH = _required_setting("ADMIN_PASSWORD_HASH")
+if not ADMIN_PASSWORD_HASH.startswith("scrypt$"):
+    raise RuntimeError("ADMIN_PASSWORD_HASH must come from: python -m backend.auth")
+COOKIE_SECURE = _setting("COOKIE_SECURE", "false").lower() == "true"

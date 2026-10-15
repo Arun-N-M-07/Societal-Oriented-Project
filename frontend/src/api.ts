@@ -38,6 +38,12 @@ export type SavedProcedureResponse = {
   status: string;
 };
 
+export type AdminSession = { username: string };
+
+// Fired when an admin request is rejected because the session has expired.
+export const UNAUTHORIZED_EVENT = "admin-unauthorized";
+const NO_SESSION_PATHS = ["/api/admin/login", "/api/admin/session"];
+
 async function errorMessage(response: Response, fallback: string) {
   const body = (await response.json().catch(() => null)) as {
     detail?: string;
@@ -45,52 +51,57 @@ async function errorMessage(response: Response, fallback: string) {
   return typeof body?.detail === "string" ? body.detail : fallback;
 }
 
-export async function extractProcedure(
-  sourceUrl: string,
-): Promise<ExtractionResponse> {
-  const response = await fetch(`${API_BASE_URL}/api/admin/extract`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ source_url: sourceUrl }),
+async function request<T>(
+  path: string,
+  fallback: string,
+  body?: unknown,
+  method = body === undefined ? "GET" : "POST",
+): Promise<T> {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    method,
+    credentials: "include",
+    headers: body === undefined ? undefined : { "Content-Type": "application/json" },
+    body: body === undefined ? undefined : JSON.stringify(body),
   });
 
-  if (!response.ok) {
-    throw new Error(await errorMessage(response, "Unable to extract procedure."));
+  if (response.status === 401 && !NO_SESSION_PATHS.includes(path)) {
+    window.dispatchEvent(new Event(UNAUTHORIZED_EVENT));
   }
-
-  return response.json() as Promise<ExtractionResponse>;
+  if (!response.ok) {
+    throw new Error(await errorMessage(response, fallback));
+  }
+  return (response.status === 204 ? undefined : response.json()) as Promise<T>;
 }
 
-export async function reExtractProcedure(
-  source: ReExtractRequest,
-): Promise<ProcedureSpine> {
-  const response = await fetch(`${API_BASE_URL}/api/admin/re-extract`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(source),
+export const extractProcedure = (sourceUrl: string) =>
+  request<ExtractionResponse>(
+    "/api/admin/extract",
+    "Unable to extract procedure.",
+    { source_url: sourceUrl },
+  );
+
+export const reExtractProcedure = (source: ReExtractRequest) =>
+  request<ProcedureSpine>(
+    "/api/admin/re-extract",
+    "Unable to re-extract procedure.",
+    source,
+  );
+
+export const approveProcedure = (approval: ApprovalRequest) =>
+  request<SavedProcedureResponse>(
+    "/api/admin/procedures",
+    "Unable to save procedure.",
+    approval,
+  );
+
+export const login = (username: string, password: string) =>
+  request<AdminSession>("/api/admin/login", "Unable to sign in.", {
+    username,
+    password,
   });
 
-  if (!response.ok) {
-    throw new Error(
-      await errorMessage(response, "Unable to re-extract procedure."),
-    );
-  }
+export const logout = () =>
+  request<void>("/api/admin/logout", "Unable to sign out.", undefined, "POST");
 
-  return response.json() as Promise<ProcedureSpine>;
-}
-
-export async function approveProcedure(
-  request: ApprovalRequest,
-): Promise<SavedProcedureResponse> {
-  const response = await fetch(`${API_BASE_URL}/api/admin/procedures`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(request),
-  });
-
-  if (!response.ok) {
-    throw new Error(await errorMessage(response, "Unable to save procedure."));
-  }
-
-  return response.json() as Promise<SavedProcedureResponse>;
-}
+export const getSession = () =>
+  request<AdminSession>("/api/admin/session", "Not signed in.");

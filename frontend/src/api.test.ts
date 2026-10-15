@@ -11,6 +11,28 @@ async function requestedUrl() {
   return fetchMock.mock.calls[0][0];
 }
 
+describe("admin requests", () => {
+  it("send the session cookie and report expired sessions", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify({ detail: "Admin authentication required." }), {
+        status: 401,
+      }),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+    const listener = vi.fn();
+    window.addEventListener("admin-unauthorized", listener);
+    vi.resetModules();
+    const { extractProcedure } = await import("./api");
+
+    await expect(extractProcedure("https://example.gov.in/x")).rejects.toThrow(
+      "Admin authentication required.",
+    );
+    expect(fetchMock.mock.calls[0][1].credentials).toBe("include");
+    expect(listener).toHaveBeenCalledTimes(1);
+    window.removeEventListener("admin-unauthorized", listener);
+  });
+});
+
 afterEach(() => {
   vi.unstubAllEnvs();
   vi.unstubAllGlobals();

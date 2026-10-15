@@ -1,18 +1,26 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from backend.auth import (
+    SESSION_COOKIE,
+    SESSION_TTL_SECONDS,
     ProvenanceError,
+    check_admin_credentials,
+    create_session_token,
     issue_provenance_token,
+    require_admin,
     verify_provenance_token,
 )
+from backend.config import COOKIE_SECURE
 from backend.database import get_db
 from backend.extractor import ExtractionError, extract_procedure
 from backend.models import Procedure
 from backend.scraper import ScraperError, SourceUnavailableError, scrape_url
 from backend.schemas import (
+    AdminSession,
     ApprovalRequest,
+    LoginRequest,
     ExtractionResponse,
     ExtractRequest,
     ProcedureSpine,
@@ -22,6 +30,8 @@ from backend.schemas import (
 
 
 router = APIRouter()
+# Every route on admin_router requires a valid admin session.
+admin_router = APIRouter(dependencies=[Depends(require_admin)])
 
 
 @router.get("/health")
@@ -29,7 +39,34 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
-@router.post("/api/admin/extract", response_model=ExtractionResponse)
+@router.post("/api/admin/login", response_model=AdminSession)
+def login(request: LoginRequest, response: Response) -> AdminSession:
+    if not check_admin_credentials(request.username, request.password):
+        raise HTTPException(status_code=401, detail="Invalid username or password.")
+    response.set_cookie(
+        SESSION_COOKIE,
+        create_session_token(request.username),
+        max_age=SESSION_TTL_SECONDS,
+        httponly=True,
+        samesite="strict",
+        secure=COOKIE_SECURE,
+    )
+    return AdminSession(username=request.username)
+
+
+@router.post("/api/admin/logout", status_code=204)
+def logout(response: Response) -> None:
+    response.delete_cookie(
+        SESSION_COOKIE, httponly=True, samesite="strict", secure=COOKIE_SECURE
+    )
+
+
+@router.get("/api/admin/session", response_model=AdminSession)
+def session(username: str = Depends(require_admin)) -> AdminSession:
+    return AdminSession(username=username)
+
+
+@admin_router.post("/api/admin/extract", response_model=ExtractionResponse)
 def create_extraction(request: ExtractRequest) -> ExtractionResponse:
     try:
         source = scrape_url(request.source_url)
@@ -57,7 +94,7 @@ def _verify_provenance(token: str, source_url: str, source_text: str) -> None:
         raise HTTPException(status_code=422, detail=str(error)) from error
 
 
-@router.post("/api/admin/re-extract", response_model=ProcedureSpine)
+@admin_router.post("/api/admin/re-extract", response_model=ProcedureSpine)
 def re_extract_procedure(request: ReExtractRequest) -> ProcedureSpine:
     _verify_provenance(
         request.provenance_token, request.source_url, request.source_text
@@ -68,7 +105,7 @@ def re_extract_procedure(request: ReExtractRequest) -> ProcedureSpine:
         raise HTTPException(status_code=502, detail=str(error)) from error
 
 
-@router.post("/api/admin/procedures", response_model=SavedProcedureResponse)
+@admin_router.post("/api/admin/procedures", response_model=SavedProcedureResponse)
 def save_procedure(
     request: ApprovalRequest, db: Session = Depends(get_db)
 ) -> SavedProcedureResponse:
@@ -110,3 +147,6 @@ def save_procedure(
         ) from error
 
     return SavedProcedureResponse(id=record.id, name=record.name, status="saved")
+
+
+router.include_router(admin_router)

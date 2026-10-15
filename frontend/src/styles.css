@@ -300,3 +300,13 @@ button:disabled {
     width: 100%;
   }
 }
+
+.session-bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-end;
+  width: min(920px, calc(100% - 32px));
+  margin: 16px auto 0;
+  color: #5c677d;
+}
