@@ -22,6 +22,8 @@ DATABASE_URL = _required_setting("DATABASE_URL")
 OLLAMA_BASE_URL = _setting("OLLAMA_BASE_URL", "http://localhost:11434")
 LLM_MODEL = _setting("LLM_MODEL", "qwen3:8b")
 EMBEDDING_MODEL = _setting("EMBEDDING_MODEL", "qwen3-embedding:0.6b")
+# Must match the embedding model (qwen3-embedding:0.6b returns 1024 values).
+EMBEDDING_DIMENSIONS = int(_setting("EMBEDDING_DIMENSIONS", "1024"))
 FRONTEND_ORIGIN = _setting("FRONTEND_ORIGIN", "http://localhost:5173")
 SECRET_KEY = _required_setting("SECRET_KEY")
 if len(SECRET_KEY) < 32:

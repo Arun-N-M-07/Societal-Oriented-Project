@@ -16,6 +16,7 @@ from backend.config import COOKIE_SECURE
 from backend.database import get_db, get_read_only_db
 from backend.extractor import ExtractionError, extract_procedure
 from backend.models import Procedure
+from backend.rag import EmbeddingError, build_chunks
 from backend.scraper import ScraperError, SourceUnavailableError, scrape_url
 from backend.schemas import (
     AdminProcedure,
@@ -116,6 +117,13 @@ def save_procedure(
     _verify_provenance(
         request.provenance_token, procedure.source_url, request.source_text
     )
+    try:
+        chunks = build_chunks(request.source_text)
+    except EmbeddingError as error:
+        raise HTTPException(
+            status_code=502,
+            detail="Could not index the procedure. Nothing was saved.",
+        ) from error
     record = Procedure(
         name=procedure.name,
         department=procedure.department,
@@ -131,6 +139,10 @@ def save_procedure(
     db.add(record)
 
     try:
+        db.flush()
+        for chunk in chunks:
+            chunk.procedure_id = record.id
+        db.add_all(chunks)
         db.commit()
         db.refresh(record)
     except IntegrityError as error:

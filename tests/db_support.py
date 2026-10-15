@@ -9,6 +9,7 @@ case they fail.
 import os
 import sys
 import unittest
+from unittest.mock import patch
 
 if "backend.config" in sys.modules:
     raise RuntimeError("Import db_support before any backend module.")
@@ -28,15 +29,40 @@ os.environ["ADMIN_PASSWORD_HASH"] = (
 
 from fastapi import FastAPI  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
+from sqlalchemy import text  # noqa: E402
 from sqlalchemy.exc import OperationalError  # noqa: E402
 from sqlalchemy.orm import Session  # noqa: E402
 
 from backend.auth import require_admin  # noqa: E402
+from backend.config import EMBEDDING_DIMENSIONS  # noqa: E402
 from backend.database import Base, engine, get_db  # noqa: E402
 from backend.routes import router  # noqa: E402
 
 if not (engine.url.database or "").endswith("_test"):
     raise RuntimeError("TEST_DATABASE_URL must name a database ending in _test.")
+
+
+def _prepare_test_database():
+    with engine.begin() as connection:
+        connection.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
+    Base.metadata.create_all(engine)
+
+
+try:  # before any test imports backend.main, which also creates tables
+    _prepare_test_database()
+except OperationalError:
+    pass  # reported by DatabaseTestCase.setUpClass
+
+
+def unit_vector(position=0):
+    """A deterministic embedding pointing along one axis."""
+    vector = [0.0] * EMBEDDING_DIMENSIONS
+    vector[position] = 1.0
+    return vector
+
+
+def fake_embed(texts, *, query=False):
+    return [unit_vector() for _ in texts]
 
 
 def make_client(session=None, admin=True):
@@ -51,12 +77,15 @@ def make_client(session=None, admin=True):
 
 
 class DatabaseTestCase(unittest.TestCase):
-    """Runs each test inside a transaction that is always rolled back."""
+    """Runs each test inside a transaction that is always rolled back.
+
+    Embeddings are faked so tests never call Ollama; self.embed is the mock.
+    """
 
     @classmethod
     def setUpClass(cls):
         try:
-            Base.metadata.create_all(engine)
+            _prepare_test_database()
         except OperationalError as error:
             if os.environ.get("REQUIRE_DB_TESTS") == "1":
                 raise
@@ -69,6 +98,9 @@ class DatabaseTestCase(unittest.TestCase):
             bind=self.connection, join_transaction_mode="create_savepoint"
         )
         self.client = make_client(self.session)
+        embed_patch = patch("backend.rag.embed_texts", side_effect=fake_embed)
+        self.embed = embed_patch.start()
+        self.addCleanup(embed_patch.stop)
 
     def tearDown(self):
         self.session.close()
