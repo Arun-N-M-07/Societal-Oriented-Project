@@ -108,8 +108,16 @@ nothing): `.venv/bin/python scripts/evaluate_identification.py`.
   DNS answer between the check and the connection (DNS rebinding) is not fully prevented.
 - Provenance tokens prove the server extracted the saved text; they do not prove a site
   is an authoritative government source.
-- Answer verification proves each claim has a verbatim supporting quote; it does not
-  prove the paraphrase means exactly what the quote says.
+- Answer verification proves each claim has a verbatim supporting quote with the same
+  numbers and the same negation; it does not prove the paraphrase otherwise means
+  exactly what the quote says.
 - Identification thresholds were chosen on a small labelled set (32 questions,
-  10 pages); re-run the evaluation as procedures are added.
+  10 pages, not held out); re-run the evaluation as procedures are added. Citizens are
+  asked to choose only when the top procedures score within `IDENTIFY_MARGIN` (0.03)
+  of each other; otherwise the best match is shown directly.
+- Admin sessions are stateless signed cookies: logout clears the browser cookie, but a
+  copied cookie stays valid until it expires (12 hours). Changing `SECRET_KEY` signs
+  everyone out. There is no rate limit on login attempts, so use a long password.
+- The backend needs PostgreSQL (with pgvector) at startup; if Ollama is down it still
+  starts, `/health/ready` returns 503 and extraction/search/answers return 502.
 - Deleting a procedure is permanent; there is no audit history of withdrawn procedures.
