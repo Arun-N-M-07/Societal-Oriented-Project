@@ -13,14 +13,17 @@ from backend.auth import (
     verify_provenance_token,
 )
 from backend.config import COOKIE_SECURE
-from backend.database import get_db
+from backend.database import get_db, get_read_only_db
 from backend.extractor import ExtractionError, extract_procedure
 from backend.models import Procedure
 from backend.scraper import ScraperError, SourceUnavailableError, scrape_url
 from backend.schemas import (
+    AdminProcedure,
     AdminSession,
     ApprovalRequest,
     LoginRequest,
+    ProcedureDetail,
+    ProcedureSummary,
     ExtractionResponse,
     ExtractRequest,
     ProcedureSpine,
@@ -147,6 +150,53 @@ def save_procedure(
         ) from error
 
     return SavedProcedureResponse(id=record.id, name=record.name, status="saved")
+
+
+@admin_router.get("/api/admin/procedures", response_model=list[AdminProcedure])
+def list_saved_procedures(db: Session = Depends(get_db)) -> list[AdminProcedure]:
+    return [
+        AdminProcedure(
+            id=p.id,
+            name=p.name,
+            department=p.department,
+            jurisdiction=p.jurisdiction,
+            source_url=p.source_url,
+        )
+        for p in db.query(Procedure).order_by(Procedure.id.desc())
+    ]
+
+
+def _summary(procedure: Procedure) -> dict:
+    return {
+        "id": procedure.id,
+        "name": procedure.name,
+        "department": procedure.department,
+        "jurisdiction": procedure.jurisdiction,
+        "summary": procedure.summary,
+    }
+
+
+@router.get("/api/procedures", response_model=list[ProcedureSummary])
+def list_procedures(db: Session = Depends(get_read_only_db)) -> list[ProcedureSummary]:
+    return [
+        ProcedureSummary(**_summary(p))
+        for p in db.query(Procedure).order_by(Procedure.name)
+    ]
+
+
+@router.get("/api/procedures/{procedure_id}", response_model=ProcedureDetail)
+def get_procedure(
+    procedure_id: int, db: Session = Depends(get_read_only_db)
+) -> ProcedureDetail:
+    procedure = db.get(Procedure, procedure_id)
+    if procedure is None:
+        raise HTTPException(status_code=404, detail="Procedure not found.")
+    return ProcedureDetail(
+        **_summary(procedure),
+        eligibility=procedure.structured_data.get("eligibility"),
+        steps=procedure.structured_data.get("steps", []),
+        source_url=procedure.source_url,
+    )
 
 
 router.include_router(admin_router)
