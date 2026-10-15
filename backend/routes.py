@@ -166,6 +166,21 @@ def list_saved_procedures(db: Session = Depends(get_db)) -> list[AdminProcedure]
     ]
 
 
+@admin_router.delete("/api/admin/procedures/{procedure_id}", status_code=204)
+def delete_procedure(procedure_id: int, db: Session = Depends(get_db)) -> None:
+    procedure = db.get(Procedure, procedure_id)
+    if procedure is None:
+        raise HTTPException(status_code=404, detail="Procedure not found.")
+    db.delete(procedure)
+    try:
+        db.commit()
+    except SQLAlchemyError as error:
+        db.rollback()
+        raise HTTPException(
+            status_code=500, detail="Unable to delete the procedure."
+        ) from error
+
+
 def _summary(procedure: Procedure) -> dict:
     return {
         "id": procedure.id,

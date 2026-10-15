@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import AdminLogin from "./AdminLogin";
 import AdminPage from "./AdminPage";
+import AdminProcedureList from "./AdminProcedureList";
 import { getSession, logout, UNAUTHORIZED_EVENT } from "./api";
 
 
@@ -50,6 +51,7 @@ export default function App() {
         </button>
       </div>
       <AdminPage />
+      <AdminProcedureList />
     </>
   );
 }

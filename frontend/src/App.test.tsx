@@ -9,6 +9,7 @@ vi.mock("./api", async (importOriginal) => ({
   getSession: vi.fn(),
   login: vi.fn(),
   logout: vi.fn(),
+  listSavedProcedures: vi.fn(),
 }));
 
 function signIn(password = "secret") {
@@ -20,6 +21,7 @@ function signIn(password = "secret") {
 beforeEach(() => {
   vi.resetAllMocks();
   vi.mocked(api.getSession).mockRejectedValue(new Error("Not signed in."));
+  vi.mocked(api.listSavedProcedures).mockResolvedValue([]);
 });
 afterEach(cleanup);
 

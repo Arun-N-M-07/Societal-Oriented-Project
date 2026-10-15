@@ -80,5 +80,22 @@ class AdminProcedureListTest(DatabaseTestCase):
         self.assertEqual(set(body[0]), {"id", "name", "department", "jurisdiction", "source_url"})
 
 
+class DeleteProcedureTest(DatabaseTestCase):
+    def test_deletes_procedure_and_frees_its_url(self):
+        procedure = add_procedure(self.session)
+
+        response = self.client.delete(f"/api/admin/procedures/{procedure.id}")
+
+        self.assertEqual(response.status_code, 204)
+        self.assertIsNone(self.session.get(Procedure, procedure.id))
+        add_procedure(self.session)  # same URL can be approved again
+
+    def test_unknown_procedure_returns_404(self):
+        response = self.client.delete("/api/admin/procedures/999999")
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), {"detail": "Procedure not found."})
+
+
 if __name__ == "__main__":
     unittest.main()

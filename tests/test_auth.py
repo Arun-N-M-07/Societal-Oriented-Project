@@ -1,5 +1,6 @@
 import db_support  # noqa: F401  (must be first)
 
+import re
 import unittest
 from unittest.mock import patch
 
@@ -112,10 +113,10 @@ class AdminSessionTest(unittest.TestCase):
             if path.startswith("/api/admin") and path not in public
             for method in methods
         ]
-        self.assertGreaterEqual(len(admin_routes), 4)
+        self.assertGreaterEqual(len(admin_routes), 6)
         for path, method in admin_routes:
             with self.subTest(path=path, method=method):
-                response = self.client.request(method, path.replace("{id}", "1"), json={})
+                response = self.client.request(method, re.sub(r"{\w+}", "1", path), json={})
                 self.assertEqual(response.status_code, 401)
 
 

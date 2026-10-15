@@ -40,6 +40,14 @@ export type SavedProcedureResponse = {
 
 export type AdminSession = { username: string };
 
+export type SavedProcedure = {
+  id: number;
+  name: string;
+  department: string | null;
+  jurisdiction: string | null;
+  source_url: string;
+};
+
 // Fired when an admin request is rejected because the session has expired.
 export const UNAUTHORIZED_EVENT = "admin-unauthorized";
 const NO_SESSION_PATHS = ["/api/admin/login", "/api/admin/session"];
@@ -105,3 +113,9 @@ export const logout = () =>
 
 export const getSession = () =>
   request<AdminSession>("/api/admin/session", "Not signed in.");
+
+export const listSavedProcedures = () =>
+  request<SavedProcedure[]>("/api/admin/procedures", "Unable to load procedures.");
+
+export const deleteProcedure = (id: number) =>
+  request<void>(`/api/admin/procedures/${id}`, "Unable to delete procedure.", undefined, "DELETE");
