@@ -22,6 +22,8 @@ QUERY_INSTRUCTION = (
 
 GUIDANCE_PASSAGES = 5
 MIN_QUOTE_WORDS = 4
+# A claim and its quote must agree on negation ("can" vs "cannot").
+NEGATION = re.compile(r"\b(?:not|no|never|cannot|without)\b|n't\b")
 
 
 class EmbeddingError(Exception):
@@ -145,8 +147,9 @@ def _normalize(text: str) -> str:
 
 
 def verify_claims(claims: object, passages: dict[int, str]) -> list[dict]:
-    """Keep only claims whose quote appears verbatim in the cited passage and
-    whose numbers (fees, ages, days...) all appear in that quote."""
+    """Keep only claims whose quote appears verbatim in the cited passage,
+    whose numbers (fees, ages, days...) all appear in that quote, and which
+    agree with the quote on negation."""
     verified = []
     for claim in claims if isinstance(claims, list) else []:
         if not isinstance(claim, dict):
@@ -161,6 +164,7 @@ def verify_claims(claims: object, passages: dict[int, str]) -> list[dict]:
             or len(quote_n.split()) < MIN_QUOTE_WORDS
             or quote_n not in _normalize(passage)
             or any(n not in quote_n for n in re.findall(r"\d+(?:[.,/]\d+)*", text))
+            or bool(NEGATION.search(_normalize(text))) != bool(NEGATION.search(quote_n))
         ):
             continue
         verified.append({"text": text.strip(), "chunk_id": chunk_id, "quote": quote.strip()})

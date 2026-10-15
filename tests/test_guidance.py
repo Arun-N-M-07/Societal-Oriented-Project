@@ -18,7 +18,7 @@ OLD_FEE = "Older guidance: the application fee for a fresh passport was Rs 1,000
 
 
 class VerifyClaimsTest(unittest.TestCase):
-    passages = {1: FEE, 2: DOCS}
+    passages = {1: FEE, 2: DOCS, 3: "Applicants without a registered mobile number cannot use online services."}
 
     def claim(self, text, quote, chunk_id=1):
         return {"text": text, "quote": quote, "chunk_id": chunk_id}
@@ -30,6 +30,13 @@ class VerifyClaimsTest(unittest.TestCase):
         ]
         self.assertEqual(len(verify_claims(claims, self.passages)), 2)
 
+    def test_keeps_negated_claims_backed_by_negated_quotes(self):
+        claim = self.claim(
+            "You cannot use online services without a registered mobile.",
+            "without a registered mobile number cannot use online services", 3,
+        )
+        self.assertEqual(len(verify_claims([claim], self.passages)), 1)
+
     def test_drops_unsupported_claims(self):
         cases = {
             "fabricated quote": self.claim("Pay online.", "the fee can be paid at any bank branch"),
@@ -37,6 +44,10 @@ class VerifyClaimsTest(unittest.TestCase):
             "unknown passage": self.claim("Pay online.", "payable online at the portal", 99),
             "invented number": self.claim("Pay Rs 2,000 online.", "fee for a fresh passport of 36 pages"),
             "too short quote": self.claim("Pay online.", "payable online"),
+            "negation added": self.claim("You cannot pay online.", "is Rs 1,500 payable online"),
+            "negation dropped": self.claim(
+                "You can use online services.", "registered mobile number cannot use online services", 3
+            ),
             "missing text": {"quote": "fee for a fresh passport of 36 pages", "chunk_id": 1},
             "string id": self.claim("Pay.", "fee for a fresh passport of 36 pages", "1"),
             "not an object": "Pay Rs 1,500",
