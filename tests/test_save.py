@@ -7,6 +7,7 @@ from unittest.mock import patch
 
 from sqlalchemy.exc import OperationalError
 
+from backend.auth import issue_provenance_token
 from backend.database import engine
 from backend.models import Procedure
 from db_support import DatabaseTestCase
@@ -14,6 +15,9 @@ from db_support import DatabaseTestCase
 
 APPROVAL = json.loads(
     (Path(__file__).resolve().parents[1] / "fixtures" / "sample_procedure.json").read_text()
+)
+APPROVAL["provenance_token"] = issue_provenance_token(
+    APPROVAL["procedure"]["source_url"], APPROVAL["source_text"]
 )
 
 
@@ -62,6 +66,28 @@ class SaveProcedureTest(DatabaseTestCase):
 
         self.assertEqual(response.status_code, 422)
         self.assertEqual(self.count(), 0)
+
+    def test_rejects_content_the_server_did_not_extract(self):
+        procedure = APPROVAL["procedure"]
+        for changed in (
+            {"source_text": "Text that was never scraped."},
+            {"procedure": {**procedure, "source_url": "https://example.gov.in/other"}},
+            {"provenance_token": "provenance:9999999999:abc:def"},
+        ):
+            with self.subTest(changed=list(changed)):
+                response = self.client.post(
+                    "/api/admin/procedures", json={**APPROVAL, **changed}
+                )
+                self.assertEqual(response.status_code, 422)
+        self.assertEqual(self.count(), 0)
+
+    def test_reviewer_may_edit_procedure_fields(self):
+        edited = {**APPROVAL["procedure"], "summary": "Edited by the reviewer."}
+        response = self.client.post(
+            "/api/admin/procedures", json={**APPROVAL, "procedure": edited}
+        )
+
+        self.assertEqual(response.status_code, 200)
 
 
 if __name__ == "__main__":

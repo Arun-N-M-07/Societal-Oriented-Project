@@ -6,10 +6,20 @@ from unittest.mock import patch
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
+from backend.auth import issue_provenance_token
 from backend.extractor import ExtractionError
 from backend.routes import router
 from backend.schemas import ProcedureSpine, ScrapeResult
-from backend.scraper import ScraperError
+from backend.scraper import ScraperError, SourceUnavailableError
+
+
+REEXTRACT_BODY = {
+    "source_url": "https://example.gov.in/passport",
+    "source_text": "Corrected official instructions.",
+    "provenance_token": issue_provenance_token(
+        "https://example.gov.in/passport", "Corrected official instructions."
+    ),
+}
 
 
 class ExtractionRouteTest(unittest.TestCase):
@@ -43,13 +53,16 @@ class ExtractionRouteTest(unittest.TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
+        body = response.json()
+        token = body.pop("provenance_token")
         self.assertEqual(
-            response.json(),
+            body,
             {
                 "source_text": "Official passport instructions.",
                 "procedure": mock_extract.return_value.model_dump(),
             },
         )
+        self.assertTrue(token.startswith("provenance:"))
         mock_scrape.assert_called_once_with(
             "https://example.gov.in/passport"
         )
@@ -108,7 +121,7 @@ class ExtractionRouteTest(unittest.TestCase):
 
     @patch("backend.routes.scrape_url")
     @patch("backend.routes.extract_procedure")
-    def test_reextracts_edited_text_without_scraping(
+    def test_reextracts_without_scraping(
         self, mock_extract, mock_scrape
     ):
         mock_extract.return_value = ProcedureSpine(
@@ -123,10 +136,7 @@ class ExtractionRouteTest(unittest.TestCase):
 
         response = self.client.post(
             "/api/admin/re-extract",
-            json={
-                "source_url": "https://example.gov.in/passport",
-                "source_text": "Corrected official instructions.",
-            },
+            json=REEXTRACT_BODY,
         )
 
         self.assertEqual(response.status_code, 200)
@@ -144,10 +154,7 @@ class ExtractionRouteTest(unittest.TestCase):
 
         response = self.client.post(
             "/api/admin/re-extract",
-            json={
-                "source_url": "https://example.gov.in/passport",
-                "source_text": "Corrected official instructions.",
-            },
+            json=REEXTRACT_BODY,
         )
 
         self.assertEqual(response.status_code, 502)
@@ -164,12 +171,50 @@ class ExtractionRouteTest(unittest.TestCase):
             json={
                 "source_url": "not-a-url",
                 "source_text": "   ",
+                "provenance_token": "x",
             },
         )
 
         self.assertEqual(response.status_code, 422)
         mock_extract.assert_not_called()
         mock_scrape.assert_not_called()
+
+    @patch("backend.routes.scrape_url")
+    @patch("backend.routes.extract_procedure")
+    def test_rejects_reextraction_of_text_the_server_did_not_extract(
+        self, mock_extract, mock_scrape
+    ):
+        for body in (
+            {**REEXTRACT_BODY, "source_text": "Injected instructions."},
+            {**REEXTRACT_BODY, "source_url": "https://example.gov.in/other"},
+            {**REEXTRACT_BODY, "provenance_token": "provenance:9999999999:abc:def"},
+        ):
+            with self.subTest(body=body):
+                response = self.client.post("/api/admin/re-extract", json=body)
+                self.assertEqual(response.status_code, 422)
+        mock_extract.assert_not_called()
+
+    @patch("backend.routes.extract_procedure")
+    @patch("backend.routes.scrape_url")
+    def test_unreachable_source_returns_502(self, mock_scrape, mock_extract):
+        mock_scrape.side_effect = SourceUnavailableError("The source page timed out.")
+
+        response = self.client.post(
+            "/api/admin/extract", json={"source_url": "https://example.gov.in/x"}
+        )
+
+        self.assertEqual(response.status_code, 502)
+        self.assertEqual(response.json(), {"detail": "The source page timed out."})
+        mock_extract.assert_not_called()
+
+    def test_rejects_unknown_and_oversized_fields(self):
+        for body in (
+            {"source_url": "https://example.gov.in/x", "extra": 1},
+            {"source_url": "https://example.gov.in/" + "a" * 2050},
+        ):
+            with self.subTest(body=str(body)[:60]):
+                response = self.client.post("/api/admin/extract", json=body)
+                self.assertEqual(response.status_code, 422)
 
 
 if __name__ == "__main__":

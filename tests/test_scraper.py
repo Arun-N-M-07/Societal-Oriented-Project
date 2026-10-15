@@ -1,3 +1,4 @@
+import socket
 import unittest
 from unittest.mock import MagicMock, patch
 
@@ -6,13 +7,93 @@ import httpx
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 
 from backend.scraper import (
+    MAX_RESPONSE_BYTES,
     ScraperError,
+    SourceUnavailableError,
     clean_html,
     fetch_static_html,
     fetch_rendered_html,
     is_source_text_usable,
+    normalize_url,
     scrape_url,
+    validate_url,
 )
+
+
+def resolves_to(*addresses):
+    return patch(
+        "backend.scraper.socket.getaddrinfo",
+        return_value=[(None, None, None, "", (address, 0)) for address in addresses],
+    )
+
+
+# Unit tests never use real DNS: every host resolves to a public address
+# unless a test patches getaddrinfo itself.
+_public_dns = resolves_to("93.184.216.34")
+setUpModule = _public_dns.start
+tearDownModule = _public_dns.stop
+
+
+def html_response(url, status=200, headers=None, body=b"<p>Hello</p>"):
+    headers = {"content-type": "text/html; charset=utf-8", **(headers or {})}
+    return httpx.Response(
+        status, headers=headers, content=body, request=httpx.Request("GET", url)
+    )
+
+
+class ValidateUrlTest(unittest.TestCase):
+    def test_accepts_public_hosts(self):
+        self.assertEqual(
+            validate_url(" https://example.gov.in/a "), "https://example.gov.in/a"
+        )
+
+    def test_rejects_unsafe_urls(self):
+        for url in (
+            "",
+            "ftp://example.gov.in/file",
+            "https://exa mple.gov.in/",
+            "https://user:pass@example.gov.in/",
+            "http://localhost:8000/",
+            "http://api.localhost/",
+            "http://127.0.0.1/",
+            "http://10.1.2.3/",
+            "http://[::1]/",
+            "http://[::ffff:127.0.0.1]/",
+            "http://169.254.169.254/latest/meta-data",
+            "http://224.0.0.1/",
+            "https://example.gov.in:99999/",
+        ):
+            with self.subTest(url=url):
+                with self.assertRaises(ScraperError):
+                    validate_url(url)
+
+    def test_rejects_hosts_resolving_to_private_addresses(self):
+        for addresses in (("10.0.0.5",), ("93.184.216.34", "127.0.0.1"), ("::1",)):
+            with self.subTest(addresses=addresses), resolves_to(*addresses):
+                with self.assertRaisesRegex(ScraperError, "Private or local"):
+                    validate_url("https://rebind.example.gov.in/")
+
+    def test_unresolvable_host_is_an_upstream_failure(self):
+        with patch(
+            "backend.scraper.socket.getaddrinfo",
+            side_effect=socket.gaierror("no such host"),
+        ):
+            with self.assertRaises(SourceUnavailableError):
+                validate_url("https://missing.example.gov.in/")
+
+
+class NormalizeUrlTest(unittest.TestCase):
+    def test_normalizes_equivalent_urls(self):
+        cases = {
+            "HTTPS://WWW.Example.GOV.in/Path/": "https://www.example.gov.in/Path",
+            "https://example.gov.in:443/a#section": "https://example.gov.in/a",
+            "http://example.gov.in:80": "http://example.gov.in/",
+            "https://example.gov.in:8443/a/?b=1&a=2": "https://example.gov.in:8443/a?b=1&a=2",
+            "http://[2001:db8::1]/x/": "http://[2001:db8::1]/x",
+        }
+        for url, expected in cases.items():
+            with self.subTest(url=url):
+                self.assertEqual(normalize_url(url), expected)
 
 
 class CleanHtmlTest(unittest.TestCase):
@@ -136,23 +217,63 @@ class SourceTextUsabilityTest(unittest.TestCase):
 
 
 class StaticFetchTest(unittest.TestCase):
-    @patch("backend.scraper.httpx.Client")
-    def test_retries_once_after_connection_reset(self, client_class):
-        response = MagicMock(is_redirect=False, text="<p>Hello</p>")
-        response.url = "https://example.gov/page"
-        response.headers = {"content-type": "text/html; charset=utf-8"}
-        client = client_class.return_value.__enter__.return_value
-        client.get.side_effect = [httpx.ConnectError("reset"), response]
+    def fetch(self, *responses):
+        with patch("backend.scraper.httpx.Client") as client_class:
+            client = client_class.return_value.__enter__.return_value
+            client.send.side_effect = list(responses)
+            return fetch_static_html("https://example.gov/page"), client
 
-        self.assertEqual(
-            fetch_static_html("https://example.gov/page"),
-            ("https://example.gov/page", "<p>Hello</p>"),
+    def test_retries_once_after_connection_reset(self):
+        result, client = self.fetch(
+            httpx.ConnectError("reset"), html_response("https://example.gov/page")
         )
-        self.assertEqual(client.get.call_count, 2)
 
-        client.get.side_effect = httpx.ConnectError("reset")
-        with self.assertRaisesRegex(ScraperError, "Unable to retrieve"):
-            fetch_static_html("https://example.gov/page")
+        self.assertEqual(result, ("https://example.gov/page", "<p>Hello</p>"))
+        self.assertEqual(client.send.call_count, 2)
+        with self.assertRaisesRegex(SourceUnavailableError, "Unable to retrieve"):
+            self.fetch(httpx.ConnectError("reset"), httpx.ConnectError("reset"))
+
+    def test_follows_validated_redirects(self):
+        result, _ = self.fetch(
+            html_response("https://example.gov/page", 302, {"location": "/final"}),
+            html_response("https://example.gov/final"),
+        )
+        self.assertEqual(result[0], "https://example.gov/final")
+
+    def test_rejects_redirect_to_private_network(self):
+        with self.assertRaisesRegex(ScraperError, "Localhost"):
+            self.fetch(
+                html_response(
+                    "https://example.gov/page", 302, {"location": "http://localhost/"}
+                )
+            )
+
+    def test_rejects_oversized_responses(self):
+        too_big = str(MAX_RESPONSE_BYTES + 1)
+        for response in (
+            html_response("https://example.gov/page", headers={"content-length": too_big}),
+            html_response("https://example.gov/page", body=b"x" * (MAX_RESPONSE_BYTES + 1)),
+        ):
+            with self.subTest(), self.assertRaisesRegex(ScraperError, "too large"):
+                self.fetch(response)
+
+    def test_classifies_failures(self):
+        cases = (
+            (httpx.ReadTimeout("slow"), SourceUnavailableError, "timed out"),
+            (html_response("https://example.gov/page", 503), SourceUnavailableError, "HTTP 503"),
+            (html_response("https://example.gov/page", 404), ScraperError, "HTTP 404"),
+            (
+                html_response("https://example.gov/page", headers={"content-type": "application/pdf"}),
+                ScraperError,
+                "application/pdf",
+            ),
+        )
+        for response, error, message in cases:
+            with self.subTest(message=message):
+                with self.assertRaisesRegex(error, message) as raised:
+                    self.fetch(response)
+                if error is ScraperError:
+                    self.assertNotIsInstance(raised.exception, SourceUnavailableError)
 
 
 class RenderedHtmlTest(unittest.TestCase):
@@ -180,6 +301,22 @@ class RenderedHtmlTest(unittest.TestCase):
         with self.assertRaisesRegex(ScraperError, "rendered page timed out"):
             fetch_rendered_html("https://example.gov/start")
         browser.close.assert_called_once()
+
+    @patch("backend.scraper.sync_playwright")
+    def test_rejects_failed_or_oversized_rendered_pages(self, sync_playwright):
+        playwright = sync_playwright.return_value.__enter__.return_value
+        page = playwright.chromium.launch.return_value.new_page.return_value
+        page.url = "https://example.gov/final"
+
+        page.goto.return_value.ok = False
+        page.goto.return_value.status = 503
+        with self.assertRaisesRegex(SourceUnavailableError, "HTTP 503"):
+            fetch_rendered_html("https://example.gov/start")
+
+        page.goto.return_value.ok = True
+        page.content.return_value = "x" * (MAX_RESPONSE_BYTES + 1)
+        with self.assertRaisesRegex(ScraperError, "too large"):
+            fetch_rendered_html("https://example.gov/start")
 
 
 class ScrapeUrlTest(unittest.TestCase):
@@ -249,6 +386,29 @@ class ScrapeUrlTest(unittest.TestCase):
         with self.assertRaisesRegex(
             ScraperError, "No meaningful page content found"
         ):
+            scrape_url("https://example.gov/start")
+
+    @patch("backend.scraper.fetch_rendered_html")
+    @patch("backend.scraper.fetch_static_html")
+    def test_returns_normalized_source_url(self, fetch_static_html, fetch_rendered_html):
+        fetch_static_html.return_value = (
+            "HTTPS://Example.GOV/Final/#top",
+            self.usable_html,
+        )
+
+        result = scrape_url("https://example.gov/start")
+
+        self.assertEqual(result.source_url, "https://example.gov/Final")
+
+    @patch("backend.scraper.fetch_rendered_html")
+    @patch("backend.scraper.fetch_static_html")
+    def test_rejects_pages_with_too_much_text(self, fetch_static_html, fetch_rendered_html):
+        fetch_static_html.return_value = (
+            "https://example.gov/final",
+            "<p>" + "word " * 30_000 + "</p>",
+        )
+
+        with self.assertRaisesRegex(ScraperError, "too much text"):
             scrape_url("https://example.gov/start")
 
     @patch("backend.scraper.fetch_rendered_html")

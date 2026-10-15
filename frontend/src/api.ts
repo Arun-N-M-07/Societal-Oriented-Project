@@ -18,14 +18,18 @@ export type ProcedureSpine = {
   source_url: string;
 };
 
+export type ReExtractRequest = ScrapeResult & { provenance_token: string };
+
 export type ExtractionResponse = {
   source_text: string;
   procedure: ProcedureSpine;
+  provenance_token: string;
 };
 
 export type ApprovalRequest = {
   procedure: ProcedureSpine;
   source_text: string;
+  provenance_token: string;
 };
 
 export type SavedProcedureResponse = {
@@ -58,7 +62,7 @@ export async function extractProcedure(
 }
 
 export async function reExtractProcedure(
-  source: ScrapeResult,
+  source: ReExtractRequest,
 ): Promise<ProcedureSpine> {
   const response = await fetch(`${API_BASE_URL}/api/admin/re-extract`, {
     method: "POST",

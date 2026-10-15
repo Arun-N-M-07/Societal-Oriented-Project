@@ -95,9 +95,6 @@ def parse_extraction(raw_output: str) -> ProcedureExtraction:
     if not isinstance(data, dict):
         raise ExtractionError("Qwen returned invalid structured data.")
 
-    if set(data) - set(ProcedureExtraction.model_fields):
-        raise ExtractionError("Qwen returned invalid structured data.")
-
     try:
         return ProcedureExtraction.model_validate(data)
     except ValidationError as error:

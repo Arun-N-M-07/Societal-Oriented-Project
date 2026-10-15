@@ -28,6 +28,7 @@ function toStepItems(texts: string[]): StepItem[] {
 export default function AdminPage() {
   const [sourceUrl, setSourceUrl] = useState("");
   const [extractedSourceText, setExtractedSourceText] = useState("");
+  const [provenanceToken, setProvenanceToken] = useState("");
   const [procedure, setProcedure] = useState<ProcedureSpine | null>(null);
   const [error, setError] = useState("");
   const [savedMessage, setSavedMessage] = useState("");
@@ -103,10 +104,12 @@ export default function AdminPage() {
       setProcedure(extraction.procedure);
       setSteps(toStepItems(extraction.procedure.steps));
       setExtractedSourceText(extraction.source_text);
+      setProvenanceToken(extraction.provenance_token);
     } catch (requestError) {
       setProcedure(null);
       setSteps([]);
       setExtractedSourceText("");
+      setProvenanceToken("");
       setError(
         requestError instanceof Error
           ? requestError.message
@@ -128,6 +131,7 @@ export default function AdminPage() {
       const extractedProcedure = await reExtractProcedure({
         source_url: procedure.source_url,
         source_text: extractedSourceText,
+        provenance_token: provenanceToken,
       });
       setProcedure(extractedProcedure);
       setSteps(toStepItems(extractedProcedure.steps));
@@ -147,6 +151,7 @@ export default function AdminPage() {
 
     setSourceUrl("");
     setExtractedSourceText("");
+    setProvenanceToken("");
     setProcedure(null);
     setSteps([]);
     setError("");
@@ -185,6 +190,7 @@ export default function AdminPage() {
       const saved = await approveProcedure({
         procedure: reviewedProcedure,
         source_text: extractedSourceText,
+        provenance_token: provenanceToken,
       });
       setSavedMessage(`Saved ${saved.name} with ID ${saved.id}.`);
     } catch (requestError) {

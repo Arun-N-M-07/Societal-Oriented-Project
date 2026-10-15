@@ -16,6 +16,7 @@ const longText = "Long sentence about the procedure. ".repeat(40).trim();
 
 const extraction: api.ExtractionResponse = {
   source_text: "Official source text.",
+  provenance_token: "token-1",
   procedure: {
     name: "Fresh Passport Application",
     department: "Ministry of External Affairs",
@@ -190,6 +191,7 @@ describe("approval", () => {
     await screen.findByText("Saved Fresh Passport Application with ID 7.");
     expect(api.approveProcedure).toHaveBeenCalledWith({
       source_text: "Official source text.",
+      provenance_token: "token-1",
       procedure: {
         ...extraction.procedure,
         steps: [
@@ -224,5 +226,10 @@ describe("approval", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Re-extract" }));
     await waitFor(() => expect(stepTexts()).toEqual(["Only step."]));
+    expect(api.reExtractProcedure).toHaveBeenCalledWith({
+      source_url: extraction.procedure.source_url,
+      source_text: "Official source text.",
+      provenance_token: "token-1",
+    });
   });
 });

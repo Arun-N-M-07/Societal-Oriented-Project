@@ -18,7 +18,9 @@ class ConfigTest(unittest.TestCase):
         importlib.reload(backend.config)
 
     def test_uses_defaults_for_unset_or_blank_settings(self):
-        config = load_config({"DATABASE_URL": "postgresql://db", "LLM_MODEL": "  "})
+        config = load_config(
+            {"DATABASE_URL": "postgresql://db", "LLM_MODEL": "  ", "SECRET_KEY": "x" * 32}
+        )
 
         self.assertEqual(config.OLLAMA_BASE_URL, "http://localhost:11434")
         self.assertEqual(config.LLM_MODEL, "qwen3:8b")
@@ -32,6 +34,7 @@ class ConfigTest(unittest.TestCase):
                 "OLLAMA_BASE_URL": "http://ollama:11434",
                 "LLM_MODEL": "other-model",
                 "FRONTEND_ORIGIN": "http://localhost:3000",
+                "SECRET_KEY": "x" * 32,
             }
         )
 
@@ -42,7 +45,13 @@ class ConfigTest(unittest.TestCase):
 
     def test_requires_database_url(self):
         with self.assertRaisesRegex(RuntimeError, "DATABASE_URL must be set"):
-            load_config({"DATABASE_URL": " "})
+            load_config({"DATABASE_URL": " ", "SECRET_KEY": "x" * 32})
+
+    def test_requires_a_long_secret_key(self):
+        with self.assertRaisesRegex(RuntimeError, "SECRET_KEY must be set"):
+            load_config({"DATABASE_URL": "postgresql://db"})
+        with self.assertRaisesRegex(RuntimeError, "at least 32 characters"):
+            load_config({"DATABASE_URL": "postgresql://db", "SECRET_KEY": "short"})
 
 
 if __name__ == "__main__":

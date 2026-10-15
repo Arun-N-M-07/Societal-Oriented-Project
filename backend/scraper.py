@@ -1,6 +1,7 @@
 import ipaddress
 import re
-from urllib.parse import urljoin, urlparse
+import socket
+from urllib.parse import urljoin, urlparse, urlsplit, urlunsplit
 
 import httpx
 from bs4 import BeautifulSoup
@@ -10,13 +11,14 @@ from playwright.sync_api import (
     sync_playwright,
 )
 
-from backend.schemas import ScrapeResult
+from backend.schemas import MAX_SOURCE_TEXT_LENGTH, ScrapeResult
 
 
 HTTP_TIMEOUT = 20.0
 BROWSER_TIMEOUT_MS = 30_000
 RENDER_WAIT_MS = 1_000
 MAX_REDIRECTS = 10
+MAX_RESPONSE_BYTES = 2_000_000
 USER_AGENT = "ProcedureAssistAI/1.0"
 HTML_CONTENT_TYPES = {"text/html", "application/xhtml+xml"}
 MIN_SOURCE_CHARACTERS = 200
@@ -44,7 +46,27 @@ CONTENT_TAGS = (
 
 
 class ScraperError(Exception):
-    pass
+    """The submitted URL or page cannot be used (client error)."""
+
+
+class SourceUnavailableError(ScraperError):
+    """The source site could not be reached or failed (upstream error)."""
+
+
+def _is_public_address(address: str) -> bool:
+    ip = ipaddress.ip_address(address.split("%", 1)[0])
+    ip = getattr(ip, "ipv4_mapped", None) or ip
+    return ip.is_global and not ip.is_multicast
+
+
+def normalize_url(url: str) -> str:
+    parts = urlsplit(url)
+    host = parts.hostname or ""
+    host = f"[{host}]" if ":" in host else host
+    default_port = {"http": 80, "https": 443}.get(parts.scheme.lower())
+    netloc = host if parts.port in (None, default_port) else f"{host}:{parts.port}"
+    path = parts.path.rstrip("/") or "/"
+    return urlunsplit((parts.scheme.lower(), netloc, path, parts.query, ""))
 
 
 def validate_url(url: str) -> str:
@@ -65,6 +87,8 @@ def validate_url(url: str) -> str:
         parsed.port
     except ValueError as error:
         raise ScraperError("Invalid URL port.") from error
+    if parsed.username or parsed.password:
+        raise ScraperError("URLs containing credentials are not allowed.")
 
     hostname = parsed.hostname.lower().rstrip(".")
     if hostname in {"localhost", "localhost.localdomain"} or hostname.endswith(
@@ -72,12 +96,17 @@ def validate_url(url: str) -> str:
     ):
         raise ScraperError("Localhost URLs are not allowed.")
 
+    # Resolve the host and reject it if any address is not public. A host can
+    # still re-resolve differently between this check and the connection (DNS
+    # rebinding); every redirect hop and browser sub-request is re-checked.
     try:
-        address = ipaddress.ip_address(hostname)
+        addresses = {str(ipaddress.ip_address(hostname))}
     except ValueError:
-        return url
-
-    if not address.is_global:
+        try:
+            addresses = {info[4][0] for info in socket.getaddrinfo(hostname, None)}
+        except (socket.gaierror, UnicodeError) as error:
+            raise SourceUnavailableError("Could not resolve the source host.") from error
+    if not addresses or not all(_is_public_address(a) for a in addresses):
         raise ScraperError("Private or local network URLs are not allowed.")
 
     return url
@@ -86,9 +115,20 @@ def validate_url(url: str) -> str:
 def _get_with_retry(client: httpx.Client, url: str) -> httpx.Response:
     # Some government sites reset the first connection at random; retry once.
     try:
-        return client.get(url)
+        return client.send(client.build_request("GET", url), stream=True)
     except (httpx.ConnectError, httpx.ReadError, httpx.RemoteProtocolError):
-        return client.get(url)
+        return client.send(client.build_request("GET", url), stream=True)
+
+
+def _read_limited(response: httpx.Response) -> str:
+    if int(response.headers.get("content-length") or 0) > MAX_RESPONSE_BYTES:
+        raise ScraperError("The source page is too large.")
+    body = bytearray()
+    for chunk in response.iter_bytes():
+        body.extend(chunk)
+        if len(body) > MAX_RESPONSE_BYTES:
+            raise ScraperError("The source page is too large.")
+    return body.decode(response.encoding or "utf-8", errors="replace")
 
 
 def fetch_static_html(
@@ -104,49 +144,51 @@ def fetch_static_html(
         ) as client:
             for _ in range(MAX_REDIRECTS + 1):
                 response = _get_with_retry(client, current_url)
-
-                if response.is_redirect:
-                    location = response.headers.get("location")
-                    if not location:
-                        raise ScraperError(
-                            "Redirect response did not include a destination."
+                try:
+                    if response.is_redirect:
+                        location = response.headers.get("location")
+                        if not location:
+                            raise ScraperError(
+                                "Redirect response did not include a destination."
+                            )
+                        current_url = validate_url(
+                            urljoin(str(response.url), location)
                         )
-                    current_url = validate_url(
-                        urljoin(str(response.url), location)
+                        continue
+
+                    response.raise_for_status()
+
+                    final_url = validate_url(str(response.url))
+                    content_type = (
+                        response.headers.get("content-type", "")
+                        .split(";", 1)[0]
+                        .strip()
+                        .lower()
                     )
-                    continue
+                    if content_type not in HTML_CONTENT_TYPES:
+                        raise ScraperError(
+                            f"Unsupported content type: {content_type or 'unknown'}."
+                        )
 
-                response.raise_for_status()
+                    html = _read_limited(response)
+                    if not html.strip():
+                        raise ScraperError("The source page returned empty HTML.")
 
-                final_url = validate_url(str(response.url))
-                content_type = (
-                    response.headers.get("content-type", "")
-                    .split(";", 1)[0]
-                    .strip()
-                    .lower()
-                )
-                if content_type not in HTML_CONTENT_TYPES:
-                    raise ScraperError(
-                        f"Unsupported content type: {content_type or 'unknown'}."
-                    )
-
-                html = response.text
-                if not html.strip():
-                    raise ScraperError("The source page returned empty HTML.")
-
-                return final_url, html
+                    return final_url, html
+                finally:
+                    response.close()
 
         raise ScraperError("Too many redirects.")
     except ScraperError:
         raise
     except httpx.TimeoutException as error:
-        raise ScraperError("The source page timed out.") from error
+        raise SourceUnavailableError("The source page timed out.") from error
     except httpx.HTTPStatusError as error:
-        raise ScraperError(
-            f"The source page returned HTTP {error.response.status_code}."
-        ) from error
+        status = error.response.status_code
+        error_class = SourceUnavailableError if status >= 500 else ScraperError
+        raise error_class(f"The source page returned HTTP {status}.") from error
     except httpx.RequestError as error:
-        raise ScraperError("Unable to retrieve the source page.") from error
+        raise SourceUnavailableError("Unable to retrieve the source page.") from error
 
 
 def clean_html(html: str) -> str:
@@ -245,7 +287,10 @@ def fetch_rendered_html(
                     timeout=timeout_ms,
                 )
                 if response is not None and not response.ok:
-                    raise ScraperError(
+                    error_class = (
+                        SourceUnavailableError if response.status >= 500 else ScraperError
+                    )
+                    raise error_class(
                         f"The rendered page returned HTTP {response.status}."
                     )
 
@@ -254,6 +299,8 @@ def fetch_rendered_html(
                 html = page.content()
                 if not html.strip():
                     raise ScraperError("The rendered page returned empty HTML.")
+                if len(html.encode()) > MAX_RESPONSE_BYTES:
+                    raise ScraperError("The source page is too large.")
 
                 return final_url, html
             finally:
@@ -261,9 +308,15 @@ def fetch_rendered_html(
     except ScraperError:
         raise
     except PlaywrightTimeoutError as error:
-        raise ScraperError("The rendered page timed out.") from error
+        raise SourceUnavailableError("The rendered page timed out.") from error
     except PlaywrightError as error:
-        raise ScraperError("The rendered page could not be loaded.") from error
+        raise SourceUnavailableError("The rendered page could not be loaded.") from error
+
+
+def _result(final_url: str, source_text: str) -> ScrapeResult:
+    if len(source_text) > MAX_SOURCE_TEXT_LENGTH:
+        raise ScraperError("The source page has too much text to process.")
+    return ScrapeResult(source_url=normalize_url(final_url), source_text=source_text)
 
 
 def scrape_url(url: str) -> ScrapeResult:
@@ -276,11 +329,11 @@ def scrape_url(url: str) -> ScrapeResult:
         source_text = ""
 
     if is_source_text_usable(source_text):
-        return ScrapeResult(source_url=final_url, source_text=source_text)
+        return _result(final_url, source_text)
 
     final_url, html = fetch_rendered_html(validated_url)
     source_text = clean_html(html)
     if not is_source_text_usable(source_text):
         raise ScraperError("No meaningful page content found.")
 
-    return ScrapeResult(source_url=final_url, source_text=source_text)
+    return _result(final_url, source_text)

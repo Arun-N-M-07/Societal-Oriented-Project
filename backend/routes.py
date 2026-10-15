@@ -2,17 +2,22 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.orm import Session
 
+from backend.auth import (
+    ProvenanceError,
+    issue_provenance_token,
+    verify_provenance_token,
+)
 from backend.database import get_db
 from backend.extractor import ExtractionError, extract_procedure
 from backend.models import Procedure
-from backend.scraper import ScraperError, scrape_url
+from backend.scraper import ScraperError, SourceUnavailableError, scrape_url
 from backend.schemas import (
     ApprovalRequest,
     ExtractionResponse,
     ExtractRequest,
     ProcedureSpine,
+    ReExtractRequest,
     SavedProcedureResponse,
-    ScrapeResult,
 )
 
 
@@ -29,6 +34,8 @@ def create_extraction(request: ExtractRequest) -> ExtractionResponse:
     try:
         source = scrape_url(request.source_url)
         procedure = extract_procedure(source.source_text, source.source_url)
+    except SourceUnavailableError as error:
+        raise HTTPException(status_code=502, detail=str(error)) from error
     except ScraperError as error:
         raise HTTPException(status_code=422, detail=str(error)) from error
     except ExtractionError as error:
@@ -37,11 +44,24 @@ def create_extraction(request: ExtractRequest) -> ExtractionResponse:
     return ExtractionResponse(
         source_text=source.source_text,
         procedure=procedure,
+        provenance_token=issue_provenance_token(
+            source.source_url, source.source_text
+        ),
     )
 
 
+def _verify_provenance(token: str, source_url: str, source_text: str) -> None:
+    try:
+        verify_provenance_token(token, source_url, source_text)
+    except ProvenanceError as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
+
+
 @router.post("/api/admin/re-extract", response_model=ProcedureSpine)
-def re_extract_procedure(request: ScrapeResult) -> ProcedureSpine:
+def re_extract_procedure(request: ReExtractRequest) -> ProcedureSpine:
+    _verify_provenance(
+        request.provenance_token, request.source_url, request.source_text
+    )
     try:
         return extract_procedure(request.source_text, request.source_url)
     except ExtractionError as error:
@@ -53,6 +73,9 @@ def save_procedure(
     request: ApprovalRequest, db: Session = Depends(get_db)
 ) -> SavedProcedureResponse:
     procedure = request.procedure
+    _verify_provenance(
+        request.provenance_token, procedure.source_url, request.source_text
+    )
     record = Procedure(
         name=procedure.name,
         department=procedure.department,

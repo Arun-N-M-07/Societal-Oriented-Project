@@ -1,6 +1,12 @@
 from urllib.parse import urlparse
 
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
+
+
+MAX_URL_LENGTH = 2_048
+MAX_SOURCE_TEXT_LENGTH = 100_000
+MAX_STEPS = 100
+MAX_STEP_LENGTH = 2_000
 
 
 def _required_text(value: str) -> str:
@@ -19,6 +25,8 @@ def _optional_text(value: str | None) -> str | None:
 
 def _http_url(value: str) -> str:
     value = _required_text(value)
+    if len(value) > MAX_URL_LENGTH:
+        raise ValueError("must be at most 2048 characters")
     parsed = urlparse(value)
     if (
         parsed.scheme.lower() not in {"http", "https"}
@@ -29,27 +37,31 @@ def _http_url(value: str) -> str:
     return value
 
 
-class ScrapeResult(BaseModel):
+class StrictModel(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+
+class ScrapeResult(StrictModel):
     source_url: str
-    source_text: str
+    source_text: str = Field(max_length=MAX_SOURCE_TEXT_LENGTH)
 
     _validate_source_url = field_validator("source_url")(_http_url)
     _validate_source_text = field_validator("source_text")(_required_text)
 
 
-class ExtractRequest(BaseModel):
+class ExtractRequest(StrictModel):
     source_url: str
 
     _validate_source_url = field_validator("source_url")(_http_url)
 
 
-class ProcedureExtraction(BaseModel):
-    name: str
-    department: str | None = None
-    jurisdiction: str | None = None
-    summary: str
-    eligibility: str | None = None
-    steps: list[str]
+class ProcedureExtraction(StrictModel):
+    name: str = Field(max_length=300)
+    department: str | None = Field(default=None, max_length=300)
+    jurisdiction: str | None = Field(default=None, max_length=300)
+    summary: str = Field(max_length=5_000)
+    eligibility: str | None = Field(default=None, max_length=10_000)
+    steps: list[str] = Field(max_length=MAX_STEPS)
 
     _validate_required_text = field_validator("name", "summary")(_required_text)
     _validate_optional_text = field_validator(
@@ -62,6 +74,8 @@ class ProcedureExtraction(BaseModel):
         cleaned_steps = [step.strip() for step in steps if step.strip()]
         if not cleaned_steps:
             raise ValueError("must contain at least one non-empty step")
+        if any(len(step) > MAX_STEP_LENGTH for step in cleaned_steps):
+            raise ValueError("each step must be at most 2000 characters")
         return cleaned_steps
 
 
@@ -71,21 +85,27 @@ class ProcedureSpine(ProcedureExtraction):
     _validate_source_url = field_validator("source_url")(_http_url)
 
 
-class ExtractionResponse(BaseModel):
+class ReExtractRequest(ScrapeResult):
+    provenance_token: str = Field(max_length=512)
+
+
+class ExtractionResponse(StrictModel):
     source_text: str
     procedure: ProcedureSpine
+    provenance_token: str
 
     _validate_source_text = field_validator("source_text")(_required_text)
 
 
-class ApprovalRequest(BaseModel):
+class ApprovalRequest(StrictModel):
     procedure: ProcedureSpine
-    source_text: str
+    source_text: str = Field(max_length=MAX_SOURCE_TEXT_LENGTH)
+    provenance_token: str = Field(max_length=512)
 
     _validate_source_text = field_validator("source_text")(_required_text)
 
 
-class SavedProcedureResponse(BaseModel):
+class SavedProcedureResponse(StrictModel):
     id: int
     name: str
     status: str
