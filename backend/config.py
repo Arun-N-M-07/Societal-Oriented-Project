@@ -21,6 +21,8 @@ def _setting(name: str, default: str) -> str:
 DATABASE_URL = _required_setting("DATABASE_URL")
 OLLAMA_BASE_URL = _setting("OLLAMA_BASE_URL", "http://localhost:11434")
 LLM_MODEL = _setting("LLM_MODEL", "qwen3:8b")
+# Context window requested from Ollama; must fit the longest allowed source text.
+LLM_CONTEXT_TOKENS = int(_setting("LLM_CONTEXT_TOKENS", "32768"))
 EMBEDDING_MODEL = _setting("EMBEDDING_MODEL", "qwen3-embedding:0.6b")
 # Must match the embedding model (qwen3-embedding:0.6b returns 1024 values).
 EMBEDDING_DIMENSIONS = int(_setting("EMBEDDING_DIMENSIONS", "1024"))

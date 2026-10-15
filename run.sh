@@ -32,7 +32,8 @@ fi
 
 if ! .venv/bin/python -c \
     'from backend.database import engine; connection = engine.connect(); connection.close()'; then
-    echo "PostgreSQL is unavailable. Start it and check DATABASE_URL in .env."
+    echo "Backend setup check failed (see the error above)."
+    echo "Check the settings in .env (see .env.example) and that PostgreSQL is running."
     exit 1
 fi
 

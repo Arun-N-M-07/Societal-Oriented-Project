@@ -65,7 +65,7 @@ class QwenClientTest(unittest.TestCase):
                 "stream": False,
                 "format": "json",
                 "think": False,
-                "options": {"temperature": 0},
+                "options": {"temperature": 0, "num_ctx": 32768},
             },
             timeout=60.0,
         )

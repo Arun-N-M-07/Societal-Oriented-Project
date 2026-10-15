@@ -3,7 +3,7 @@ import json
 import httpx
 from pydantic import ValidationError
 
-from backend.config import LLM_MODEL, OLLAMA_BASE_URL
+from backend.config import LLM_CONTEXT_TOKENS, LLM_MODEL, OLLAMA_BASE_URL
 from backend.schemas import ProcedureExtraction, ProcedureSpine, ScrapeResult
 
 
@@ -53,7 +53,7 @@ def call_qwen(prompt: str) -> str:
                 "stream": False,
                 "format": "json",
                 "think": False,
-                "options": {"temperature": 0},
+                "options": {"temperature": 0, "num_ctx": LLM_CONTEXT_TOKENS},
             },
             timeout=QWEN_TIMEOUT_SECONDS,
         )

@@ -1,4 +1,6 @@
+import httpx
 from fastapi import APIRouter, Depends, HTTPException, Response
+from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.orm import Session
 
@@ -12,7 +14,7 @@ from backend.auth import (
     require_admin,
     verify_provenance_token,
 )
-from backend.config import COOKIE_SECURE
+from backend.config import COOKIE_SECURE, EMBEDDING_MODEL, LLM_MODEL, OLLAMA_BASE_URL
 from backend.database import get_db, get_read_only_db
 from backend.extractor import ExtractionError, extract_procedure
 from backend.models import Procedure
@@ -46,6 +48,27 @@ admin_router = APIRouter(dependencies=[Depends(require_admin)])
 @router.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok"}
+
+
+@router.get("/health/ready")
+def readiness(response: Response, db: Session = Depends(get_db)) -> dict[str, str]:
+    """Check the database (with the pgvector table) and the Ollama models."""
+    checks = {"database": "ok", "ollama": "ok"}
+    try:
+        db.execute(text("SELECT 1 FROM procedure_chunks LIMIT 1"))
+    except SQLAlchemyError:
+        checks["database"] = "unavailable"
+    try:
+        tags = httpx.get(f"{OLLAMA_BASE_URL.rstrip('/')}/api/tags", timeout=3)
+        tags.raise_for_status()
+        installed = {model["name"] for model in tags.json()["models"]}
+        if not {LLM_MODEL, EMBEDDING_MODEL} <= installed:
+            checks["ollama"] = "models missing"
+    except (httpx.HTTPError, ValueError, KeyError, TypeError):
+        checks["ollama"] = "unavailable"
+    ready = all(value == "ok" for value in checks.values())
+    response.status_code = 200 if ready else 503
+    return {"status": "ok" if ready else "unavailable", **checks}
 
 
 @router.post("/api/admin/login", response_model=AdminSession)

@@ -37,7 +37,7 @@ from sqlalchemy.orm import Session  # noqa: E402
 
 from backend.auth import require_admin  # noqa: E402
 from backend.config import EMBEDDING_DIMENSIONS  # noqa: E402
-from backend.database import Base, engine, get_db  # noqa: E402
+from backend.database import Base, engine, get_db, get_read_only_db  # noqa: E402
 from backend.routes import router  # noqa: E402
 
 if not (engine.url.database or "").endswith("_test"):
@@ -73,6 +73,18 @@ def make_client(session=None, admin=True):
     app.include_router(router)
     if session is not None:
         app.dependency_overrides[get_db] = lambda: session
+
+        # Requests share one test transaction, so keep each read-only request
+        # in a savepoint; rolling it back ends read-only mode for later ones.
+        def read_only_session():
+            savepoint = session.begin_nested()
+            session.execute(text("SET TRANSACTION READ ONLY"))
+            try:
+                yield session
+            finally:
+                savepoint.rollback()
+
+        app.dependency_overrides[get_read_only_db] = read_only_session
     if admin:
         app.dependency_overrides[require_admin] = lambda: "admin"
     return TestClient(app)
