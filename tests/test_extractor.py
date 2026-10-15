@@ -1,3 +1,5 @@
+import db_support  # noqa: F401  (must be first)
+
 import json
 import unittest
 from pathlib import Path

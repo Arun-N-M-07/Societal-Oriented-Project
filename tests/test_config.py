@@ -1,3 +1,5 @@
+import db_support  # noqa: F401  (must be first)
+
 import importlib
 import os
 import unittest
