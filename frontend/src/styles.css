@@ -350,3 +350,37 @@ button:disabled {
   color: #3157c8;
   font-size: 0.88rem;
 }
+
+.citizen-page h3 {
+  margin: 20px 0 8px;
+  font-size: 1.05rem;
+}
+
+.citizen-steps {
+  display: grid;
+  gap: 10px;
+  padding-left: 22px;
+}
+
+.citizen-page a {
+  color: #3157c8;
+  overflow-wrap: anywhere;
+}
+
+.follow-up {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #e4e9f2;
+}
+
+.answer details {
+  margin-top: 6px;
+  color: #566176;
+  font-size: 0.9rem;
+}
+
+.answer blockquote {
+  margin: 8px 0;
+  padding-left: 12px;
+  border-left: 3px solid #c9d2e2;
+}

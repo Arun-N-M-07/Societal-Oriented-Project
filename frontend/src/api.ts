@@ -119,3 +119,44 @@ export const listSavedProcedures = () =>
 
 export const deleteProcedure = (id: number) =>
   request<void>(`/api/admin/procedures/${id}`, "Unable to delete procedure.", undefined, "DELETE");
+
+export type ProcedureSummary = {
+  id: number;
+  name: string;
+  department: string | null;
+  jurisdiction: string | null;
+  summary: string;
+};
+
+export type ProcedureDetail = ProcedureSummary & {
+  eligibility: string | null;
+  steps: string[];
+  source_url: string;
+};
+
+export type IdentifyResponse = {
+  status: "matched" | "ambiguous" | "no_match";
+  candidates: ProcedureSummary[];
+};
+
+export type GuidanceResponse = {
+  procedure_id: number;
+  source_url: string;
+  insufficient_evidence: boolean;
+  claims: { text: string; chunk_id: number; quote: string }[];
+  omitted_claims: number;
+};
+
+export const identifyProcedure = (question: string) =>
+  request<IdentifyResponse>("/api/identify", "Unable to search procedures.", {
+    question,
+  });
+
+export const getProcedure = (id: number) =>
+  request<ProcedureDetail>(`/api/procedures/${id}`, "Unable to load the procedure.");
+
+export const askGuidance = (procedureId: number, question: string) =>
+  request<GuidanceResponse>("/api/guidance", "Unable to answer the question.", {
+    procedure_id: procedureId,
+    question,
+  });

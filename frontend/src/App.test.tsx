@@ -19,11 +19,21 @@ function signIn(password = "secret") {
 }
 
 beforeEach(() => {
+  window.history.pushState({}, "", "/admin");
   vi.resetAllMocks();
   vi.mocked(api.getSession).mockRejectedValue(new Error("Not signed in."));
   vi.mocked(api.listSavedProcedures).mockResolvedValue([]);
 });
 afterEach(cleanup);
+
+describe("routing", () => {
+  it("shows the citizen page outside /admin", () => {
+    window.history.pushState({}, "", "/");
+    render(<App />);
+    expect(screen.getByRole("heading", { name: "Find the right government procedure" })).toBeTruthy();
+    expect(api.getSession).not.toHaveBeenCalled();
+  });
+});
 
 describe("admin sign in", () => {
   it("shows the login form when there is no session", async () => {

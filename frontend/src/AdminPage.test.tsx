@@ -46,9 +46,11 @@ function row(stepNumber: number) {
   return screen.getAllByTestId("step-row")[stepNumber - 1];
 }
 
+const onSaved = vi.fn();
+
 async function openReview() {
   vi.mocked(api.extractProcedure).mockResolvedValue(extraction);
-  render(<AdminPage />);
+  render(<AdminPage onSaved={onSaved} />);
   fireEvent.change(screen.getByLabelText("Source URL"), {
     target: { value: "https://example.gov.in/passport" },
   });
@@ -189,6 +191,7 @@ describe("approval", () => {
     fireEvent.click(screen.getByRole("button", { name: "Approve and save" }));
 
     await screen.findByText("Saved Fresh Passport Application with ID 7.");
+    expect(onSaved).toHaveBeenCalledTimes(1);
     expect(api.approveProcedure).toHaveBeenCalledWith({
       source_text: "Official source text.",
       provenance_token: "token-1",

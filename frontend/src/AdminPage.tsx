@@ -25,7 +25,7 @@ function toStepItems(texts: string[]): StepItem[] {
 }
 
 
-export default function AdminPage() {
+export default function AdminPage({ onSaved }: { onSaved?: () => void }) {
   const [sourceUrl, setSourceUrl] = useState("");
   const [extractedSourceText, setExtractedSourceText] = useState("");
   const [provenanceToken, setProvenanceToken] = useState("");
@@ -193,6 +193,7 @@ export default function AdminPage() {
         provenance_token: provenanceToken,
       });
       setSavedMessage(`Saved ${saved.name} with ID ${saved.id}.`);
+      onSaved?.();
     } catch (requestError) {
       setError(
         requestError instanceof Error
