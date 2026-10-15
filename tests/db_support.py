@@ -18,6 +18,8 @@ TEST_DATABASE_URL = os.environ.get(
     "TEST_DATABASE_URL", "postgresql+psycopg2://localhost:5432/procedureassist_test"
 )
 os.environ["DATABASE_URL"] = TEST_DATABASE_URL
+# Unit tests must never reach a real model: fail fast if anything tries.
+os.environ["OLLAMA_BASE_URL"] = "http://127.0.0.1:9"
 os.environ.setdefault("SECRET_KEY", "test-only-secret-key-that-is-long-enough")
 os.environ["ADMIN_USERNAME"] = "admin"
 # scrypt hash of TEST_PASSWORD (fixed salt, test use only)

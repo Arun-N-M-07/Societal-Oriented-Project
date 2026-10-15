@@ -127,6 +127,17 @@ class AdminProcedure(StrictModel):
     source_url: str
 
 
+class IdentifyRequest(StrictModel):
+    question: str = Field(max_length=1_000)
+
+    _validate_question = field_validator("question")(_required_text)
+
+
+class IdentifyResponse(StrictModel):
+    status: str
+    candidates: list[ProcedureSummary]
+
+
 class LoginRequest(StrictModel):
     username: str = Field(max_length=100)
     password: str = Field(max_length=200)

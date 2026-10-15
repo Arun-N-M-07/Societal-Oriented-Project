@@ -16,6 +16,7 @@ from backend.config import COOKIE_SECURE
 from backend.database import get_db, get_read_only_db
 from backend.extractor import ExtractionError, extract_procedure
 from backend.models import Procedure
+from backend.procedure_search import identify
 from backend.rag import EmbeddingError, build_chunks
 from backend.scraper import ScraperError, SourceUnavailableError, scrape_url
 from backend.schemas import (
@@ -27,6 +28,8 @@ from backend.schemas import (
     ProcedureSummary,
     ExtractionResponse,
     ExtractRequest,
+    IdentifyRequest,
+    IdentifyResponse,
     ProcedureSpine,
     ReExtractRequest,
     SavedProcedureResponse,
@@ -223,6 +226,22 @@ def get_procedure(
         eligibility=procedure.structured_data.get("eligibility"),
         steps=procedure.structured_data.get("steps", []),
         source_url=procedure.source_url,
+    )
+
+
+@router.post("/api/identify", response_model=IdentifyResponse)
+def identify_procedure(
+    request: IdentifyRequest, db: Session = Depends(get_read_only_db)
+) -> IdentifyResponse:
+    try:
+        status, procedures = identify(db, request.question)
+    except EmbeddingError as error:
+        raise HTTPException(
+            status_code=502, detail="The search service is unavailable. Try again."
+        ) from error
+    return IdentifyResponse(
+        status=status,
+        candidates=[ProcedureSummary(**_summary(p)) for p in procedures],
     )
 
 
