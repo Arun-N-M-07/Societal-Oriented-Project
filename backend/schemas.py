@@ -138,6 +138,27 @@ class IdentifyResponse(StrictModel):
     candidates: list[ProcedureSummary]
 
 
+class GuidanceRequest(StrictModel):
+    procedure_id: int
+    question: str = Field(max_length=1_000)
+
+    _validate_question = field_validator("question")(_required_text)
+
+
+class Claim(StrictModel):
+    text: str
+    chunk_id: int
+    quote: str
+
+
+class GuidanceResponse(StrictModel):
+    procedure_id: int
+    source_url: str
+    insufficient_evidence: bool
+    claims: list[Claim]
+    omitted_claims: int
+
+
 class LoginRequest(StrictModel):
     username: str = Field(max_length=100)
     password: str = Field(max_length=200)

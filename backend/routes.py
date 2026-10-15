@@ -17,7 +17,7 @@ from backend.database import get_db, get_read_only_db
 from backend.extractor import ExtractionError, extract_procedure
 from backend.models import Procedure
 from backend.procedure_search import identify
-from backend.rag import EmbeddingError, build_chunks
+from backend.rag import EmbeddingError, GuidanceError, answer_question, build_chunks
 from backend.scraper import ScraperError, SourceUnavailableError, scrape_url
 from backend.schemas import (
     AdminProcedure,
@@ -28,6 +28,8 @@ from backend.schemas import (
     ProcedureSummary,
     ExtractionResponse,
     ExtractRequest,
+    GuidanceRequest,
+    GuidanceResponse,
     IdentifyRequest,
     IdentifyResponse,
     ProcedureSpine,
@@ -242,6 +244,28 @@ def identify_procedure(
     return IdentifyResponse(
         status=status,
         candidates=[ProcedureSummary(**_summary(p)) for p in procedures],
+    )
+
+
+@router.post("/api/guidance", response_model=GuidanceResponse)
+def guidance(
+    request: GuidanceRequest, db: Session = Depends(get_read_only_db)
+) -> GuidanceResponse:
+    procedure = db.get(Procedure, request.procedure_id)
+    if procedure is None:
+        raise HTTPException(status_code=404, detail="Procedure not found.")
+    try:
+        claims, omitted = answer_question(db, procedure.id, request.question)
+    except (EmbeddingError, GuidanceError) as error:
+        raise HTTPException(
+            status_code=502, detail="The answer service is unavailable. Try again."
+        ) from error
+    return GuidanceResponse(
+        procedure_id=procedure.id,
+        source_url=procedure.source_url,
+        insufficient_evidence=not claims,
+        claims=claims,
+        omitted_claims=omitted,
     )
 
 
