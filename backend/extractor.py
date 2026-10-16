@@ -103,7 +103,6 @@ def extract_procedure(source_text: str, source_url: str) -> ProcedureSpine:
         ]
 
     result = ProcedureExtraction.model_validate(data)
-
     return ProcedureSpine(
         **result.model_dump(),
         source_url=source_url
