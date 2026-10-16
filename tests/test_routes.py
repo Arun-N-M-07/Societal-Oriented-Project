@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 from backend.auth import issue_provenance_token
 from backend.extractor import ExtractionError
-from backend.schemas import ProcedureSpine, ScrapeResult
+from backend.schemas import ProcedureDraft, ScrapeResult
 from backend.scraper import ScraperError, SourceUnavailableError
 from db_support import make_client
 
@@ -32,7 +32,7 @@ class ExtractionRouteTest(unittest.TestCase):
             source_url="https://example.gov.in/final-passport-page",
             source_text="Official passport instructions.",
         )
-        mock_extract.return_value = ProcedureSpine(
+        mock_extract.return_value = ProcedureDraft(
             name="Fresh Passport Application",
             department="Ministry of External Affairs",
             jurisdiction="Central Government",
@@ -119,7 +119,7 @@ class ExtractionRouteTest(unittest.TestCase):
     def test_reextracts_without_scraping(
         self, mock_extract, mock_scrape
     ):
-        mock_extract.return_value = ProcedureSpine(
+        mock_extract.return_value = ProcedureDraft(
             name="Edited Passport Application",
             department="Ministry of External Affairs",
             jurisdiction="Central Government",

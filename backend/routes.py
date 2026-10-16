@@ -25,16 +25,16 @@ from backend.schemas import (
     AdminProcedure,
     AdminSession,
     ApprovalRequest,
-    LoginRequest,
-    ProcedureDetail,
-    ProcedureSummary,
     ExtractionResponse,
     ExtractRequest,
     GuidanceRequest,
     GuidanceResponse,
     IdentifyRequest,
     IdentifyResponse,
-    ProcedureSpine,
+    LoginRequest,
+    ProcedureDetail,
+    ProcedureDraft,
+    ProcedureSummary,
     ReExtractRequest,
     SavedProcedureResponse,
 )
@@ -126,8 +126,8 @@ def _verify_provenance(token: str, source_url: str, source_text: str) -> None:
         raise HTTPException(status_code=422, detail=str(error)) from error
 
 
-@admin_router.post("/api/admin/re-extract", response_model=ProcedureSpine)
-def re_extract_procedure(request: ReExtractRequest) -> ProcedureSpine:
+@admin_router.post("/api/admin/re-extract", response_model=ProcedureDraft)
+def re_extract_procedure(request: ReExtractRequest) -> ProcedureDraft:
     _verify_provenance(
         request.provenance_token, request.source_url, request.source_text
     )
@@ -172,7 +172,6 @@ def save_procedure(
             chunk.procedure_id = record.id
         db.add_all(chunks)
         db.commit()
-        db.refresh(record)
     except IntegrityError as error:
         db.rollback()
         if getattr(error.orig, "pgcode", None) == "23505":

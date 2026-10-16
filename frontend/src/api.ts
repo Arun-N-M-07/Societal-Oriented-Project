@@ -8,7 +8,7 @@ export type ScrapeResult = {
   source_text: string;
 };
 
-export type ProcedureSpine = {
+export type ProcedureDraft = {
   name: string;
   department: string | null;
   jurisdiction: string | null;
@@ -22,12 +22,12 @@ export type ReExtractRequest = ScrapeResult & { provenance_token: string };
 
 export type ExtractionResponse = {
   source_text: string;
-  procedure: ProcedureSpine;
+  procedure: ProcedureDraft;
   provenance_token: string;
 };
 
 export type ApprovalRequest = {
-  procedure: ProcedureSpine;
+  procedure: ProcedureDraft;
   source_text: string;
   provenance_token: string;
 };
@@ -89,7 +89,7 @@ export const extractProcedure = (sourceUrl: string) =>
   );
 
 export const reExtractProcedure = (source: ReExtractRequest) =>
-  request<ProcedureSpine>(
+  request<ProcedureDraft>(
     "/api/admin/re-extract",
     "Unable to re-extract procedure.",
     source,

@@ -27,21 +27,8 @@ PLACEHOLDER_PATTERN = re.compile(
     r"\b(enable javascript|javascript is required|loading)\b", re.IGNORECASE
 )
 CONTENT_TAGS = (
-    "title",
-    "h1",
-    "h2",
-    "h3",
-    "h4",
-    "h5",
-    "h6",
-    "p",
-    "li",
-    "th",
-    "td",
-    "dt",
-    "dd",
-    "label",
-    "legend",
+    "title", "h1", "h2", "h3", "h4", "h5", "h6",
+    "p", "li", "th", "td", "dt", "dd", "label", "legend",
 )
 
 

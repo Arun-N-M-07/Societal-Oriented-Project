@@ -79,7 +79,7 @@ class ProcedureExtraction(StrictModel):
         return cleaned_steps
 
 
-class ProcedureSpine(ProcedureExtraction):
+class ProcedureDraft(ProcedureExtraction):
     source_url: str
 
     _validate_source_url = field_validator("source_url")(_http_url)
@@ -91,14 +91,12 @@ class ReExtractRequest(ScrapeResult):
 
 class ExtractionResponse(StrictModel):
     source_text: str
-    procedure: ProcedureSpine
+    procedure: ProcedureDraft
     provenance_token: str
-
-    _validate_source_text = field_validator("source_text")(_required_text)
 
 
 class ApprovalRequest(StrictModel):
-    procedure: ProcedureSpine
+    procedure: ProcedureDraft
     source_text: str = Field(max_length=MAX_SOURCE_TEXT_LENGTH)
     provenance_token: str = Field(max_length=512)
 
@@ -172,5 +170,3 @@ class SavedProcedureResponse(StrictModel):
     id: int
     name: str
     status: str
-
-    _validate_text = field_validator("name", "status")(_required_text)

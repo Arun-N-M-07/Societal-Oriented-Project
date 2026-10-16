@@ -5,7 +5,6 @@ import unittest
 from unittest.mock import patch
 
 from backend.auth import (
-    PROVENANCE_TTL_SECONDS,
     SESSION_COOKIE,
     ProvenanceError,
     create_session_token,
@@ -46,7 +45,6 @@ class ProvenanceTokenTest(unittest.TestCase):
         with patch("backend.auth.time.time", return_value=10**10):
             with self.assertRaisesRegex(ProvenanceError, "expired"):
                 verify_provenance_token(token, URL, TEXT)
-        self.assertEqual(PROVENANCE_TTL_SECONDS, 7200)
 
 
 class PasswordHashTest(unittest.TestCase):

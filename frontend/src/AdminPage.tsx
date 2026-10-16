@@ -4,7 +4,7 @@ import {
   approveProcedure,
   extractProcedure,
   reExtractProcedure,
-  type ProcedureSpine,
+  type ProcedureDraft,
 } from "./api";
 
 
@@ -29,7 +29,7 @@ export default function AdminPage({ onSaved }: { onSaved?: () => void }) {
   const [sourceUrl, setSourceUrl] = useState("");
   const [extractedSourceText, setExtractedSourceText] = useState("");
   const [provenanceToken, setProvenanceToken] = useState("");
-  const [procedure, setProcedure] = useState<ProcedureSpine | null>(null);
+  const [procedure, setProcedure] = useState<ProcedureDraft | null>(null);
   const [error, setError] = useState("");
   const [savedMessage, setSavedMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -164,7 +164,7 @@ export default function AdminPage({ onSaved }: { onSaved?: () => void }) {
 
     setError("");
 
-    const reviewedProcedure: ProcedureSpine = {
+    const reviewedProcedure: ProcedureDraft = {
       ...procedure,
       name: procedure.name.trim(),
       department: procedure.department?.trim() || null,

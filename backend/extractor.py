@@ -4,7 +4,7 @@ import httpx
 from pydantic import ValidationError
 
 from backend.config import LLM_CONTEXT_TOKENS, LLM_MODEL, OLLAMA_BASE_URL
-from backend.schemas import ProcedureExtraction, ProcedureSpine, ScrapeResult
+from backend.schemas import ProcedureExtraction, ProcedureDraft, ScrapeResult
 
 
 QWEN_TIMEOUT_SECONDS = 60.0
@@ -103,7 +103,7 @@ def parse_extraction(raw_output: str) -> ProcedureExtraction:
         ) from error
 
 
-def extract_procedure(source_text: str, source_url: str) -> ProcedureSpine:
+def extract_procedure(source_text: str, source_url: str) -> ProcedureDraft:
     try:
         source = ScrapeResult(source_url=source_url, source_text=source_text)
     except ValidationError as error:
@@ -113,7 +113,7 @@ def extract_procedure(source_text: str, source_url: str) -> ProcedureSpine:
         call_qwen(build_extraction_prompt(source.source_text))
     )
 
-    return ProcedureSpine(
+    return ProcedureDraft(
         **extraction.model_dump(),
         source_url=source.source_url,
     )

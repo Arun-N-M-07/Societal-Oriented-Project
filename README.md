@@ -1,123 +1,103 @@
 # ProcedureAssist
 
-ProcedureAssist turns official government web pages into human-reviewed procedures
-and helps citizens find and understand them.
+ProcedureAssist turns official government web pages into reviewed, step-by-step
+procedures and helps citizens find them.
 
-- **Admin** (`/admin`): sign in, extract a procedure from an official URL (scraper +
-  local Qwen model), review and edit it, approve it. Approval stores the procedure and
-  indexes its official text as evidence.
-- **Citizen** (`/`): describe a situation in plain language, get the matching approved
-  procedure (or choose between plausible ones), read its steps and official link, and
-  ask follow-up questions. Answers contain only claims backed by a verbatim quote from
-  the official text; otherwise the app says it cannot answer.
+- **Admin** (`/admin`): sign in, paste an official URL, review what the local Qwen model
+  extracted, and approve it. Approval saves the procedure and indexes the page text so it
+  can be searched and quoted.
+- **Citizen** (`/`): describe a situation in plain words, get the matching procedure (or
+  choose between close matches), read its steps and official link, and ask follow-up
+  questions. Every answer quotes the official page word for word; if the page doesn't
+  answer the question, the app says so.
 
-ProcedureAssist gives guidance only. It never submits applications.
+It gives guidance only and never submits applications.
 
 ## Stack
 
-FastAPI, SQLAlchemy, PostgreSQL 16 with pgvector, Ollama (`qwen3:8b` for extraction
-and answers, `qwen3-embedding:0.6b` for search), Playwright for JavaScript pages,
-React + TypeScript + Vite.
+- Backend: Python 3.14, FastAPI, SQLAlchemy, PostgreSQL 16 with pgvector
+- Scraping: httpx and BeautifulSoup, with Playwright (Chromium) for JavaScript pages
+- Models (local, via Ollama): `qwen3:8b` for extraction and answers, `qwen3-embedding:0.6b` for search
+- Frontend: React, TypeScript, Vite
 
 ## Setup (macOS)
 
-1. Install Python 3.14, Node 22+, PostgreSQL 16 (`brew install postgresql@16`),
-   pgvector (`brew install pgvector`) and [Ollama](https://ollama.com).
+1. Install Python 3.14, Node 22+, PostgreSQL 16 and pgvector (`brew install postgresql@16 pgvector`)
+   and [Ollama](https://ollama.com).
 2. Download the models:
    ```bash
    ollama pull qwen3:8b
    ollama pull qwen3-embedding:0.6b
    ```
-3. Create the database and enable pgvector once:
+3. Create the database and enable pgvector:
    ```bash
    brew services start postgresql@16
    createdb procedureassist
    psql -d procedureassist -c "CREATE EXTENSION vector"
    ```
-4. Create `.env` from the example and fill it in:
+4. Configure the environment:
    ```bash
    cp .env.example .env
-   python3 -c "import secrets; print(secrets.token_urlsafe(48))"   # SECRET_KEY
    python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
-   .venv/bin/python -m backend.auth                                 # ADMIN_PASSWORD_HASH
+   python3 -c "import secrets; print(secrets.token_urlsafe(48))"   # paste as SECRET_KEY
+   .venv/bin/python -m backend.auth                                 # paste as ADMIN_PASSWORD_HASH
    ```
-   `.env` must never be committed. `.env.example` lists every setting.
-5. Start everything:
-   ```bash
-   ./start.sh
-   ```
-   It starts PostgreSQL and Ollama, checks both models are installed, then runs
-   `run.sh` (installs dependencies, checks the database, starts the backend on
-   http://localhost:8000 and the frontend on http://localhost:5173).
+   Set `DATABASE_URL` too. `.env.example` describes every setting; never commit `.env`.
 
-Open http://localhost:5173 for citizens and http://localhost:5173/admin for admins.
-Use `localhost`, not `127.0.0.1`: the backend only accepts the origin in `FRONTEND_ORIGIN`.
+## Running
 
-Procedures saved before evidence indexing existed can be indexed once with
-`.venv/bin/python -m backend.rag backfill` (safe to re-run).
+```bash
+./start.sh
+```
+
+This starts PostgreSQL and Ollama, checks both models are installed, then runs `run.sh`,
+which installs dependencies and starts the backend (http://localhost:8000) and frontend
+(http://localhost:5173). Open http://localhost:5173 (citizens) or
+http://localhost:5173/admin. Use `localhost`, not `127.0.0.1`, because the backend only
+accepts the origin set in `FRONTEND_ORIGIN`.
+
+`GET /health/ready` reports whether the database and models are available.
+Procedures saved before indexing existed can be indexed with
+`.venv/bin/python -m backend.rag backfill` (safe to run again).
 
 ## Tests
 
-Database tests use a separate database whose name must end in `_test`; they never touch
-`procedureassist`.
+Database tests run against a separate database whose name must end in `_test`, never
+against `procedureassist`.
 
 ```bash
-createdb procedureassist_test                     # once; tests enable pgvector in it
+createdb procedureassist_test                      # once
 REQUIRE_DB_TESTS=1 .venv/bin/python -m unittest discover -s tests
 npm test --prefix frontend
-npm run build --prefix frontend                   # type check + production build
+npm run build --prefix frontend                    # type check and production build
 ```
 
-Without `REQUIRE_DB_TESTS=1`, database tests are skipped (with a reason) when the test
-database is unreachable. Set `TEST_DATABASE_URL` to use a different test database. Unit
-tests never call Ollama.
+Without `REQUIRE_DB_TESTS=1`, database tests are skipped when the test database is
+unavailable. Tests never call Ollama.
 
-To re-check identification thresholds against real official pages (uses Ollama, writes
-nothing): `.venv/bin/python scripts/evaluate_identification.py`.
-
-## API
-
-| Endpoint | Access | Purpose |
-|---|---|---|
-| `GET /health`, `GET /health/ready` | public | Liveness; readiness of database, pgvector table and Ollama models (503 if not ready) |
-| `POST /api/admin/login`, `POST /api/admin/logout`, `GET /api/admin/session` | public / admin | Admin session (HttpOnly, SameSite=Strict cookie) |
-| `POST /api/admin/extract` | admin | Scrape a URL and extract a procedure; returns a signed provenance token |
-| `POST /api/admin/re-extract` | admin | Re-run extraction on the same verified text |
-| `POST /api/admin/procedures` | admin | Approve: verify provenance, save and index the procedure |
-| `GET /api/admin/procedures`, `DELETE /api/admin/procedures/{id}` | admin | List; permanently delete a procedure and its evidence |
-| `GET /api/procedures`, `GET /api/procedures/{id}` | public, read-only | Approved procedures (never the source text) |
-| `POST /api/identify` | public, read-only | `matched`, `ambiguous` (2-3 candidates) or `no_match` |
-| `POST /api/guidance` | public, read-only | Quote-verified answer for one procedure, or `insufficient_evidence` |
+`.venv/bin/python scripts/evaluate_identification.py` re-checks the search thresholds
+against real official pages (uses Ollama, writes nothing).
 
 ## Troubleshooting
 
 | Problem | Fix |
 |---|---|
-| Backend exits with "... must be set" | Add the setting to `.env` (see `.env.example`) |
-| `type "vector" does not exist` at startup | Run `psql -d procedureassist -c "CREATE EXTENSION vector"` |
-| Browser shows network/CORS errors | Open `http://localhost:5173`, not `127.0.0.1` |
-| Extract returns 502 | Ollama is not running or a model is missing (`ollama list`); check `/health/ready` |
-| Extract returns 422 for a real site | The site blocked or failed the request, or the page has no readable text |
-| Save returns 409 | That URL is already saved; delete it in the admin list first |
-| `Port ... already in use` | Stop the previous `run.sh` with Ctrl+C |
+| Backend exits with "... must be set" | Add the setting to `.env` |
+| `type "vector" does not exist` | `psql -d procedureassist -c "CREATE EXTENSION vector"` |
+| Network or CORS errors in the browser | Use `http://localhost:5173`, not `127.0.0.1` |
+| Extract returns 502 | Ollama is down or a model is missing; check `/health/ready` |
+| Extract returns 422 | The site blocked the request or the page has no readable text |
+| Save returns 409 | That URL is already saved; delete it from the admin list first |
 
-## Known limitations
+## Limitations
 
-- Only HTML pages are supported (no PDFs, login-protected or bot-protected sites).
-- Hostnames are resolved and checked before every request, but a host that changes its
-  DNS answer between the check and the connection (DNS rebinding) is not fully prevented.
-- Provenance tokens prove the server extracted the saved text; they do not prove a site
-  is an authoritative government source.
-- Answer verification proves each claim has a verbatim supporting quote with the same
-  numbers and the same negation; it does not prove the paraphrase otherwise means
-  exactly what the quote says.
-- Identification thresholds were chosen on a small labelled set (32 questions,
-  10 pages, not held out); re-run the evaluation as procedures are added. Citizens are
-  asked to choose only when the top procedures score within `IDENTIFY_MARGIN` (0.03)
-  of each other; otherwise the best match is shown directly.
-- Admin sessions are stateless signed cookies: logout clears the browser cookie, but a
-  copied cookie stays valid until it expires (12 hours). Changing `SECRET_KEY` signs
-  everyone out. There is no rate limit on login attempts, so use a long password.
-- The backend needs PostgreSQL (with pgvector) at startup; if Ollama is down it still
-  starts, `/health/ready` returns 503 and extraction/search/answers return 502.
-- Deleting a procedure is permanent; there is no audit history of withdrawn procedures.
+- Only HTML pages work; PDFs and login- or bot-protected sites are not supported.
+- Hosts are checked before every request, but DNS rebinding is not fully prevented.
+- Answers are checked for a word-for-word quote with the same numbers and negation, not
+  for every possible change in meaning.
+- Search thresholds come from a small labelled set (32 questions over 10 pages). The app
+  asks the citizen to choose only when the top matches score within 0.03 of each other.
+- Admin sessions are signed cookies that last 12 hours; logging out does not revoke a
+  copied cookie, and login attempts are not rate limited. Changing `SECRET_KEY` signs
+  everyone out.
+- Deleting a procedure is permanent.
