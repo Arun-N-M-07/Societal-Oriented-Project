@@ -18,7 +18,6 @@ USER_AGENT = (
     "(Government Procedure Information Retrieval)"
 )
 
-
 class ScraperError(Exception):
     """Controlled error raised for scraper failures."""
 
