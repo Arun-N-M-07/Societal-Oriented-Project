@@ -1,3 +1,4 @@
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes import router
@@ -16,3 +17,12 @@ app.add_middleware(
 )
 
 app.include_router(router)
+
+
+@app.get("/health")
+def health_check():
+    return {
+        "status": "ok",
+        "message": "ProcedureAssist API is running"
+    }
+
