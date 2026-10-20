@@ -1,0 +1,271 @@
+{
+ "_comment": "Demo coverage after the review batch in DEMO.md is approved. Expected procedures are source_url substrings; null means no approved procedure. Run: .venv/bin/python scripts/evaluate_needs.py fixtures/evaluation/demo_services.json",
+ "cases": [
+  {
+   "message": "How do I register as a new voter?",
+   "expected": [
+    "general-voters"
+   ],
+   "relation": false
+  },
+  {
+   "message": "I turned 18, how can I get my name on the voter list?",
+   "expected": [
+    "general-voters"
+   ],
+   "relation": false
+  },
+  {
+   "message": "How do I check if my name is in the electoral roll before voting?",
+   "expected": [
+    "how-to-vote"
+   ],
+   "relation": false
+  },
+  {
+   "message": "I live abroad for work. Can I register as an overseas voter?",
+   "expected": [
+    "overseas-voters"
+   ],
+   "relation": false
+  },
+  {
+   "message": "How do I get a learner's licence?",
+   "expected": [
+    "learners-license"
+   ],
+   "relation": false
+  },
+  {
+   "message": "How do I get a permanent driving licence after my learner's licence?",
+   "expected": [
+    "permanent-license"
+   ],
+   "relation": false
+  },
+  {
+   "message": "My driving licence expires next month. How do I renew it?",
+   "expected": [
+    "content/renewal"
+   ],
+   "relation": false
+  },
+  {
+   "message": "I lost my driving licence. How do I get a duplicate?",
+   "expected": [
+    "duplicate-licence"
+   ],
+   "relation": false
+  },
+  {
+   "message": "How do I renew my vehicle registration certificate?",
+   "expected": [
+    "renewal-of-rc"
+   ],
+   "relation": false
+  },
+  {
+   "message": "What is the fee for a learner's licence test?",
+   "expected": [
+    "licensing-related-fees"
+   ],
+   "relation": false
+  },
+  {
+   "message": "How do I link my PAN with Aadhaar?",
+   "expected": [
+    "how-to-link-aadhaar"
+   ],
+   "relation": false
+  },
+  {
+   "message": "How do I register on the income tax e-filing portal?",
+   "expected": [
+    "register-e-filing"
+   ],
+   "relation": false
+  },
+  {
+   "message": "How do I file ITR-1 online?",
+   "expected": [
+    "itr1"
+   ],
+   "relation": false
+  },
+  {
+   "message": "I need to file ITR-2 for capital gains.",
+   "expected": [
+    "itr-2"
+   ],
+   "relation": false
+  },
+  {
+   "message": "Who can join the Atal Pension Yojana?",
+   "expected": [
+    "apy"
+   ],
+   "relation": false
+  },
+  {
+   "message": "Can I update my Aadhaar at a post office?",
+   "expected": [
+    "aadhaar-updation"
+   ],
+   "relation": false
+  },
+  {
+   "message": "How do I update my Aadhaar address online?",
+   "expected": [
+    "uidai"
+   ],
+   "relation": false
+  },
+  {
+   "message": "What are the benefits of the EPF scheme?",
+   "expected": [
+    "epf-scheme"
+   ],
+   "relation": false
+  },
+  {
+   "message": "How is the EPS pension calculated when I retire?",
+   "expected": [
+    "pension-scheme-eps"
+   ],
+   "relation": false
+  },
+  {
+   "message": "What insurance does EDLI give my family if I die during service?",
+   "expected": [
+    "edli"
+   ],
+   "relation": false
+  },
+  {
+   "message": "My passport has expired. How do I get a new one?",
+   "expected": [
+    "passportindia"
+   ],
+   "relation": false
+  },
+  {
+   "message": "How can I edit my CAN details on the TN e-Sevai portal?",
+   "expected": [
+    "tnesevai"
+   ],
+   "relation": false
+  },
+  {
+   "message": "What documents do I need to file my income tax return?",
+   "expected": [
+    "incometax"
+   ],
+   "relation": false
+  },
+  {
+   "message": "How do I change the name on my PAN card?",
+   "expected": [
+    null
+   ],
+   "relation": false
+  },
+  {
+   "message": "How do I apply for a ration card?",
+   "expected": [
+    null
+   ],
+   "relation": false
+  },
+  {
+   "message": "How do I get a birth certificate?",
+   "expected": [
+    null
+   ],
+   "relation": false
+  },
+  {
+   "message": "How do I apply for a marriage certificate?",
+   "expected": [
+    null
+   ],
+   "relation": false
+  },
+  {
+   "message": "How do I apply for a scholarship?",
+   "expected": [
+    null
+   ],
+   "relation": false
+  },
+  {
+   "message": "How do I apply for a driving licence in the UK?",
+   "expected": [
+    null
+   ],
+   "relation": false
+  },
+  {
+   "message": "What is the best biryani recipe?",
+   "expected": [
+    null
+   ],
+   "relation": false
+  },
+  {
+   "message": "Update my Aadhaar address and renew my passport.",
+   "expected": [
+    "uidai",
+    "passportindia"
+   ],
+   "relation": false
+  },
+  {
+   "message": "Help me file my ITR-2 and check whether I need to link PAN with Aadhaar.",
+   "expected": [
+    "file-itr-2-online",
+    "how-to-link-aadhaar"
+   ],
+   "relation": false
+  },
+  {
+   "message": "I need a Community Certificate and a driving licence renewal.",
+   "expected": [
+    null,
+    "content/renewal"
+   ],
+   "relation": false
+  },
+  {
+   "message": "My driving licence expires next month. How do I renew it, what is the fee, and can I apply online?",
+   "expected": [
+    "content/renewal"
+   ],
+   "relation": false
+  },
+  {
+   "message": "I registered as a voter last year. Now I need a duplicate driving licence.",
+   "expected": [
+    "duplicate-licence"
+   ],
+   "relation": false
+  },
+  {
+   "message": "I need a learner's licence, an overseas voter registration, to join Atal Pension Yojana and to link PAN with Aadhaar.",
+   "expected": [
+    "learners-license",
+    "overseas-voters",
+    "apy"
+   ],
+   "pending": 1,
+   "relation": false
+  },
+  {
+   "message": "Renew my driving licence and register as a voter. Which should I do first, and can I reuse documents?",
+   "expected": [
+    "content/renewal",
+    "general-voters"
+   ],
+   "relation": true
+  }
+ ]
+}

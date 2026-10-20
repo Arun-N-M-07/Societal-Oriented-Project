@@ -78,7 +78,7 @@ class AdminSessionTest(unittest.TestCase):
         self.assertEqual(self.client.get("/api/admin/session").json(), {"username": "admin"})
 
     def test_rejects_wrong_credentials_with_same_message(self):
-        for response in (self.login(password="wrong"), self.login(username="root")):
+        for response in (self.login(password="wrong"), self.login(username="root"), self.login(username="admïn")):
             self.assertEqual(response.status_code, 401)
             self.assertEqual(response.json(), {"detail": "Invalid username or password."})
             self.assertNotIn("set-cookie", response.headers)

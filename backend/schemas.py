@@ -131,9 +131,26 @@ class IdentifyRequest(StrictModel):
     _validate_question = field_validator("question")(_required_text)
 
 
+class Need(StrictModel):
+    phrases: list[str]
+    question: str
+    status: str
+    candidates: list[ProcedureSummary]
+
+
+class PendingNeed(StrictModel):
+    phrase: str
+    question: str
+
+
 class IdentifyResponse(StrictModel):
     status: str
     candidates: list[ProcedureSummary]
+    # Only for status "multiple": per-need results, needs over the limit, and the
+    # citizen's question about how the needs relate.
+    needs: list[Need] = []
+    pending: list[PendingNeed] = []
+    relation_question: str | None = None
 
 
 class GuidanceRequest(StrictModel):
@@ -155,6 +172,25 @@ class GuidanceResponse(StrictModel):
     insufficient_evidence: bool
     claims: list[Claim]
     omitted_claims: int
+
+
+class RelationRequest(StrictModel):
+    procedure_ids: list[int] = Field(min_length=2, max_length=10)
+    question: str = Field(max_length=1_000)
+
+    _validate_question = field_validator("question")(_required_text)
+
+
+class RelationClaim(Claim):
+    procedure_id: int
+    source_url: str
+
+
+class RelationResponse(StrictModel):
+    insufficient_evidence: bool
+    claims: list[RelationClaim]
+    omitted_claims: int
+    comparison: bool = False
 
 
 class LoginRequest(StrictModel):

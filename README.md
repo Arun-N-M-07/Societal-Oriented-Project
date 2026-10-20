@@ -77,6 +77,9 @@ unavailable. Tests never call Ollama.
 
 `.venv/bin/python scripts/evaluate_identification.py` re-checks the search thresholds
 against real official pages (uses Ollama, writes nothing).
+`.venv/bin/python scripts/evaluate_needs.py` compares single- and multi-need handling on the
+labelled messages in `fixtures/evaluation/multi_need.json` (uses Ollama and the saved
+procedures, writes nothing).
 
 ## Troubleshooting
 

@@ -90,6 +90,8 @@ class NormalizeUrlTest(unittest.TestCase):
             "http://example.gov.in:80": "http://example.gov.in/",
             "https://example.gov.in:8443/a/?b=1&a=2": "https://example.gov.in:8443/a?b=1&a=2",
             "http://[2001:db8::1]/x/": "http://[2001:db8::1]/x",
+            "https://example.gov.in/a?mobile-app=1&utm_source=chatgpt.com": "https://example.gov.in/a?mobile-app=1",
+            "https://example.gov.in/a?utm_source=x&UTM_medium=y": "https://example.gov.in/a",
         }
         for url, expected in cases.items():
             with self.subTest(url=url):

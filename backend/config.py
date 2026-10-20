@@ -39,3 +39,5 @@ COOKIE_SECURE = _setting("COOKIE_SECURE", "false").lower() == "true"
 # scripts/evaluate_identification.py on the labelled evaluation set).
 IDENTIFY_MIN_SCORE = float(_setting("IDENTIFY_MIN_SCORE", "0.53"))
 IDENTIFY_MARGIN = float(_setting("IDENTIFY_MARGIN", "0.03"))
+# Needs answered per message; the rest are listed for the citizen to send next.
+MAX_NEEDS = int(_setting("MAX_NEEDS", "3"))

@@ -134,17 +134,36 @@ export type ProcedureDetail = ProcedureSummary & {
   source_url: string;
 };
 
-export type IdentifyResponse = {
+export type Need = {
+  phrases: string[];
+  question: string;
   status: "matched" | "ambiguous" | "no_match";
   candidates: ProcedureSummary[];
 };
+
+export type IdentifyResponse = {
+  status: "matched" | "ambiguous" | "no_match" | "multiple";
+  candidates: ProcedureSummary[];
+  needs?: Need[];
+  pending?: { phrase: string; question: string }[];
+  relation_question?: string | null;
+};
+
+type Claim = { text: string; chunk_id: number; quote: string; procedure_id?: number; source_url?: string };
 
 export type GuidanceResponse = {
   procedure_id: number;
   source_url: string;
   insufficient_evidence: boolean;
-  claims: { text: string; chunk_id: number; quote: string }[];
+  claims: Claim[];
   omitted_claims: number;
+};
+
+export type RelationResponse = {
+  insufficient_evidence: boolean;
+  claims: Required<Claim>[];
+  omitted_claims: number;
+  comparison?: boolean;
 };
 
 export const identifyProcedure = (question: string) =>
@@ -154,6 +173,12 @@ export const identifyProcedure = (question: string) =>
 
 export const getProcedure = (id: number) =>
   request<ProcedureDetail>(`/api/procedures/${id}`, "Unable to load the procedure.");
+
+export const askRelation = (procedureIds: number[], question: string) =>
+  request<RelationResponse>("/api/relation", "Unable to answer the question.", {
+    procedure_ids: procedureIds,
+    question,
+  });
 
 export const askGuidance = (procedureId: number, question: string) =>
   request<GuidanceResponse>("/api/guidance", "Unable to answer the question.", {

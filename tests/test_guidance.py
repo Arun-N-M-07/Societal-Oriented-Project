@@ -37,6 +37,10 @@ class VerifyClaimsTest(unittest.TestCase):
         )
         self.assertEqual(len(verify_claims([claim], self.passages)), 1)
 
+    def test_drops_repeated_claims(self):
+        claim = self.claim("Pay Rs 1,500 online.", "fee for a fresh passport of 36 pages is Rs 1,500")
+        self.assertEqual(len(verify_claims([claim, dict(claim)], self.passages)), 1)
+
     def test_drops_unsupported_claims(self):
         cases = {
             "fabricated quote": self.claim("Pay online.", "the fee can be paid at any bank branch"),
@@ -190,10 +194,158 @@ class GuidanceApiTest(DatabaseTestCase):
         self.embed.side_effect = EmbeddingError("down")
         self.assertEqual(self.ask({"insufficient_evidence": True}).status_code, 502)
 
+    def test_counts_distinct_unsupported_claims_and_survives_malformed_ones(self):
+        ids = self.chunk_ids()
+        good = {"text": "Pay Rs 1,500 online.", "chunk_id": ids[FEE], "quote": "is Rs 1,500 payable online"}
+        body = self.ask({"insufficient_evidence": False, "claims": [good, good, ["odd"], {"text": ["other"]}, {"text": None}]}).json()
+
+        self.assertEqual([c["text"] for c in body["claims"]], ["Pay Rs 1,500 online."])
+        self.assertEqual(body["omitted_claims"], 3)
+
     def test_writes_nothing(self):
         before = self.session.query(func.count(ProcedureChunk.id)).scalar()
         self.ask({"insufficient_evidence": True, "claims": []})
         self.assertEqual(self.session.query(func.count(ProcedureChunk.id)).scalar(), before)
+
+
+LINK = "Existing PAN holders must link PAN with Aadhaar before filing the return."
+BOTH_NAMES = "Enter your PAN and Aadhaar number on the portal."
+ADDRESS = "Address update requests are verified at an Aadhaar Enrolment Centre."
+STEP = "Upload the address proof after you sign in to the portal."
+TAX_ORDER = "File the income tax return only after your PAN is linked with Aadhaar."
+
+
+class RelationApiTest(DatabaseTestCase):
+    def setUp(self):
+        super().setUp()
+        self.client = make_client(self.session, admin=False)
+        self.pan = GuidanceApiTest.add(self, "PAN", [LINK, BOTH_NAMES])
+        self.aadhaar = GuidanceApiTest.add(self, "Aadhaar", [ADDRESS, STEP])
+        self.tax = GuidanceApiTest.add(self, "Income tax", [TAX_ORDER])
+        self.unrelated = GuidanceApiTest.add(self, "Passport", [FEE])
+        llm = patch("backend.rag.call_qwen")
+        self.llm = llm.start()
+        self.addCleanup(llm.stop)
+
+    def chunk(self, content):
+        return self.session.query(ProcedureChunk).filter_by(content=content).one().id
+
+    def claim(self, text, content, quote=None):
+        return {"text": text, "chunk_id": self.chunk(content), "quote": quote or content.rstrip(".")}
+
+    def ask(self, claims, ids=None, question="Which should I do first?"):
+        self.llm.return_value = json.dumps({"insufficient_evidence": not claims, "claims": claims})
+        ids = ids or [self.pan.id, self.aadhaar.id]
+        return self.client.post("/api/relation", json={"procedure_ids": ids, "question": question})
+
+    def test_keeps_an_explicitly_stated_relationship_as_official_text_with_its_source(self):
+        body = self.ask([self.claim("You can reuse your Aadhaar address proof for PAN too.", LINK)]).json()
+
+        self.assertFalse(body["insufficient_evidence"])
+        self.assertEqual(body["claims"][0]["text"], LINK.rstrip("."))
+        self.assertEqual(body["claims"][0]["procedure_id"], self.pan.id)
+        self.assertEqual(body["claims"][0]["source_url"], self.pan.source_url)
+
+    def test_rejects_relationships_the_quote_does_not_state(self):
+        cases = {
+            "order from an unrelated fact": self.claim("Update your Aadhaar address first, then link PAN.", ADDRESS),
+            "reuse from an unrelated fact": self.claim("You can reuse the same address proof for PAN.", ADDRESS),
+            "step inside one procedure": self.claim("Upload the address proof after you sign in.", STEP),
+            "names both but states nothing": self.claim("Link PAN and Aadhaar first.", BOTH_NAMES),
+            "inference with no relation words": self.claim("Your Aadhaar proof also works for PAN.", BOTH_NAMES),
+        }
+        for name, claim in cases.items():
+            with self.subTest(name):
+                self.assertEqual(self.ask([claim]).json(),
+                                 {"insufficient_evidence": True, "claims": [], "omitted_claims": 1})
+
+    def test_relates_three_procedures_with_each_quote_attributed_to_its_own_page(self):
+        body = self.ask(
+            [self.claim("Link PAN before filing.", LINK), self.claim("File after linking.", TAX_ORDER),
+             self.claim("Verify at a centre first.", ADDRESS)],
+            ids=[self.pan.id, self.aadhaar.id, self.tax.id],
+        ).json()
+
+        self.assertEqual([(c["text"], c["procedure_id"]) for c in body["claims"]],
+                         [(LINK.rstrip("."), self.pan.id), (TAX_ORDER.rstrip("."), self.tax.id)])
+        self.assertEqual(body["omitted_claims"], 1)
+
+    def test_uses_only_the_requested_procedures_evidence(self):
+        self.ask([])
+        prompt = self.llm.call_args.args[0]
+        self.assertIn(LINK, prompt)
+        self.assertIn(ADDRESS, prompt)
+        self.assertNotIn(FEE, prompt)
+        self.assertIn("never combine separate facts", prompt)
+
+        body = self.ask([self.claim("The passport fee is Rs 1,500.", FEE, "fee for a fresh passport of 36 pages is Rs 1,500")]).json()
+        self.assertTrue(body["insufficient_evidence"])
+
+    def test_rejects_bad_requests_and_reports_failures(self):
+        self.assertEqual(self.ask([], ids=[self.pan.id]).status_code, 422)
+        self.assertEqual(self.ask([], ids=[self.pan.id, 999999]).status_code, 404)
+        self.llm.side_effect = ExtractionError("down")
+        self.assertEqual(self.ask([]).status_code, 502)
+
+
+EPF = "EPF members can withdraw the full balance at retirement after 58 years."
+EPS = "EPS pays a monthly pension to members after 58 years of service."
+EDLI = "EDLI pays an assurance benefit to the nominee if a member dies in service."
+
+
+class ComparisonApiTest(DatabaseTestCase):
+    def setUp(self):
+        super().setUp()
+        self.client = make_client(self.session, admin=False)
+        self.epf = GuidanceApiTest.add(self, "Employees' Provident Fund Scheme", [EPF])
+        self.eps = GuidanceApiTest.add(self, "Employees' Pension Scheme (EPS)", [EPS])
+        self.edli = GuidanceApiTest.add(self, "Employees' Deposit Linked Insurance (EDLI)", [EDLI])
+        llm = patch("backend.rag.call_qwen")
+        self.llm = llm.start()
+        self.addCleanup(llm.stop)
+
+    def chunk(self, content):
+        return self.session.query(ProcedureChunk).filter_by(content=content).one().id
+
+    def ask(self, claims, procedures, question="What is the difference between EPF and EPS?"):
+        self.llm.return_value = json.dumps({"insufficient_evidence": not claims, "claims": claims})
+        return self.client.post("/api/relation", json={"procedure_ids": [p.id for p in procedures], "question": question}).json()
+
+    def test_each_point_is_verified_against_its_own_procedure(self):
+        body = self.ask([
+            {"text": "EPF allows full withdrawal at retirement.", "chunk_id": self.chunk(EPF), "quote": "can withdraw the full balance at retirement"},
+            {"text": "EPS pays a monthly pension.", "chunk_id": self.chunk(EPS), "quote": "EPS pays a monthly pension to members"},
+            {"text": "Unlike the pension scheme, EPF pays a lump sum.", "chunk_id": self.chunk(EPF), "quote": "can withdraw the full balance at retirement"},
+            {"text": "EPS pays a pension of Rs 7,500.", "chunk_id": self.chunk(EPS), "quote": "EPS pays a monthly pension to members"},
+        ], [self.epf, self.eps])
+
+        self.assertTrue(body["comparison"])
+        self.assertEqual([(c["text"], c["procedure_id"], c["source_url"]) for c in body["claims"]], [
+            ("EPF allows full withdrawal at retirement.", self.epf.id, self.epf.source_url),
+            ("EPS pays a monthly pension.", self.eps.id, self.eps.source_url),
+        ])
+        self.assertEqual(body["omitted_claims"], 2)
+
+    def test_compares_three_procedures_from_their_own_passages_only(self):
+        body = self.ask([{"text": "EDLI pays the nominee if a member dies in service.", "chunk_id": self.chunk(EDLI),
+                          "quote": "pays an assurance benefit to the nominee"}],
+                        [self.epf, self.eps, self.edli], "Explain EPF, EPS and EDLI and how they differ")
+        prompt = self.llm.call_args.args[0]
+
+        self.assertEqual([c["procedure_id"] for c in body["claims"]], [self.edli.id])
+        self.assertIn("how several government schemes or procedures compare", prompt)
+        for passage in (EPF, EPS, EDLI):
+            self.assertIn(passage, prompt)
+
+    def test_says_so_when_the_pages_do_not_support_a_comparison(self):
+        self.assertEqual(self.ask([], [self.epf, self.eps]),
+                         {"insufficient_evidence": True, "claims": [], "omitted_claims": 0, "comparison": True})
+
+    def test_dependency_questions_keep_the_strict_relationship_rules(self):
+        body = self.ask([{"text": "EPS pays a monthly pension.", "chunk_id": self.chunk(EPS), "quote": "EPS pays a monthly pension to members"}],
+                        [self.epf, self.eps], "Must I join EPF before EPS?")
+
+        self.assertEqual(body, {"insufficient_evidence": True, "claims": [], "omitted_claims": 1})
 
 
 class GuidancePromptTest(unittest.TestCase):

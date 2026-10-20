@@ -48,7 +48,8 @@ def check_admin_credentials(username: str, password: str) -> bool:
     from backend.config import ADMIN_PASSWORD_HASH, ADMIN_USERNAME
 
     password_ok = verify_password(password, ADMIN_PASSWORD_HASH)
-    return hmac.compare_digest(username, ADMIN_USERNAME) and password_ok
+    # compare_digest rejects non-ASCII str, so compare UTF-8 bytes.
+    return hmac.compare_digest(username.encode(), ADMIN_USERNAME.encode()) and password_ok
 
 
 def create_session_token(username: str) -> str:

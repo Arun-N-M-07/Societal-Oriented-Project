@@ -18,8 +18,8 @@ from backend.config import COOKIE_SECURE, EMBEDDING_MODEL, LLM_MODEL, OLLAMA_BAS
 from backend.database import get_db, get_read_only_db
 from backend.extractor import ExtractionError, extract_procedure
 from backend.models import Procedure
-from backend.procedure_search import identify
-from backend.rag import EmbeddingError, GuidanceError, answer_question, build_chunks
+from backend.procedure_search import identify, identify_needs
+from backend.rag import COMPARISON, EmbeddingError, GuidanceError, answer_question, build_chunks, compare, relate
 from backend.scraper import ScraperError, SourceUnavailableError, scrape_url
 from backend.schemas import (
     AdminProcedure,
@@ -32,10 +32,14 @@ from backend.schemas import (
     IdentifyRequest,
     IdentifyResponse,
     LoginRequest,
+    Need,
+    PendingNeed,
     ProcedureDetail,
     ProcedureDraft,
     ProcedureSummary,
     ReExtractRequest,
+    RelationRequest,
+    RelationResponse,
     SavedProcedureResponse,
 )
 
@@ -253,19 +257,33 @@ def get_procedure(
     )
 
 
-@router.post("/api/identify", response_model=IdentifyResponse)
+@router.post("/api/identify", response_model=IdentifyResponse, response_model_exclude_unset=True)
 def identify_procedure(
     request: IdentifyRequest, db: Session = Depends(get_read_only_db)
 ) -> IdentifyResponse:
     try:
-        status, procedures = identify(db, request.question)
+        multiple = identify_needs(db, request.question)
+        if not isinstance(multiple, tuple):
+            status, procedures = identify(db, request.question, need=multiple)
     except EmbeddingError as error:
         raise HTTPException(
             status_code=502, detail="The search service is unavailable. Try again."
         ) from error
+    if not isinstance(multiple, tuple):
+        return IdentifyResponse(
+            status=status,
+            candidates=[ProcedureSummary(**_summary(p)) for p in procedures],
+        )
+    needs, pending, relation = multiple
     return IdentifyResponse(
-        status=status,
-        candidates=[ProcedureSummary(**_summary(p)) for p in procedures],
+        status="multiple",
+        candidates=[],
+        needs=[
+            Need(**{**n, "candidates": [ProcedureSummary(**_summary(p)) for p in n["candidates"]]})
+            for n in needs
+        ],
+        pending=[PendingNeed(**n) for n in pending],
+        relation_question=relation,
     )
 
 
@@ -288,6 +306,29 @@ def guidance(
         insufficient_evidence=not claims,
         claims=claims,
         omitted_claims=omitted,
+    )
+
+
+@router.post("/api/relation", response_model=RelationResponse, response_model_exclude_defaults=True)
+def relation(
+    request: RelationRequest, db: Session = Depends(get_read_only_db)
+) -> RelationResponse:
+    procedures = db.query(Procedure).filter(Procedure.id.in_(request.procedure_ids)).all()
+    if len(procedures) != len(set(request.procedure_ids)):
+        raise HTTPException(status_code=404, detail="Procedure not found.")
+    comparison = bool(COMPARISON.search(request.question))
+    try:
+        claims, omitted = (compare if comparison else relate)(db, [p.id for p in procedures], request.question)
+    except (EmbeddingError, GuidanceError) as error:
+        raise HTTPException(
+            status_code=502, detail="The answer service is unavailable. Try again."
+        ) from error
+    urls = {p.id: p.source_url for p in procedures}
+    return RelationResponse(
+        insufficient_evidence=not claims,
+        claims=[{**c, "source_url": urls[c["procedure_id"]]} for c in claims],
+        omitted_claims=omitted,
+        comparison=comparison,
     )
 
 

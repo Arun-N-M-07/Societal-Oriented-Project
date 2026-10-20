@@ -53,7 +53,9 @@ def normalize_url(url: str) -> str:
     default_port = {"http": 80, "https": 443}.get(parts.scheme.lower())
     netloc = host if parts.port in (None, default_port) else f"{host}:{parts.port}"
     path = parts.path.rstrip("/") or "/"
-    return urlunsplit((parts.scheme.lower(), netloc, path, parts.query, ""))
+    # Tracking parameters (utm_source=...) are not part of the official page.
+    query = "&".join(p for p in parts.query.split("&") if p and not p.lower().startswith("utm_"))
+    return urlunsplit((parts.scheme.lower(), netloc, path, query, ""))
 
 
 def validate_url(url: str) -> str:
