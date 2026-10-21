@@ -1,3 +1,4 @@
+from typing import Literal
 from urllib.parse import urlparse
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
@@ -7,6 +8,8 @@ MAX_URL_LENGTH = 2_048
 MAX_SOURCE_TEXT_LENGTH = 100_000
 MAX_STEPS = 100
 MAX_STEP_LENGTH = 2_000
+# The citizen's input language; Tamil (or Tamil words) is normalized to an English query.
+Language = Literal["en", "ta"]
 
 
 def _required_text(value: str) -> str:
@@ -127,6 +130,7 @@ class AdminProcedure(StrictModel):
 
 class IdentifyRequest(StrictModel):
     question: str = Field(max_length=1_000)
+    language: Language = "en"
 
     _validate_question = field_validator("question")(_required_text)
 
@@ -151,11 +155,16 @@ class IdentifyResponse(StrictModel):
     needs: list[Need] = []
     pending: list[PendingNeed] = []
     relation_question: str | None = None
+    # Only for Tamil questions: the English query that was searched, or, instead of a
+    # search, a request to say which service the question is about.
+    normalized_query: str | None = None
+    clarification: str | None = None
 
 
 class GuidanceRequest(StrictModel):
     procedure_id: int
     question: str = Field(max_length=1_000)
+    language: Language = "en"
 
     _validate_question = field_validator("question")(_required_text)
 
@@ -172,6 +181,12 @@ class GuidanceResponse(StrictModel):
     insufficient_evidence: bool
     claims: list[Claim]
     omitted_claims: int
+    normalized_query: str | None = None
+
+
+class TranscriptionResponse(StrictModel):
+    text: str
+    language: Language
 
 
 class RelationRequest(StrictModel):

@@ -41,3 +41,7 @@ IDENTIFY_MIN_SCORE = float(_setting("IDENTIFY_MIN_SCORE", "0.53"))
 IDENTIFY_MARGIN = float(_setting("IDENTIFY_MARGIN", "0.03"))
 # Needs answered per message; the rest are listed for the citizen to send next.
 MAX_NEEDS = int(_setting("MAX_NEEDS", "3"))
+# Local speech-to-text (optional; see requirements-speech.txt). The weights are read
+# from the Hugging Face cache, or from SPEECH_MODEL_DIR; they are never downloaded here.
+SPEECH_MODEL = _setting("SPEECH_MODEL", "bodhan-ai/indic-transcribe-flex")
+SPEECH_MODEL_DIR = os.getenv("SPEECH_MODEL_DIR", "").strip() or None

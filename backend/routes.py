@@ -1,5 +1,8 @@
+import asyncio
+
 import httpx
-from fastapi import APIRouter, Depends, HTTPException, Response
+from fastapi import APIRouter, Depends, HTTPException, Request, Response
+from fastapi.concurrency import run_in_threadpool
 from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.orm import Session
@@ -18,6 +21,7 @@ from backend.config import COOKIE_SECURE, EMBEDDING_MODEL, LLM_MODEL, OLLAMA_BAS
 from backend.database import get_db, get_read_only_db
 from backend.extractor import ExtractionError, extract_procedure
 from backend.models import Procedure
+from backend.normalize import needs_normalizing, normalize_query
 from backend.procedure_search import identify, identify_needs
 from backend.rag import COMPARISON, EmbeddingError, GuidanceError, answer_question, build_chunks, compare, relate
 from backend.scraper import ScraperError, SourceUnavailableError, scrape_url
@@ -31,6 +35,7 @@ from backend.schemas import (
     GuidanceResponse,
     IdentifyRequest,
     IdentifyResponse,
+    Language,
     LoginRequest,
     Need,
     PendingNeed,
@@ -41,6 +46,16 @@ from backend.schemas import (
     RelationRequest,
     RelationResponse,
     SavedProcedureResponse,
+    TranscriptionResponse,
+)
+from backend.speech import (
+    MAX_AUDIO_BYTES,
+    TIMEOUT_SECONDS,
+    AudioError,
+    SpeechBusyError,
+    SpeechUnavailableError,
+    TranscriptionError,
+    transcribe,
 )
 
 
@@ -257,14 +272,58 @@ def get_procedure(
     )
 
 
+CLARIFY = "Which service or document is your question about? For example: passport renewal or Aadhaar address update."
+WAV_TYPES = {"audio/wav", "audio/x-wav", "audio/wave"}
+
+
+def _normalized(question: str, language: str) -> dict | None:
+    """The English query for a Tamil or Tamil-English question; None for English
+    questions, or when normalization fails (the original question is then searched)."""
+    return normalize_query(question) if needs_normalizing(question, language) else None
+
+
+@router.post("/api/speech/transcribe", response_model=TranscriptionResponse)
+async def transcribe_speech(request: Request, language: Language = "ta") -> TranscriptionResponse:
+    """Transcribe a short recording on this machine. The audio and transcript are not
+    stored or logged; the citizen edits the transcript before sending it."""
+    if request.headers.get("content-type", "").split(";")[0].strip().lower() not in WAV_TYPES:
+        raise HTTPException(status_code=415, detail="Send the recording as WAV audio.")
+    data = bytearray()
+    async for chunk in request.stream():
+        data += chunk
+        if len(data) > MAX_AUDIO_BYTES:
+            raise HTTPException(status_code=413, detail="The recording is too long. Keep it under 30 seconds.")
+    try:
+        # On timeout the citizen gets an answer; the running transcription still finishes
+        # (and deletes its file) in its thread, and later requests report "busy" meanwhile.
+        text = await asyncio.wait_for(run_in_threadpool(transcribe, bytes(data), language), TIMEOUT_SECONDS)
+    except TimeoutError as error:
+        raise HTTPException(status_code=504, detail="Transcription took too long. Try again or type your question.") from error
+    except AudioError as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
+    except SpeechUnavailableError as error:
+        raise HTTPException(status_code=503, detail="Voice input is not set up on this server. Type your question instead.") from error
+    except SpeechBusyError as error:
+        raise HTTPException(status_code=503, detail="Voice input is busy. Try again in a moment.") from error
+    except TranscriptionError as error:
+        raise HTTPException(status_code=502, detail="The recording could not be transcribed. Try again or type your question.") from error
+    return TranscriptionResponse(text=text, language=language)
+
+
 @router.post("/api/identify", response_model=IdentifyResponse, response_model_exclude_unset=True)
 def identify_procedure(
     request: IdentifyRequest, db: Session = Depends(get_read_only_db)
 ) -> IdentifyResponse:
+    question, extra = request.question, {}
+    if normalized := _normalized(question, request.language):
+        if normalized["needs_clarification"]:
+            return IdentifyResponse(status="no_match", candidates=[], clarification=CLARIFY)
+        question = normalized["normalized_query"]
+        extra = {"normalized_query": question}
     try:
-        multiple = identify_needs(db, request.question)
+        multiple = identify_needs(db, question)
         if not isinstance(multiple, tuple):
-            status, procedures = identify(db, request.question, need=multiple)
+            status, procedures = identify(db, question, need=multiple)
     except EmbeddingError as error:
         raise HTTPException(
             status_code=502, detail="The search service is unavailable. Try again."
@@ -273,9 +332,10 @@ def identify_procedure(
         return IdentifyResponse(
             status=status,
             candidates=[ProcedureSummary(**_summary(p)) for p in procedures],
+            **extra,
         )
     needs, pending, relation = multiple
-    return IdentifyResponse(
+    return IdentifyResponse(**extra,
         status="multiple",
         candidates=[],
         needs=[
@@ -287,15 +347,20 @@ def identify_procedure(
     )
 
 
-@router.post("/api/guidance", response_model=GuidanceResponse)
+@router.post("/api/guidance", response_model=GuidanceResponse, response_model_exclude_unset=True)
 def guidance(
     request: GuidanceRequest, db: Session = Depends(get_read_only_db)
 ) -> GuidanceResponse:
     procedure = db.get(Procedure, request.procedure_id)
     if procedure is None:
         raise HTTPException(status_code=404, detail="Procedure not found.")
+    # The procedure is already chosen, so a vague question is answered, not clarified.
+    question, extra = request.question, {}
+    if normalized := _normalized(question, request.language):
+        question = normalized["normalized_query"]
+        extra = {"normalized_query": question}
     try:
-        claims, omitted = answer_question(db, procedure.id, request.question)
+        claims, omitted = answer_question(db, procedure.id, question)
     except (EmbeddingError, GuidanceError) as error:
         raise HTTPException(
             status_code=502, detail="The answer service is unavailable. Try again."
@@ -306,6 +371,7 @@ def guidance(
         insufficient_evidence=not claims,
         claims=claims,
         omitted_claims=omitted,
+        **extra,
     )
 
 

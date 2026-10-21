@@ -1,4 +1,4 @@
-import { useRef, useState, type FormEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 
 import {
   askGuidance,
@@ -7,10 +7,12 @@ import {
   identifyProcedure,
   type GuidanceResponse,
   type IdentifyResponse,
+  type Language,
   type Need,
   type ProcedureDetail,
   type RelationResponse,
 } from "./api";
+import VoiceInput from "./VoiceInput";
 
 
 type Pending = "identify" | "procedure" | "guidance" | null;
@@ -20,6 +22,8 @@ type Section = { need: Need; procedureId?: number; answer?: GuidanceResponse; er
 type Message = {
   id: number;
   question: string;
+  // The English query searched and answered for a Tamil question.
+  query?: string;
   answer?: Reply;
   sections?: Section[];
   pending?: { phrase: string; question: string }[];
@@ -41,10 +45,56 @@ const NO_RELATION =
 
 const message = (error: unknown, fallback: string) =>
   error instanceof Error ? error.message : fallback;
+const asked = (m: Message) => m.query ?? m.question;
+
+// Read-aloud uses only voices installed on this device (Indian English first), so the
+// answer is not sent to an online voice service. Answers are in English.
+function offlineVoice() {
+  const voices = window.speechSynthesis?.getVoices().filter((v) => v.localService && v.lang.startsWith("en")) ?? [];
+  return voices.find((v) => v.lang === "en-IN") ?? voices[0];
+}
+
+function ReadAloud({ text }: { text: string }) {
+  const [speaking, setSpeaking] = useState(false);
+  const [, setVoicesLoaded] = useState(0);
+  useEffect(() => {
+    const synth = window.speechSynthesis;
+    if (!synth) return;
+    // Browsers load voices asynchronously; render again once they arrive (or if
+    // they arrived between the first render and this effect).
+    const update = () => setVoicesLoaded((count) => count + 1);
+    synth.addEventListener("voiceschanged", update);
+    update();
+    return () => {
+      synth.removeEventListener("voiceschanged", update);
+      synth.cancel();
+    };
+  }, []);
+  const voice = offlineVoice();
+  if (!voice) return null;
+  function play(voice: SpeechSynthesisVoice) {
+    window.speechSynthesis.cancel(); // stops any other answer being read
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.voice = voice;
+    utterance.lang = voice.lang;
+    utterance.onend = () => setSpeaking(false);
+    utterance.onerror = () => setSpeaking(false);
+    window.speechSynthesis.speak(utterance);
+    setSpeaking(true);
+  }
+  return speaking ? (
+    <button className="secondary-button" type="button" onClick={() => { window.speechSynthesis.cancel(); setSpeaking(false); }}>
+      Stop reading
+    </button>
+  ) : (
+    <button className="secondary-button" type="button" onClick={() => play(voice)}>Read aloud</button>
+  );
+}
 
 
 export default function CitizenPage() {
   const [situation, setSituation] = useState("");
+  const [language, setLanguage] = useState<Language>("en");
   const [matches, setMatches] = useState<IdentifyResponse | null>(null);
   const [procedure, setProcedure] = useState<ProcedureDetail | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -74,8 +124,9 @@ export default function CitizenPage() {
   // Answer one message from the procedure's evidence.
   async function answer(id: number, message: Message) {
     setPending("guidance");
-    const reply = await askGuidance(id, message.question);
-    update(message.id, (m) => ({ ...m, answer: reply }));
+    // An already normalized query is English and is not normalized again.
+    const reply = await askGuidance(id, asked(message), message.query ? "en" : language);
+    update(message.id, (m) => ({ ...m, answer: reply, query: reply.normalized_query ?? m.query }));
   }
 
   // Each need is answered on its own, one at a time, so one failure leaves the others intact.
@@ -115,6 +166,10 @@ export default function CitizenPage() {
 
   async function handleResult(result: IdentifyResponse, message: Message) {
     setMatches(result);
+    if (result.normalized_query) {
+      message = { ...message, query: result.normalized_query };
+      update(message.id, (m) => ({ ...m, query: result.normalized_query }));
+    }
     if (result.status === "matched") await showAndAnswer(result.candidates[0].id, message);
     if (result.status === "multiple") await answerNeeds(message, result);
   }
@@ -123,13 +178,18 @@ export default function CitizenPage() {
   // a question about how they relate goes to the relationship check; anything else
   // unclear asks the citizen which procedure they mean.
   async function followUp(message: Message, active: number[]) {
-    const result = await identifyProcedure(message.question);
+    const result = await identifyProcedure(message.question, language);
+    if (result.normalized_query) {
+      message = { ...message, query: result.normalized_query };
+      update(message.id, (m) => ({ ...m, query: result.normalized_query }));
+    }
     const hit = result.status === "matched" ? result.candidates[0].id : undefined;
     if (hit && active.includes(hit)) return answer(hit, message);
     if (result.status === "no_match" || result.status === "ambiguous") {
-      if (!ASKS_RELATION.test(message.question)) return update(message.id, (m) => ({ ...m, note: WHICH_ONE }));
+      const note = result.clarification ?? WHICH_ONE;
+      if (result.clarification || !ASKS_RELATION.test(asked(message))) return update(message.id, (m) => ({ ...m, note }));
       setPending("guidance");
-      const reply = await askRelation(active, message.question);
+      const reply = await askRelation(active, asked(message));
       return update(message.id, (m) => ({ ...m, answer: reply }));
     }
     setMessages([message]);
@@ -142,7 +202,7 @@ export default function CitizenPage() {
   }
 
   function openProcedure(id: number) {
-    const message = newMessage(messages[0].question);
+    const message = { ...newMessage(messages[0].question), query: messages[0].query };
     setMessages([message]);
     void run("procedure", () => showAndAnswer(id, message), "Unable to load the procedure.");
   }
@@ -161,7 +221,7 @@ export default function CitizenPage() {
       return;
     }
     setMessages([message]);
-    void run("identify", async () => handleResult(await identifyProcedure(question), message),
+    void run("identify", async () => handleResult(await identifyProcedure(question, language), message),
       "Unable to search procedures.");
   }
 
@@ -184,6 +244,7 @@ export default function CitizenPage() {
             </li>
           ))}
         </ol>
+        <ReadAloud text={reply.claims.map((claim) => claim.text).join(" ")} />
         {reply.omitted_claims > 0 && (
           <p className="field-help">
             {reply.omitted_claims} statement(s) were left out because the official text did not support them.
@@ -277,6 +338,7 @@ export default function CitizenPage() {
       {messages.map((m) => (
         <section className="card review-card" key={m.id}>
           <p className="section-intro"><strong>You:</strong> {m.question}</p>
+          {m.query && m.query !== m.question && <p className="field-help">Searched as: {m.query}</p>}
           {m.answer && renderAnswer(m.answer, refusal(m.answer))}
           {m.note && <p className="feedback" role="status">{m.note}</p>}
           {m.sections && (
@@ -370,12 +432,26 @@ export default function CitizenPage() {
 
       {matches?.status === "no_match" && (
         <p className="feedback" role="status">
-          We don't have an approved procedure that matches this yet. Try describing your
-          situation differently, for example which document or service you need.
+          {matches.clarification ?? (
+            "We don't have an approved procedure that matches this yet. Try describing your " +
+            "situation differently, for example which document or service you need."
+          )}
         </p>
       )}
 
       <form className="card" onSubmit={handleSend}>
+        <div className="form-field">
+          <label htmlFor="language">Language</label>
+          <select id="language" value={language} onChange={(event) => setLanguage(event.target.value as Language)}>
+            <option value="en">English</option>
+            <option value="ta">தமிழ் (Tamil)</option>
+          </select>
+          {language === "ta" && (
+            <p className="field-help">Ask in Tamil or Tamil-English. Answers are shown in English, quoted from the official pages.</p>
+          )}
+        </div>
+        <VoiceInput language={language} disabled={busy}
+          onTranscript={(text) => setSituation((current) => (current.trim() ? `${current.trim()} ${text}` : text))} />
         <div className="form-field">
           <label htmlFor="situation">{procedure ? "Ask about this procedure" : "Your situation or question"}</label>
           <textarea

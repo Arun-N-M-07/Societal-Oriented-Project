@@ -7,9 +7,14 @@ models (so it is not part of the unit tests).
 
 --answers also generates every matched answer (and the relationship check when
 asked) and verifies that each cited chunk belongs to the answering procedure.
+
+Tamil or Tamil-English messages are first normalized as /api/identify does; a case
+can also require a clarification ("clarification"), words the normalized query must
+keep ("keep", regexes) or that normalization is skipped ("bypass").
 """
 
 import json
+import re
 import sys
 import time
 from collections import Counter
@@ -19,6 +24,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from backend.database import SessionLocal  # noqa: E402
 from backend.models import ProcedureChunk  # noqa: E402
+from backend.normalize import needs_normalizing, normalize_query  # noqa: E402
 from backend.procedure_search import identify, identify_needs  # noqa: E402
 from backend.rag import answer_question, relate  # noqa: E402
 
@@ -60,40 +66,57 @@ def check_answers(db, owner, asked, relation, case):
 
 totals = {"single flow": 0, "multi-need": 0}
 categories = Counter()
-stats = Counter(latency=[])
+stats = Counter(latency=[], **{"normalize latency": []})
 with SessionLocal() as db:
     owner = dict(db.query(ProcedureChunk.id, ProcedureChunk.procedure_id))
     for case in cases:
         expected, message = case["expected"], case["message"]
         old = [label(*identify(db, message))]
-        multiple = identify_needs(db, message)
-        if isinstance(multiple, tuple):
+        query, clarified = message, False
+        if needs_normalizing(message, "en"):
+            start = time.time()
+            normalized = normalize_query(message)
+            stats["normalize latency"].append(time.time() - start)
+            if normalized:
+                query, clarified = normalized["normalized_query"], normalized["needs_clarification"]
+        multiple = () if clarified else identify_needs(db, query)
+        if clarified:
+            new, pending, relation, asked = [None], [], None, []
+        elif isinstance(multiple, tuple):
             needs, pending, relation = multiple
             new = [label(n["status"], n["candidates"]) for n in needs]
             asked = [(n["candidates"][0].id, n["question"]) for n in needs if n["status"] == "matched"]
         else:
-            status, procedures = identify(db, message, need=multiple)
+            status, procedures = identify(db, query, need=multiple)
             new, pending, relation = [label(status, procedures)], [], None
-            asked = [(procedures[0].id, message)] if status == "matched" else []
+            asked = [(procedures[0].id, query)] if status == "matched" else []
+        understood = (clarified == case.get("clarification", False)
+                      and all(re.search(word, query, re.IGNORECASE) for word in case.get("keep", []))
+                      and (query == message or not case.get("bypass")))
         results = {
             "single flow": len(old) == len(expected) and all(map(correct, expected, old)),
             "multi-need": len(new) == len(expected) and all(map(correct, expected, new))
-            and len(pending) == case.get("pending", 0) and bool(relation) == case["relation"],
+            and len(pending) == case.get("pending", 0) and bool(relation) == case["relation"] and understood,
         }
         for name, ok in results.items():
             totals[name] += ok
         category = case.get("category", "uncategorised")
         categories[category, results["multi-need"]] += 1
         notes = check_answers(db, owner, asked, relation, case) if answers else ""
-        print(f"{'ok ' if results['multi-need'] else 'MISS'} [{category}] {message[:66]:66} -> {new} "
+        searched = " (clarification)" if clarified else f" as {query!r}" if query != message else ""
+        print(f"{'ok ' if results['multi-need'] else 'MISS'} [{category}] {message[:66]:66}{searched} -> {new} "
               f"pending={len(pending)} relation={bool(relation)} {notes}")
 
+if stats["normalize latency"]:
+    took = sorted(stats["normalize latency"])
+    print(f"normalized {len(took)} messages; latency median {took[len(took) // 2]:.1f}s, max {took[-1]:.1f}s")
 for name, score in totals.items():
     print(f"{name}: {score}/{len(cases)} messages fully correct")
 for category in sorted({c for c, _ in categories}):
     print(f"  {category}: {categories[category, True]}/{categories[category, True] + categories[category, False]}")
 if answers:
     latency = sorted(stats.pop("latency")) or [0]
+    stats.pop("normalize latency")
     print(f"answers: {stats['answered']} with verified claims, {stats['abstained']} abstained, "
           f"{stats['leaked']} cited another procedure's chunk; latency median {latency[len(latency) // 2]:.0f}s, max {latency[-1]:.0f}s")
     if stats["relation labelled"]:

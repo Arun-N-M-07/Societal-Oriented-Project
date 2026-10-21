@@ -1,10 +1,16 @@
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import CitizenPage from "./CitizenPage";
 import * as api from "./api";
 
 vi.mock("./api");
+// The recorder itself is tested in VoiceInput.test.tsx; here it just hands over a transcript.
+vi.mock("./VoiceInput", () => ({
+  default: ({ onTranscript }: { onTranscript: (text: string) => void }) => (
+    <button type="button" onClick={() => onTranscript("Passport renew pannanum")}>Speak your question</button>
+  ),
+}));
 
 const passport = {
   id: 13,
@@ -65,8 +71,8 @@ describe("citizen workflow", () => {
       passportDetail.source_url,
     );
     expect(screen.getByText(/does not submit applications/)).toBeTruthy();
-    expect(api.identifyProcedure).toHaveBeenCalledWith("My passport expired");
-    await waitFor(() => expect(api.askGuidance).toHaveBeenCalledWith(13, "My passport expired"));
+    expect(api.identifyProcedure).toHaveBeenCalledWith("My passport expired", "en");
+    await waitFor(() => expect(api.askGuidance).toHaveBeenCalledWith(13, "My passport expired", "en"));
   });
 
   it("hides eligibility when the approved record has none", async () => {
@@ -89,7 +95,7 @@ describe("citizen workflow", () => {
 
     await screen.findByRole("heading", { name: passport.name });
     expect(api.getProcedure).toHaveBeenCalledWith(20);
-    await waitFor(() => expect(api.askGuidance).toHaveBeenCalledWith(20, "How do I apply for a passport?"));
+    await waitFor(() => expect(api.askGuidance).toHaveBeenCalledWith(20, "How do I apply for a passport?", "en"));
     fireEvent.click(screen.getByRole("button", { name: "Back to choices" }));
     expect(screen.getByText("Which of these fits your situation?")).toBeTruthy();
   });
@@ -114,7 +120,7 @@ describe("citizen workflow", () => {
     fireEvent.click(screen.getByRole("button", { name: "Try again" }));
 
     await screen.findByRole("heading", { name: passport.name });
-    expect(api.identifyProcedure).toHaveBeenNthCalledWith(2, "My passport expired");
+    expect(api.identifyProcedure).toHaveBeenNthCalledWith(2, "My passport expired", "en");
   });
 
   it("disables searching while a request is in progress", async () => {
@@ -149,7 +155,7 @@ describe("follow-up questions", () => {
     expect(await screen.findByText("Carry proof of address.")).toBeTruthy();
     expect(screen.getByText("carry proof of address and date of birth")).toBeTruthy();
     expect(screen.getByText(/1 statement\(s\) were left out/)).toBeTruthy();
-    expect(api.askGuidance).toHaveBeenCalledWith(13, "Which documents do I need?");
+    expect(api.askGuidance).toHaveBeenCalledWith(13, "Which documents do I need?", "en");
   });
 
   it("refuses honestly when the official text has no answer", async () => {
@@ -182,8 +188,8 @@ describe("follow-up questions", () => {
     expect(screen.getByText("My passport expired")).toBeTruthy();
     expect(screen.getByText("Which documents do I need?")).toBeTruthy();
     expect(screen.getByText("Is there a fee?")).toBeTruthy();
-    expect(api.askGuidance).toHaveBeenNthCalledWith(1, 13, "Which documents do I need?");
-    expect(api.askGuidance).toHaveBeenNthCalledWith(2, 13, "Is there a fee?");
+    expect(api.askGuidance).toHaveBeenNthCalledWith(1, 13, "Which documents do I need?", "en");
+    expect(api.askGuidance).toHaveBeenNthCalledWith(2, 13, "Is there a fee?", "en");
   });
 
   it("retries a failed answer with the same question", async () => {
@@ -201,7 +207,7 @@ describe("follow-up questions", () => {
     fireEvent.click(await screen.findByRole("button", { name: "Try again" }));
 
     await waitFor(() => expect(api.askGuidance).toHaveBeenCalledTimes(2));
-    expect(api.askGuidance).toHaveBeenLastCalledWith(13, "Which documents do I need?");
+    expect(api.askGuidance).toHaveBeenLastCalledWith(13, "Which documents do I need?", "en");
   });
 });
 
@@ -296,7 +302,7 @@ describe("several needs in one message", () => {
 
     vi.mocked(api.identifyProcedure).mockResolvedValue({ status: "matched", candidates: [aadhaar] });
     search("Tell me more about the Aadhaar update");
-    await waitFor(() => expect(api.askGuidance).toHaveBeenLastCalledWith(30, "Tell me more about the Aadhaar update"));
+    await waitFor(() => expect(api.askGuidance).toHaveBeenLastCalledWith(30, "Tell me more about the Aadhaar update", "en"));
     await waitFor(() => expect(screen.getByRole("button", { name: "Send" }).hasAttribute("disabled")).toBe(false));
 
     vi.mocked(api.identifyProcedure).mockResolvedValue({ status: "no_match", candidates: [] });
@@ -313,7 +319,7 @@ describe("several needs in one message", () => {
     fireEvent.click(screen.getAllByRole("button", { name: "Ask more about this" })[0]);
     await screen.findByRole("heading", { name: passport.name });
     ask("What are the fees?");
-    await waitFor(() => expect(api.askGuidance).toHaveBeenLastCalledWith(13, "What are the fees?"));
+    await waitFor(() => expect(api.askGuidance).toHaveBeenLastCalledWith(13, "What are the fees?", "en"));
   });
 
   it("shows a comparison point by point with each procedure named and missing details stated", async () => {
@@ -343,5 +349,120 @@ describe("several needs in one message", () => {
     expect(screen.getByText("Employees' Provident Fund Scheme:")).toBeTruthy();
     expect(screen.getByText(/No comparable details were found for: Employees' Pension Scheme \(EPS\)/)).toBeTruthy();
     expect(api.askRelation).toHaveBeenCalledWith([36, 37], "What is the difference between EPF and EPS?");
+  });
+});
+
+describe("Tamil questions", () => {
+  it("searches and answers the English query while showing the citizen's own words", async () => {
+    vi.mocked(api.identifyProcedure).mockResolvedValue({
+      status: "matched", candidates: [passport], normalized_query: "How do I renew my passport?",
+    });
+    render(<CitizenPage />);
+    fireEvent.change(screen.getByLabelText("Language"), { target: { value: "ta" } });
+    expect(screen.getByText(/Answers are shown in English/)).toBeTruthy();
+    search("Enakku passport renew pannanum");
+
+    await waitFor(() => expect(api.askGuidance).toHaveBeenCalledWith(13, "How do I renew my passport?", "en"));
+    expect(api.identifyProcedure).toHaveBeenCalledWith("Enakku passport renew pannanum", "ta");
+    expect(screen.getByText("Enakku passport renew pannanum")).toBeTruthy();
+    expect(screen.getByText("Searched as: How do I renew my passport?")).toBeTruthy();
+  });
+
+  it("puts the transcript in the question box to edit, and sends only what the citizen sends", async () => {
+    vi.mocked(api.identifyProcedure).mockResolvedValue({ status: "no_match", candidates: [] });
+    render(<CitizenPage />);
+    const box = screen.getByLabelText("Your situation or question") as HTMLTextAreaElement;
+    fireEvent.click(screen.getByRole("button", { name: "Speak your question" }));
+
+    expect(box.value).toBe("Passport renew pannanum");
+    expect(api.identifyProcedure).not.toHaveBeenCalled();
+    fireEvent.change(box, { target: { value: "Enakku passport renew pannanum" } });
+    fireEvent.click(screen.getByRole("button", { name: "Send" }));
+    await waitFor(() => expect(api.identifyProcedure).toHaveBeenCalledWith("Enakku passport renew pannanum", "en"));
+  });
+
+  it("asks which service is meant instead of guessing", async () => {
+    vi.mocked(api.identifyProcedure).mockResolvedValue({
+      status: "no_match", candidates: [], clarification: "Which service or document is your question about?",
+    });
+    render(<CitizenPage />);
+    search("Update pannanum");
+
+    expect(await screen.findByText("Which service or document is your question about?")).toBeTruthy();
+    expect(screen.queryByText(/We don't have an approved procedure/)).toBeNull();
+    expect(api.askGuidance).not.toHaveBeenCalled();
+  });
+
+  it("follow-ups about the open procedure are sent with the selected language", async () => {
+    vi.mocked(api.identifyProcedure).mockResolvedValue({ status: "matched", candidates: [passport] });
+    vi.mocked(api.askGuidance).mockResolvedValueOnce({
+      procedure_id: 13, source_url: passportDetail.source_url, insufficient_evidence: true, claims: [], omitted_claims: 0,
+    }).mockResolvedValueOnce({
+      procedure_id: 13, source_url: passportDetail.source_url, insufficient_evidence: true, claims: [], omitted_claims: 0,
+      normalized_query: "What documents are needed?",
+    });
+    render(<CitizenPage />);
+    search();
+    await screen.findByRole("heading", { name: passport.name });
+    fireEvent.change(screen.getByLabelText("Language"), { target: { value: "ta" } });
+    ask("Enna documents venum?");
+
+    await waitFor(() => expect(api.askGuidance).toHaveBeenLastCalledWith(13, "Enna documents venum?", "ta"));
+    expect(await screen.findByText("Searched as: What documents are needed?")).toBeTruthy();
+  });
+});
+
+describe("read aloud", () => {
+  const listeners: (() => void)[] = [];
+  const speech = {
+    getVoices: vi.fn(), speak: vi.fn(), cancel: vi.fn(),
+    addEventListener: (_: string, listener: () => void) => listeners.push(listener),
+    removeEventListener: vi.fn(),
+  };
+
+  beforeEach(() => {
+    vi.stubGlobal("speechSynthesis", speech);
+    vi.stubGlobal("SpeechSynthesisUtterance", class { onend = null; onerror = null; voice = null; lang = ""; constructor(public text: string) {} });
+    vi.mocked(api.identifyProcedure).mockResolvedValue({ status: "matched", candidates: [passport] });
+    vi.mocked(api.askGuidance).mockResolvedValue({
+      procedure_id: 13, source_url: passportDetail.source_url, insufficient_evidence: false, omitted_claims: 0,
+      claims: [{ text: "Create a Passport Seva account.", chunk_id: 1, quote: "Register" }, { text: "Book an appointment.", chunk_id: 2, quote: "Book" }],
+    });
+  });
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("reads the written answer with an offline Indian English voice and can stop", async () => {
+    const indian = { localService: true, lang: "en-IN" };
+    speech.getVoices.mockReturnValue([{ localService: false, lang: "en-IN" }, { localService: true, lang: "en-US" }, indian]);
+    render(<CitizenPage />);
+    search();
+    fireEvent.click(await screen.findByRole("button", { name: "Read aloud" }));
+
+    const utterance = speech.speak.mock.calls[0][0];
+    expect([utterance.text, utterance.voice]).toEqual(["Create a Passport Seva account. Book an appointment.", indian]);
+    expect(screen.getByText("Create a Passport Seva account.")).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Stop reading" }));
+    expect(speech.cancel).toHaveBeenCalled();
+    expect(screen.getByRole("button", { name: "Read aloud" })).toBeTruthy();
+  });
+
+  it("appears once the browser finishes loading its voices", async () => {
+    speech.getVoices.mockReturnValue([]);
+    render(<CitizenPage />);
+    search();
+    await screen.findByText("Create a Passport Seva account.");
+    expect(screen.queryByRole("button", { name: "Read aloud" })).toBeNull();
+
+    speech.getVoices.mockReturnValue([{ localService: true, lang: "en-IN" }]);
+    act(() => listeners.forEach((listener) => listener()));
+    expect(screen.getByRole("button", { name: "Read aloud" })).toBeTruthy();
+  });
+
+  it("is hidden when only online voices are available", async () => {
+    speech.getVoices.mockReturnValue([{ localService: false, lang: "en-IN" }]);
+    render(<CitizenPage />);
+    search();
+    await screen.findByText("Create a Passport Seva account.");
+    expect(screen.queryByRole("button", { name: "Read aloud" })).toBeNull();
   });
 });

@@ -68,8 +68,8 @@ async function request<T>(
   const response = await fetch(`${API_BASE_URL}${path}`, {
     method,
     credentials: "include",
-    headers: body === undefined ? undefined : { "Content-Type": "application/json" },
-    body: body === undefined ? undefined : JSON.stringify(body),
+    headers: body === undefined ? undefined : { "Content-Type": body instanceof Blob ? body.type : "application/json" },
+    body: body === undefined || body instanceof Blob ? body : JSON.stringify(body),
   });
 
   if (response.status === 401 && !NO_SESSION_PATHS.includes(path)) {
@@ -147,6 +147,9 @@ export type IdentifyResponse = {
   needs?: Need[];
   pending?: { phrase: string; question: string }[];
   relation_question?: string | null;
+  // Tamil questions only: the English query that was searched, or a request for the service name.
+  normalized_query?: string;
+  clarification?: string;
 };
 
 type Claim = { text: string; chunk_id: number; quote: string; procedure_id?: number; source_url?: string };
@@ -157,6 +160,7 @@ export type GuidanceResponse = {
   insufficient_evidence: boolean;
   claims: Claim[];
   omitted_claims: number;
+  normalized_query?: string;
 };
 
 export type RelationResponse = {
@@ -166,9 +170,12 @@ export type RelationResponse = {
   comparison?: boolean;
 };
 
-export const identifyProcedure = (question: string) =>
+export type Language = "en" | "ta";
+
+export const identifyProcedure = (question: string, language: Language = "en") =>
   request<IdentifyResponse>("/api/identify", "Unable to search procedures.", {
     question,
+    language,
   });
 
 export const getProcedure = (id: number) =>
@@ -180,8 +187,17 @@ export const askRelation = (procedureIds: number[], question: string) =>
     question,
   });
 
-export const askGuidance = (procedureId: number, question: string) =>
+export const askGuidance = (procedureId: number, question: string, language: Language = "en") =>
   request<GuidanceResponse>("/api/guidance", "Unable to answer the question.", {
     procedure_id: procedureId,
     question,
+    language,
   });
+
+// The recording is transcribed on the ProcedureAssist server; it is not stored.
+export const transcribeSpeech = (wav: Blob, language: Language) =>
+  request<{ text: string; language: Language }>(
+    `/api/speech/transcribe?language=${language}`,
+    "Unable to transcribe the recording.",
+    wav,
+  );
