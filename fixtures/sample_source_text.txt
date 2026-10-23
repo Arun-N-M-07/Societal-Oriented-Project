@@ -1,0 +1,14 @@
+Fresh Passport Application
+
+Department: Ministry of External Affairs
+Jurisdiction: Central Government
+
+This service allows applicants to apply for a fresh passport through the
+official passport portal.
+
+Application Process
+
+1. Register on the official portal.
+2. Complete the application form.
+3. Pay the applicable fee.
+4. Schedule an appointment.

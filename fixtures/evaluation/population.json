@@ -1,0 +1,355 @@
+{
+ "_comment": "Labelled before any results were seen (2026-10-20). Expected procedures are source_url substrings of the 4 approved procedures and the 20 pages in fixtures/ingestion/demo_batch.json; 'ambiguous' means the citizen should be asked to choose; null means no approved procedure applies. relation_evidence: whether an approved page explicitly states the relationship.",
+ "cases": [
+  {
+   "category": "A single",
+   "message": "How do I renew my passport?",
+   "expected": [
+    "passportindia"
+   ],
+   "relation": false
+  },
+  {
+   "category": "A single",
+   "message": "How can I register on the income tax portal?",
+   "expected": [
+    "register-e-filing"
+   ],
+   "relation": false
+  },
+  {
+   "category": "A single",
+   "message": "How do I file ITR-1 online?",
+   "expected": [
+    "itr1"
+   ],
+   "relation": false
+  },
+  {
+   "category": "A single",
+   "message": "I need to file ITR-2 for capital gains.",
+   "expected": [
+    "itr-2"
+   ],
+   "relation": false
+  },
+  {
+   "category": "A single",
+   "message": "How do I renew my vehicle registration certificate?",
+   "expected": [
+    "renewal-of-rc"
+   ],
+   "relation": false
+  },
+  {
+   "category": "A single",
+   "message": "How do I transfer the ownership of a car I sold?",
+   "expected": [
+    "ownership-transfer"
+   ],
+   "relation": false
+  },
+  {
+   "category": "A single",
+   "message": "I moved house. How do I change the address on my vehicle registration?",
+   "expected": [
+    "address-change"
+   ],
+   "relation": false
+  },
+  {
+   "category": "A single",
+   "message": "How do I get an International Driving Permit?",
+   "expected": [
+    "international-driving-permit"
+   ],
+   "relation": false
+  },
+  {
+   "category": "A single",
+   "message": "How do I link my PAN with Aadhaar?",
+   "expected": [
+    "how-to-link-aadhaar"
+   ],
+   "relation": false
+  },
+  {
+   "category": "A single",
+   "message": "Who can join the Atal Pension Yojana?",
+   "expected": [
+    "apy"
+   ],
+   "relation": false
+  },
+  {
+   "category": "A single",
+   "message": "How do I register as a new voter?",
+   "expected": [
+    "general-voters"
+   ],
+   "relation": false
+  },
+  {
+   "category": "A single",
+   "message": "How do I update my Aadhaar address online?",
+   "expected": [
+    "uidai"
+   ],
+   "relation": false
+  },
+  {
+   "category": "B phrasing",
+   "message": "dl renewal process",
+   "expected": [
+    "content/renewal"
+   ],
+   "relation": false
+  },
+  {
+   "category": "B phrasing",
+   "message": "lost my driving licence what to do",
+   "expected": [
+    "duplicate-licence"
+   ],
+   "relation": false
+  },
+  {
+   "category": "B phrasing",
+   "message": "passprt renewal",
+   "expected": [
+    "passportindia"
+   ],
+   "relation": false
+  },
+  {
+   "category": "B phrasing",
+   "message": "Can NRIs vote in Indian elections?",
+   "expected": [
+    "overseas-voters"
+   ],
+   "relation": false
+  },
+  {
+   "category": "B phrasing",
+   "message": "aadhar update at post office",
+   "expected": [
+    "aadhaar-updation"
+   ],
+   "relation": false
+  },
+  {
+   "category": "B phrasing",
+   "message": "how much is the learner licence test fee",
+   "expected": [
+    "licensing-related-fees"
+   ],
+   "relation": false
+  },
+  {
+   "category": "B phrasing",
+   "message": "sold my bike, need to transfer the RC",
+   "expected": [
+    "ownership-transfer"
+   ],
+   "relation": false
+  },
+  {
+   "category": "B phrasing",
+   "message": "I turned 18, how do I get on the voter list?",
+   "expected": [
+    "general-voters"
+   ],
+   "relation": false
+  },
+  {
+   "category": "C multiple",
+   "message": "I need to renew my passport and update my Aadhaar details. What should I do for each?",
+   "expected": [
+    "passportindia",
+    "uidai"
+   ],
+   "relation": false
+  },
+  {
+   "category": "C multiple",
+   "message": "I need to register as a voter, and I also want to understand how to renew my passport.",
+   "expected": [
+    "general-voters",
+    "passportindia"
+   ],
+   "relation": false
+  },
+  {
+   "category": "C multiple",
+   "message": "Renew my driving licence, transfer my car's ownership and link PAN with Aadhaar.",
+   "expected": [
+    "content/renewal",
+    "ownership-transfer",
+    "how-to-link-aadhaar"
+   ],
+   "relation": false
+  },
+  {
+   "category": "C multiple",
+   "message": "I need a learner's licence, an overseas voter registration, to join Atal Pension Yojana and to link PAN with Aadhaar.",
+   "expected": [
+    "learners-license",
+    "overseas-voters",
+    "apy"
+   ],
+   "relation": false,
+   "pending": 1
+  },
+  {
+   "category": "C multiple",
+   "message": "Help me file my ITR-2 and check whether I need to link PAN with Aadhaar.",
+   "expected": [
+    "itr-2",
+    "how-to-link-aadhaar"
+   ],
+   "relation": false
+  },
+  {
+   "category": "D background",
+   "message": "I recently updated my Aadhaar. Now I want to renew my passport.",
+   "expected": [
+    "passportindia"
+   ],
+   "relation": false
+  },
+  {
+   "category": "D background",
+   "message": "I registered as a voter last year. Now I need a duplicate driving licence.",
+   "expected": [
+    "duplicate-licence"
+   ],
+   "relation": false
+  },
+  {
+   "category": "D background",
+   "message": "My driving licence expires next month. How do I renew it, what is the fee, and can I apply online?",
+   "expected": [
+    "content/renewal"
+   ],
+   "relation": false
+  },
+  {
+   "category": "E ambiguous",
+   "message": "How do I get a driving licence?",
+   "expected": [
+    "ambiguous"
+   ],
+   "relation": false
+  },
+  {
+   "category": "E ambiguous",
+   "message": "What are my EPFO benefits?",
+   "expected": [
+    "ambiguous"
+   ],
+   "relation": false
+  },
+  {
+   "category": "F relationship",
+   "message": "Renew my driving licence and register as a voter. Which should I do first, and can I reuse documents?",
+   "expected": [
+    "content/renewal",
+    "general-voters"
+   ],
+   "relation": true,
+   "relation_evidence": false
+  },
+  {
+   "category": "F relationship",
+   "message": "I want to update my Aadhaar address and file my ITR-2. Do I need Aadhaar to get my ITR-2 refund?",
+   "expected": [
+    "uidai",
+    "itr-2"
+   ],
+   "relation": true,
+   "relation_evidence": true
+  },
+  {
+   "category": "F relationship",
+   "message": "Update my Aadhaar address and renew my passport. Which should I do first, and can I reuse documents?",
+   "expected": [
+    "uidai",
+    "passportindia"
+   ],
+   "relation": true,
+   "relation_evidence": false
+  },
+  {
+   "category": "G unsupported",
+   "message": "How do I apply for a ration card?",
+   "expected": [
+    null
+   ],
+   "relation": false
+  },
+  {
+   "category": "G unsupported",
+   "message": "How do I get a birth certificate?",
+   "expected": [
+    null
+   ],
+   "relation": false
+  },
+  {
+   "category": "G unsupported",
+   "message": "How do I apply for a scholarship?",
+   "expected": [
+    null
+   ],
+   "relation": false
+  },
+  {
+   "category": "G unsupported",
+   "message": "How do I apply for a US passport?",
+   "expected": [
+    null
+   ],
+   "relation": false
+  },
+  {
+   "category": "G unsupported",
+   "message": "How do I renew my driving licence in the UK?",
+   "expected": [
+    null
+   ],
+   "relation": false
+  },
+  {
+   "category": "G unsupported",
+   "message": "How do I change the name on my PAN card?",
+   "expected": [
+    null
+   ],
+   "relation": false
+  },
+  {
+   "category": "G unsupported",
+   "message": "How do I get a marriage certificate?",
+   "expected": [
+    null
+   ],
+   "relation": false
+  },
+  {
+   "category": "G unsupported",
+   "message": "Someone stole my bag with my passport inside. Where do I file a police complaint?",
+   "expected": [
+    null
+   ],
+   "relation": false
+  },
+  {
+   "category": "G unsupported",
+   "message": "What is the best biryani recipe?",
+   "expected": [
+    null
+   ],
+   "relation": false
+  }
+ ]
+}

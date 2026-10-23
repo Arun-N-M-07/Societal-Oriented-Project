@@ -1,0 +1,17 @@
+{
+  "procedure": {
+    "name": "Fresh Passport Application",
+    "department": "Ministry of External Affairs",
+    "jurisdiction": "Central Government",
+    "summary": "Procedure for applying for a fresh passport.",
+    "eligibility": null,
+    "steps": [
+      "Register on the official portal.",
+      "Complete the application form.",
+      "Pay the applicable fee.",
+      "Schedule an appointment."
+    ],
+    "source_url": "https://example.gov.in/passport"
+  },
+  "source_text": "Official source content used for persistence testing."
+}
