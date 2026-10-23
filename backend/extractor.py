@@ -61,13 +61,9 @@ def call_qwen(prompt: str) -> str:
     except httpx.TimeoutException as error:
         raise ExtractionError("Qwen extraction timed out.") from error
     except httpx.HTTPStatusError as error:
-        raise ExtractionError(
-            f"Qwen request failed with HTTP {error.response.status_code}."
-        ) from error
+        raise ExtractionError(f"Qwen request failed with HTTP {error.response.status_code}.") from error
     except httpx.RequestError as error:
-        raise ExtractionError(
-            "Unable to connect to the local Qwen model."
-        ) from error
+        raise ExtractionError("Unable to connect to the local Qwen model.") from error
 
     try:
         data = response.json()
@@ -85,22 +81,11 @@ def call_qwen(prompt: str) -> str:
 
 
 def parse_extraction(raw_output: str) -> ProcedureExtraction:
+    # Pydantic also rejects JSON that is not an object (a list, a string...).
     try:
-        data = json.loads(raw_output)
-    except (json.JSONDecodeError, TypeError) as error:
-        raise ExtractionError(
-            "Qwen returned invalid structured data."
-        ) from error
-
-    if not isinstance(data, dict):
-        raise ExtractionError("Qwen returned invalid structured data.")
-
-    try:
-        return ProcedureExtraction.model_validate(data)
-    except ValidationError as error:
-        raise ExtractionError(
-            "Qwen returned invalid structured data."
-        ) from error
+        return ProcedureExtraction.model_validate(json.loads(raw_output))
+    except (json.JSONDecodeError, TypeError, ValidationError) as error:
+        raise ExtractionError("Qwen returned invalid structured data.") from error
 
 
 def extract_procedure(source_text: str, source_url: str) -> ProcedureDraft:
@@ -109,11 +94,5 @@ def extract_procedure(source_text: str, source_url: str) -> ProcedureDraft:
     except ValidationError as error:
         raise ExtractionError("Source URL or text is invalid.") from error
 
-    extraction = parse_extraction(
-        call_qwen(build_extraction_prompt(source.source_text))
-    )
-
-    return ProcedureDraft(
-        **extraction.model_dump(),
-        source_url=source.source_url,
-    )
+    extraction = parse_extraction(call_qwen(build_extraction_prompt(source.source_text)))
+    return ProcedureDraft(**extraction.model_dump(), source_url=source.source_url)

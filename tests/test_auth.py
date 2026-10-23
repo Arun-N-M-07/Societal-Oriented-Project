@@ -87,7 +87,8 @@ class AdminSessionTest(unittest.TestCase):
         valid = create_session_token("admin")
         with patch("backend.auth.time.time", return_value=0):
             expired = create_session_token("admin")
-        for cookie in (None, "garbage", valid[:-1] + "0", expired, create_session_token("other")):
+        forged = valid[:-1] + ("1" if valid.endswith("0") else "0")  # always a different signature
+        for cookie in (None, "garbage", forged, expired, create_session_token("other")):
             with self.subTest(cookie=str(cookie)[:20]):
                 self.client.cookies.clear()
                 if cookie:

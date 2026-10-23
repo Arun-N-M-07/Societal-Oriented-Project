@@ -354,40 +354,442 @@ button:disabled {
   font-size: 0.88rem;
 }
 
-.citizen-page h3 {
-  margin: 20px 0 8px;
-  font-size: 1.05rem;
+/* Citizen chat */
+.chat {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: #f7f9fc;
 }
 
-.citizen-steps {
-  display: grid;
-  gap: 10px;
-  padding-left: 22px;
+.chat-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 56px;
+  padding: 8px max(16px, calc(50% - 380px));
+  border-bottom: 1px solid #e4e9f2;
+  background: rgba(247, 249, 252, 0.92);
+  backdrop-filter: blur(8px);
 }
 
-.citizen-page a {
+.chat-brand {
+  color: #172033;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.chat-header .secondary-button {
+  padding: 6px 12px;
+  font-size: 0.88rem;
+}
+
+.chat-thread {
+  flex: 1;
+  width: min(760px, 100% - 32px);
+  margin: 0 auto;
+  padding: 28px 0 16px;
+}
+
+.chat-thread a {
   color: #3157c8;
   overflow-wrap: anywhere;
 }
 
-.follow-up {
-  margin-top: 24px;
-  padding-top: 20px;
+.chat-welcome {
+  padding: 12vh 0 24px;
+  text-align: center;
+}
+
+.chat-welcome h1 {
+  margin: 0 0 10px;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  letter-spacing: -0.03em;
+}
+
+.chat-welcome p {
+  margin: 0 auto;
+  max-width: 520px;
+  color: #5c677d;
+}
+
+.examples {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 10px;
+  margin-top: 28px;
+  text-align: left;
+}
+
+.example {
+  padding: 12px 14px;
+  border-color: #dde3ee;
+  color: #344054;
+  background: #ffffff;
+  font-weight: 550;
+  line-height: 1.35;
+  text-align: left;
+}
+
+.example:hover {
+  border-color: #c9d2e2;
+  background: #f3f5f9;
+}
+
+.exchange {
+  scroll-margin-top: 72px; /* below the sticky header */
+}
+
+.exchange + .exchange {
+  margin-top: 28px;
+}
+
+.user-message {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.user-message p {
+  max-width: 85%;
+  margin: 0;
+  padding: 10px 16px;
+  border-radius: 18px 18px 4px 18px;
+  color: #ffffff;
+  background: #3157c8;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.searched-as {
+  margin: 6px 0 0;
+  color: #667085;
+  font-size: 0.82rem;
+  text-align: right;
+}
+
+.assistant-message {
+  margin-top: 16px;
+  line-height: 1.6;
+}
+
+.assistant-message > :first-child {
+  margin-top: 0;
+}
+
+.assistant-message h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+}
+
+.assistant-message h3 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+}
+
+.procedure-intro .field-help {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin: 2px 0 8px;
+}
+
+.link-button {
+  padding: 0;
+  color: #3157c8;
+  background: none;
+  font-size: inherit;
+  font-weight: 600;
+}
+
+.procedure-details {
+  margin-bottom: 12px;
+  color: #344054;
+  font-size: 0.92rem;
+}
+
+.procedure-details summary,
+.answer details summary {
+  color: #3157c8;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.procedure-details[open] {
+  padding: 12px 14px;
+  border: 1px solid #e4e9f2;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.procedure-details h3 {
+  margin-top: 12px;
+}
+
+.need {
+  margin-top: 22px;
+  padding-top: 18px;
   border-top: 1px solid #e4e9f2;
 }
 
+.choices h2 {
+  margin-bottom: 4px;
+}
+
+.citizen-steps {
+  display: grid;
+  gap: 12px;
+  margin: 8px 0 0;
+  padding-left: 22px;
+}
+
+.citizen-steps li::marker {
+  color: #3157c8;
+  font-weight: 700;
+}
+
 .answer details {
-  margin-top: 6px;
+  margin-top: 4px;
   color: #566176;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
 }
 
 .answer blockquote {
   margin: 8px 0;
-  padding-left: 12px;
+  padding: 6px 12px;
   border-left: 3px solid #c9d2e2;
+  background: #ffffff;
+}
+
+.answer > .field-help {
+  margin: 10px 0 0;
+}
+
+.answer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.answer-actions .secondary-button,
+.assistant-message .secondary-button {
+  padding: 6px 12px;
+  font-size: 0.86rem;
+}
+
+.action-link {
+  padding: 6px 12px;
+  border: 1px solid #c9d2e2;
+  border-radius: 9px;
+  background: #ffffff;
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.assistant-message .feedback {
+  margin-top: 12px;
+  font-weight: 550;
+}
+
+.chat .feedback[role="status"]:not(.error) {
+  border: 1px solid #e4e9f2;
+  background: #ffffff;
+}
+
+.thinking {
+  margin: 12px 0 0;
+  color: #5c677d;
+  font-size: 0.92rem;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+/* Composer: stays at the bottom of the window while the thread scrolls. */
+.composer {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  padding: 8px max(16px, calc(50% - 380px)) 10px;
+  background: #f7f9fc;
+}
+
+/* Fade the thread out above the composer instead of cutting it off. */
+.composer::before {
+  position: absolute;
+  top: -24px;
+  right: 0;
+  left: 0;
+  height: 24px;
+  background: linear-gradient(rgba(247, 249, 252, 0), #f7f9fc);
+  content: "";
+  pointer-events: none;
+}
+
+.composer-context {
+  margin: 0 0 6px 4px;
+  color: #5c677d;
+  font-size: 0.82rem;
+}
+
+.composer-box {
+  border: 1px solid #c9d2e2;
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 6px 24px rgba(30, 45, 75, 0.08);
+}
+
+.composer-box:focus-within {
+  border-color: #466fe5;
+  box-shadow: 0 0 0 3px rgba(70, 111, 229, 0.14);
+}
+
+.composer-box textarea {
+  display: block;
+  min-height: 0;
+  max-height: 12em;
+  padding: 14px 18px 4px;
+  border: 0;
+  border-radius: 22px 22px 0 0;
+  box-shadow: none;
+  resize: none;
+}
+
+.composer-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 6px 8px 8px 12px;
+}
+
+.composer-tools select {
+  width: auto;
+  margin-right: auto; /* pushes the voice and send buttons to the right */
+  padding: 5px 8px;
+  border-color: #e4e9f2;
+  border-radius: 999px;
+  color: #344054;
+  background: #f7f9fc;
+  font-size: 0.86rem;
 }
 
 .voice-input {
-  margin-bottom: 16px;
+  display: contents; /* its buttons sit in the composer toolbar */
+}
+
+/* The language is fixed once recording starts; hiding the picker keeps the controls on one row. */
+.composer-tools:has(.mic-button.recording) select {
+  display: none;
+}
+
+.voice-input .secondary-button {
+  padding: 5px 10px;
+  font-size: 0.84rem;
+}
+
+.voice-note,
+.recording {
+  color: #5c677d;
+  font-size: 0.84rem;
+}
+
+.recording {
+  color: #a63838;
+  font-weight: 650;
+}
+
+.voice-error {
+  flex-basis: 100%;
+  order: 1;
+  margin: 2px 0 0;
+  font-size: 0.86rem;
+}
+
+.mic-button,
+.send-button {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.mic-button svg,
+.send-button svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.mic-button {
+  color: #344054;
+  background: transparent;
+}
+
+.mic-button:hover:not(:disabled) {
+  background: #f3f5f9;
+}
+
+.mic-button.recording,
+.mic-button.recording:hover:not(:disabled) {
+  color: #ffffff;
+  background: #a63838;
+}
+
+.mic-button.recording svg {
+  fill: currentColor;
+}
+
+.send-button {
+  color: #ffffff;
+  background: #172033;
+}
+
+.send-button:hover:not(:disabled) {
+  background: #3157c8;
+}
+
+.composer-note {
+  margin: 8px 4px 0;
+  color: #8a94a6;
+  font-size: 0.76rem;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .chat-thread {
+    width: calc(100% - 24px);
+    padding-top: 18px;
+  }
+
+  .chat-welcome {
+    padding-top: 6vh;
+  }
+
+  .user-message p {
+    max-width: 92%;
+  }
+
+  .composer {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
 }

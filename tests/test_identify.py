@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 from backend.extractor import ExtractionError
 from backend.models import Procedure, ProcedureChunk
-from backend.procedure_search import classify, extract_needs, mentions
+from backend.procedure_search import abbreviates, classify, extract_needs, mentions, names_something
 from backend.rag import EmbeddingError
 from db_support import DatabaseTestCase, make_client, unit_vector
 
@@ -105,6 +105,29 @@ class ExtractNeedsTest(unittest.TestCase):
         self.assertIsNone(extract_needs(MESSAGE)[1])
 
 
+class AbbreviatesTest(unittest.TestCase):
+    def test_literal_abbreviations_and_initials_of_consecutive_capitalised_words(self):
+        for acronym, name in [("EPS", "Employees' Pension Scheme (EPS)"), ("EPF", "Employees' Provident Fund Scheme"),
+                              ("DL", "Duplicate Driving Licence"), ("RC", "Renewal of Vehicle Registration Certificate"),
+                              ("PAN", "Link PAN with Aadhaar")]:
+            with self.subTest(acronym):
+                self.assertTrue(abbreviates(acronym, name))
+        for acronym, name in [("EPS", "Employees' Provident Fund Scheme"), ("EPF", "Employees' Pension Scheme (EPS)"),
+                              ("RC", "Change of Address in Vehicle Registration"), ("UK", "Apply for a passport")]:
+            with self.subTest(acronym):
+                self.assertFalse(abbreviates(acronym, name))
+
+
+class NamesSomethingTest(unittest.TestCase):
+    def test_a_question_must_name_a_service_document_or_detail(self):
+        for question in ["How do I renew?", "What documents do I need?", "How much is the fee?", "How do I apply?"]:
+            with self.subTest(question):
+                self.assertFalse(names_something(question))
+        for question in ["How do I renew my passport?", "Can I vote?", "I turned 18.", "எனக்கு பாஸ்போர்ட் வேண்டும்"]:
+            with self.subTest(question):
+                self.assertTrue(names_something(question))
+
+
 def between(first, second):
     vector = [a + b for a, b in zip(unit_vector(first), unit_vector(second))]
     return [value / math.sqrt(2) for value in vector]
@@ -176,6 +199,20 @@ class IdentifyApiTest(DatabaseTestCase):
         self.assertEqual(self.ask(near(0.5), "What is EPS?").json()["candidates"][0]["id"], eps.id)
         self.assertEqual(self.ask(near(0.5), "What is the pension?").json()["status"], "no_match")
         self.assertEqual(self.ask(near(0.4), "What is EPS?").json()["status"], "no_match")
+
+    def test_an_abbreviation_naming_one_close_candidate_decides(self):
+        epf = self.add("Employees' Provident Fund Scheme", [unit_vector(4)])
+        eps = self.add("Employees' Pension Scheme (EPS)", [unit_vector(5)])
+        epf.source_text = eps.source_text = "EPF and EPS rules"
+        tie = between(4, 5)
+        self.assertEqual(self.ask(tie, "Can I withdraw my EPF?").json()["candidates"][0]["id"], epf.id)
+        self.assertEqual(self.ask(tie, "How much goes into EPS?").json()["candidates"][0]["id"], eps.id)
+        # It also overrides a confident match on the other scheme ...
+        leaning_eps = [0.75 if i == 5 else 0.66 if i == 4 else 0.0 for i in range(len(unit_vector()))]
+        self.assertEqual(self.ask(leaning_eps, "Can I withdraw my EPF?").json()["candidates"][0]["id"], epf.id)
+        # ... but naming both, or neither, leaves the scores to decide.
+        self.assertEqual(self.ask(tie, "Is EPS part of EPF?").json()["status"], "ambiguous")
+        self.assertEqual(self.ask(tie, "Can I withdraw my provident fund?").json()["status"], "ambiguous")
 
     def test_name_check_does_not_turn_a_close_call_into_a_match(self):
         self.aadhaar.source_text = "Aadhaar update in India"
@@ -270,6 +307,15 @@ class IdentifyNeedsApiTest(DatabaseTestCase):
 
         self.assertEqual(body["candidates"][0]["id"], self.passport.id)
 
+    def test_the_standalone_question_decides_when_the_phrase_alone_is_unclear(self, llm):
+        llm.return_value = json.dumps({"needs": [{"phrase": "get a new one", "question": "How do I get a new passport?"}],
+                                       "relation_question": None})
+        vectors = {"get a new one": between(1, 2), "How do I get a new passport?": unit_vector(0)}
+        self.embed.side_effect = lambda texts, query=False: [vectors.get(t, unit_vector(7)) for t in texts]
+        body = self.client.post("/api/identify", json={"question": "My passport has expired. How do I get a new one?"}).json()
+
+        self.assertEqual((body["status"], body["candidates"][0]["id"]), ("matched", self.passport.id))
+
     def test_the_whole_message_is_used_when_the_need_alone_matches_nothing(self, llm):
         llm.return_value = needs_output("renew my passport", relation=None)
         self.embed.side_effect = lambda texts, query=False: [unit_vector(1 if "," in t else 9) for t in texts]
@@ -331,11 +377,29 @@ class IdentifyNeedsApiTest(DatabaseTestCase):
                          [(["EPF"], "matched", self.passport.id), (["EPS"], "matched", self.aadhaar.id)])
         self.assertEqual(body["relation_question"], message)
 
+    def test_a_question_naming_no_service_asks_which_one_without_searching(self, llm):
+        body = self.client.post("/api/identify", json={"question": "How do I renew?"}).json()
+
+        self.assertEqual((body["status"], body["candidates"]), ("no_match", []))
+        self.assertIn("Which service or document", body["clarification"])
+        self.embed.assert_not_called()
+        llm.assert_not_called()
+
+    def test_the_citizen_chooses_when_the_phrase_and_its_question_disagree(self, llm):
+        llm.return_value = json.dumps({"needs": [{"phrase": "register to vote", "question": "How do I register to vote from abroad?"}],
+                                       "relation_question": None})
+        vectors = {"register to vote": unit_vector(0), "How do I register to vote from abroad?": unit_vector(1)}
+        self.embed.side_effect = lambda texts, query=False: [vectors.get(t, unit_vector(7)) for t in texts]
+        body = self.client.post("/api/identify", json={"question": "I live abroad. How do I register to vote?"}).json()
+
+        self.assertEqual(body["status"], "ambiguous")
+        self.assertEqual({c["id"] for c in body["candidates"]}, {self.passport.id, self.aadhaar.id})
+
     def test_untrustworthy_or_single_extraction_keeps_the_single_flow(self, llm):
         for output in (needs_output("renew my passport"), "not json"):
             with self.subTest(output=output[:20]):
                 llm.return_value = output
-                self.embed.side_effect = lambda texts, query=False: [unit_vector(0)]
+                self.embed.side_effect = lambda texts, query=False: [unit_vector(0) for _ in texts]
                 body = self.client.post("/api/identify", json={"question": "I want to renew my passport, please."}).json()
                 self.assertEqual(body, {"status": "matched", "candidates": [body["candidates"][0]]})
                 self.assertEqual(body["candidates"][0]["id"], self.passport.id)

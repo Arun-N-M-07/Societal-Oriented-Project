@@ -37,6 +37,40 @@ class VerifyClaimsTest(unittest.TestCase):
         )
         self.assertEqual(len(verify_claims([claim], self.passages)), 1)
 
+    def test_quotes_joining_table_cells_or_list_items_differ_only_in_punctuation(self):
+        # Scraped tables and lists store each cell or item as its own paragraph.
+        passages = {7: "Purpose\n\nFor test of competence to drive\n\nRs. 300.00/-\n\n4",
+                    8: "Documents required\n\nApplication in Form 25\n\nInsurance certificate*"}
+        kept = [
+            self.claim("The driving test fee is Rs. 300.00/-.", "For test of competence to drive Rs. 300.00/-.", 7),
+            self.claim("Apply in Form 25.", "Documents required: Application in Form 25", 8),
+        ]
+        self.assertEqual(len(verify_claims(kept, passages)), 2)
+        dropped = [
+            self.claim("The fee is Rs. 300.", "test of competence to drive Rs. 300.00/- extra", 7),
+            self.claim("Apply in Form 2.", "required: Application in Form 2", 8),  # "Form 2" is not "Form 25"
+            self.claim("Test fee.", "For test of competence to dri", 7),  # stops mid-word
+        ]
+        self.assertEqual(verify_claims(dropped, passages), [])
+
+    def test_a_short_quote_must_be_a_whole_list_item_without_numbers(self):
+        passages = {9: "Documents required\n\nInsurance certificate*\n\nIssue of learner licence\n\nRs. 150.00/-"}
+        self.assertEqual(len(verify_claims([self.claim("Bring the insurance certificate.", "Insurance certificate*", 9)], passages)), 1)
+        for text, quote in [("Bring the insurance.", "Insurance"),  # part of an item
+                            ("The fee is Rs. 150.", "Rs. 150.00/-")]:  # a bare amount needs its label
+            with self.subTest(quote):
+                self.assertEqual(verify_claims([self.claim(text, quote, 9)], passages), [])
+
+    def test_numbers_must_equal_the_quoted_numbers(self):
+        quote = "fee for a fresh passport of 36 pages is Rs 1,500"
+        for text in ["Pay Rs 1500.", "Pay Rs. 1,500.00 online.", "A 36-page passport costs Rs 1,500."]:
+            with self.subTest(text):
+                self.assertEqual(len(verify_claims([self.claim(text, quote)], self.passages)), 1)
+        # Digits of the quoted amount are not the amount ("Rs 150" is not "Rs 1,500").
+        for text in ["Pay Rs 150.", "Pay Rs 1,50.", "A 3-page passport costs Rs 1,500.", "Pay Rs 1.5 online."]:
+            with self.subTest(text):
+                self.assertEqual(verify_claims([self.claim(text, quote)], self.passages), [])
+
     def test_drops_repeated_claims(self):
         claim = self.claim("Pay Rs 1,500 online.", "fee for a fresh passport of 36 pages is Rs 1,500")
         self.assertEqual(len(verify_claims([claim, dict(claim)], self.passages)), 1)
@@ -176,6 +210,44 @@ class GuidanceApiTest(DatabaseTestCase):
 
         self.assertTrue(response.json()["insufficient_evidence"])
         self.llm.assert_not_called()
+
+    def test_a_page_naming_the_procedure_answers_when_its_own_page_cannot(self):
+        table = self.add("Fee table", ["Issue of a Passport of 36 pages costs Rs 1,500 at the counter."])
+        chunk = self.session.query(ProcedureChunk).filter_by(procedure_id=table.id).one()
+        self.llm.side_effect = [
+            json.dumps({"insufficient_evidence": True, "claims": []}),
+            json.dumps({"insufficient_evidence": False, "claims": [
+                {"text": "It costs Rs 1,500.", "chunk_id": chunk.id, "quote": "Passport of 36 pages costs Rs 1,500"}]}),
+        ]
+        body = self.client.post("/api/guidance", json={"procedure_id": self.procedure.id, "question": "Fee?"}).json()
+
+        self.assertEqual((body["procedure_id"], body["source_url"]), (table.id, "https://example.gov.in/Fee table"))
+        self.assertEqual([c["chunk_id"] for c in body["claims"]], [chunk.id])
+        # The Aadhaar page does not name the passport procedure, so it was never asked.
+        self.assertEqual(self.llm.call_count, 2)
+        self.assertNotIn("Aadhaar", self.llm.call_args.args[0])
+
+    def test_only_the_related_page_s_passages_naming_the_procedure_are_used(self):
+        table = self.add("Fee table", ["Issue of a Passport of 36 pages costs Rs 1,500 at the counter.",
+                                       "Duplicate licence to a driving school costs Rs 5,000."])
+        self.llm.return_value = json.dumps({"insufficient_evidence": True, "claims": []})
+        self.client.post("/api/guidance", json={"procedure_id": self.procedure.id, "question": "Duplicate fee?"})
+
+        related_prompt = self.llm.call_args_list[1].args[0]
+        self.assertIn("Issue of a Passport", related_prompt)
+        self.assertNotIn("driving school", related_prompt)
+
+    def test_related_pages_are_not_asked_when_the_page_answers_or_nothing_names_it(self):
+        self.add("Fee table", ["Issue of a Passport of 36 pages costs Rs 1,500 at the counter."])
+        ids = self.chunk_ids()
+        self.ask({"insufficient_evidence": False, "claims": [
+            {"text": "Pay Rs 1,500 online.", "chunk_id": ids[FEE], "quote": "is Rs 1,500 payable online"}]})
+        self.assertEqual(self.llm.call_count, 1)
+
+        self.llm.reset_mock()
+        body = self.client.post("/api/guidance", json={"procedure_id": self.other.id, "question": "Fee?"}).json()
+        self.assertEqual((body["procedure_id"], body["insufficient_evidence"]), (self.other.id, True))
+        self.assertEqual(self.llm.call_count, 1)
 
     def test_errors(self):
         self.assertEqual(

@@ -161,8 +161,12 @@ Do not use outside knowledge or guess.
 Answer as short, ordered steps in plain language.
 Every claim must include a quote copied word for word from one passage and that passage's number as chunk_id.
 Never state a fee, deadline, document, age or eligibility rule unless your quote states it.
+Keep the conditions a passage attaches to a fact (who it applies to, when, in which case) in your claim.
+Use only facts about what the citizen asks about. A fact about a different service, or about a different kind of applicant (such as an organisation, school or business instead of the citizen), does not answer the question; if that is the only matching fact, set insufficient_evidence to true.
+A link, button, heading or menu label is not a fact.
+Quote one continuous piece of a passage. Quote each list item on its own, without the list's heading.
 If passages disagree, include each claim with its own quote.
-If the passages do not answer the question, set insufficient_evidence to true and return no claims.
+If the passages answer only part of the question, answer that part. If they do not answer it at all, set insufficient_evidence to true and return no claims.
 
 Return only JSON: {{"insufficient_evidence": true or false, "claims": [{{"text": "...", "chunk_id": 0, "quote": "..."}}]}}
 
@@ -171,14 +175,39 @@ Citizen question: {question}
 {passages}"""
 
 
+def _numbers(text: str) -> set:
+    """Numbers by value, so "Rs. 200" matches "Rs. 200.00/-" but not "Rs. 20" or "2.5 lakh"."""
+    values = set()
+    for number in re.findall(r"\d+(?:[.,/]\d+)*", text):
+        try:
+            values.add(float(number.replace(",", "")))
+        except ValueError:  # a fraction or date such as 1/2
+            values.add(number)
+    return values
+
+
 def _normalize(text: str) -> str:
     text = text.translate(str.maketrans("\u2018\u2019\u201c\u201d\u2013\u2014", "''\"\"--"))
     return " ".join(text.split()).lower()
 
 
+def _words(text: str) -> str:
+    """Whole words only, padded for whole-word matching. Scraped tables and lists keep
+    each cell or item as its own paragraph, so a quote joining a heading or label to
+    its value ("Documents required: Form 25", "... Rs. 300.00/-.") differs from the page
+    only in punctuation."""
+    return f" {' '.join(re.findall(r'\w+', _normalize(text)))} "
+
+
+def _whole_item(quote: str, passage: str) -> bool:
+    """A short quote is evidence only when it is a whole list item of the passage
+    ("Insurance certificate*"); a bare amount ("Rs. 150.00/-") needs its label."""
+    return not re.search(r"\d", quote) and _words(quote) in {_words(block) for block in passage.split("\n\n")}
+
+
 def verify_claims(claims: object, passages: dict[int, str]) -> list[dict]:
-    """Keep only claims whose quote appears verbatim in the cited passage,
-    whose numbers (fees, ages, days...) all appear in that quote, and which
+    """Keep only claims whose quote appears word for word in the cited passage,
+    whose numbers (fees, ages, days...) all equal numbers in that quote, and which
     agree with the quote on negation."""
     verified = []
     for claim in claims if isinstance(claims, list) else []:
@@ -191,14 +220,28 @@ def verify_claims(claims: object, passages: dict[int, str]) -> list[dict]:
         quote_n = _normalize(quote)
         if (
             passage is None
-            or len(quote_n.split()) < MIN_QUOTE_WORDS
-            or quote_n not in _normalize(passage)
-            or any(n not in quote_n for n in re.findall(r"\d+(?:[.,/]\d+)*", text))
+            or len(quote_n.split()) < MIN_QUOTE_WORDS and not _whole_item(quote, passage)
+            or _words(quote) not in _words(passage)
+            or not _numbers(text) <= _numbers(quote_n)
             or bool(NEGATION.search(_normalize(text))) != bool(NEGATION.search(quote_n))
         ) or any(v["text"] == text.strip() for v in verified):  # drop repeated claims
             continue
         verified.append({"text": text.strip(), "chunk_id": chunk_id, "quote": quote.strip()})
     return verified
+
+
+def answer_from_naming_pages(db: Session, procedure: Procedure, question: str):
+    """A page that says only "Fees as prescribed" may be answered by another approved page
+    that names the procedure, such as a fee table with a row for it. Only that page's
+    passages naming the procedure are used. (page, claims, omitted) or None."""
+    name = _normalize(procedure.name)
+    for page in db.query(Procedure).filter(Procedure.id != procedure.id):
+        if name in _normalize(page.source_text):
+            chunks = [c for c in retrieve(db, page.id, question) if name in _normalize(c.content)]
+            claims, omitted = _answer(question, chunks)
+            if claims:
+                return page, claims, omitted
+    return None
 
 
 def answer_question(db: Session, procedure_id: int, question: str) -> tuple[list[dict], int]:

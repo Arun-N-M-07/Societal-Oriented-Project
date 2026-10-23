@@ -309,8 +309,7 @@ def _result(final_url: str, source_text: str) -> ScrapeResult:
 
 
 def scrape_url(url: str) -> ScrapeResult:
-    validated_url = validate_url(url)
-    final_url, html = fetch_static_html(validated_url)
+    final_url, html = fetch_static_html(url)  # both fetchers validate the URL
 
     try:
         source_text = clean_html(html)
@@ -320,7 +319,7 @@ def scrape_url(url: str) -> ScrapeResult:
     if is_source_text_usable(source_text):
         return _result(final_url, source_text)
 
-    final_url, html = fetch_rendered_html(validated_url)
+    final_url, html = fetch_rendered_html(url)
     source_text = clean_html(html)
     if not is_source_text_usable(source_text):
         raise ScraperError("No meaningful page content found.")

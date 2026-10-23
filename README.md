@@ -119,6 +119,9 @@ against real official pages (uses Ollama, writes nothing).
 `.venv/bin/python scripts/evaluate_needs.py` compares single- and multi-need handling on the
 labelled messages in `fixtures/evaluation/multi_need.json` (uses Ollama and the saved
 procedures, writes nothing).
+`.venv/bin/python scripts/evaluate_answers.py` asks the 80 questions in
+`fixtures/evaluation/answers.json` through the real API, checks each answer's quotes and
+citations, and names the stage where each failure happened (uses Ollama, writes nothing).
 
 ## Troubleshooting
 

@@ -26,7 +26,7 @@ Do not answer the question, give advice or invent missing facts.
 Do not turn a comparison into a question about only one of the compared services, and do not change a question about eligibility, fees, documents, renewal, correction, cancellation or status into a different intent.
 A document mentioned as proof is not the service being asked about.
 Keep the question type: "epdi/eppadi" = how, "enna" = what, "mudiyuma" = can I, "venum/vendum" = need, "vithiyasam" = difference, "illama" = without, "illana" = if I do not have, "...alana" = if I do not, "enna aagum" = what happens, "evlo" = how much, "kidaikkum" = will get, "thaana" = is it, "aa kuduthu" = by giving as, "X la" = in or on X.
-Formal Tamil: "கடவுச்சீட்டு" = passport, "ஓட்டுநர் உரிமம்" = driving licence, "வாக்காளர்" = voter, "வருமான வரி" = income tax, "ஓய்வூதியம்" = pension.
+Formal Tamil: "கடவுச்சீட்டு" = passport, "ஓட்டுநர் உரிமம்" = driving licence, "பழகுநர் உரிமம்" = learner's licence, "வாக்காளர்" = voter, "வருமான வரி" = income tax, "ஓய்வூதியம்" = pension.
 Write "DL" as driving licence and "RC" as vehicle registration certificate (RC); keep other acronyms such as PAN, EPF, EPS, EDLI, IDP and ITR.
 A statement of need ("X pannanum", "X venum", "X vendum") asks how to do X.
 Keep every person, document and detail the citizen names (for example "paiyan" = son, "ponnu" = daughter, "amma" = mother), and add none they did not say.

@@ -107,6 +107,30 @@ describe("voice input", () => {
     expect(screen.getByText(/not supported in this browser/)).toBeTruthy();
   });
 
+  it("waits for microphone permission without opening a second microphone", async () => {
+    let allow: (stream: { getTracks: () => typeof track[] }) => void = () => undefined;
+    vi.mocked(navigator.mediaDevices.getUserMedia).mockReturnValueOnce(new Promise((resolve) => { allow = resolve; }) as never);
+    render(<VoiceInput language="ta" disabled={false} onTranscript={vi.fn()} />);
+    const speak = screen.getByRole("button", { name: "Speak your question" }) as HTMLButtonElement;
+    fireEvent.click(speak);
+    fireEvent.click(speak);
+
+    expect(speak.disabled).toBe(true);
+    expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledTimes(1);
+    await act(async () => allow({ getTracks: () => [track] }));
+    expect(screen.getByRole("button", { name: "Stop and transcribe" })).toBeTruthy();
+  });
+
+  it("clears an old voice error when the next request starts", async () => {
+    vi.mocked(navigator.mediaDevices.getUserMedia).mockRejectedValueOnce(new DOMException("denied", "NotAllowedError"));
+    const { rerender } = render(<VoiceInput language="ta" disabled={false} onTranscript={vi.fn()} />);
+    fireEvent.click(screen.getByRole("button", { name: "Speak your question" }));
+    expect(await screen.findByRole("alert")).toBeTruthy();
+
+    rerender(<VoiceInput language="ta" disabled onTranscript={vi.fn()} />);
+    expect(screen.queryByRole("alert")).toBeNull();
+  });
+
   it("is disabled while another request is running", () => {
     render(<VoiceInput language="ta" disabled onTranscript={vi.fn()} />);
     expect((screen.getByRole("button", { name: "Speak your question" }) as HTMLButtonElement).disabled).toBe(true);

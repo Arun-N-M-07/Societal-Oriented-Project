@@ -110,11 +110,7 @@ export default function AdminPage({ onSaved }: { onSaved?: () => void }) {
       setSteps([]);
       setExtractedSourceText("");
       setProvenanceToken("");
-      setError(
-        requestError instanceof Error
-          ? requestError.message
-          : "Unable to extract procedure.",
-      );
+      setError(requestError instanceof Error ? requestError.message : "Unable to extract procedure.");
     } finally {
       setIsLoading(false);
     }
@@ -136,11 +132,7 @@ export default function AdminPage({ onSaved }: { onSaved?: () => void }) {
       setProcedure(extractedProcedure);
       setSteps(toStepItems(extractedProcedure.steps));
     } catch (requestError) {
-      setError(
-        requestError instanceof Error
-          ? requestError.message
-          : "Unable to re-extract procedure.",
-      );
+      setError(requestError instanceof Error ? requestError.message : "Unable to re-extract procedure.");
     } finally {
       setIsLoading(false);
     }
@@ -195,11 +187,7 @@ export default function AdminPage({ onSaved }: { onSaved?: () => void }) {
       setSavedMessage(`Saved ${saved.name} with ID ${saved.id}.`);
       onSaved?.();
     } catch (requestError) {
-      setError(
-        requestError instanceof Error
-          ? requestError.message
-          : "Unable to save procedure.",
-      );
+      setError(requestError instanceof Error ? requestError.message : "Unable to save procedure.");
     } finally {
       setIsSaving(false);
     }

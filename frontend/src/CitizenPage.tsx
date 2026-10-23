@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent, type ReactNode } from "react";
 
 import {
   askGuidance,
@@ -29,6 +29,10 @@ type Message = {
   pending?: { phrase: string; question: string }[];
   relation?: { question: string; answer?: RelationResponse; error?: string };
   note?: string;
+  // The procedure this message's answer introduces (shown once, above the answer).
+  opened?: ProcedureDetail;
+  // Set when a related official page answered instead (a fee table naming this procedure).
+  source?: string;
 };
 
 // A follow-up across several procedures is only sent to the relationship check
@@ -39,6 +43,12 @@ const WHICH_ONE = "Which procedure is this about? Use “Ask more about this” 
 // Mirrors backend rag.COMPARISON: the backend answers these as a comparison.
 const COMPARES = /\b(differ\w*|compar\w*|versus|vs)\b/i;
 const NO_COMPARISON = "The approved official pages do not give details that compare these procedures for this question.";
+const EXAMPLES = [
+  "My passport expired, how do I get a new one?",
+  "How do I link my PAN with Aadhaar?",
+  "Aadhaar la address change panna enna proof venum?",
+  "What is the difference between EPF and EPS?",
+];
 const NO_RELATION =
   "The approved official sources do not confirm an order, dependency or document reuse between these procedures. " +
   "Use “Ask more about this” to ask about one procedure.";
@@ -72,7 +82,7 @@ function ReadAloud({ text }: { text: string }) {
   }, []);
   const voice = offlineVoice();
   if (!voice) return null;
-  function play(voice: SpeechSynthesisVoice) {
+  function play() {
     window.speechSynthesis.cancel(); // stops any other answer being read
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.voice = voice;
@@ -87,7 +97,7 @@ function ReadAloud({ text }: { text: string }) {
       Stop reading
     </button>
   ) : (
-    <button className="secondary-button" type="button" onClick={() => play(voice)}>Read aloud</button>
+    <button className="secondary-button" type="button" onClick={play}>Read aloud</button>
   );
 }
 
@@ -101,12 +111,24 @@ export default function CitizenPage() {
   const [pending, setPending] = useState<Pending>(null);
   const [error, setError] = useState<{ text: string; retry: () => void } | null>(null);
   const lastId = useRef(0);
+  const latest = useRef<HTMLElement>(null);
+  // A new question, and again its finished answer, scroll to the top of the window so the answer is read from the start.
+  const done = pending === null;
+  useEffect(() => {
+    latest.current?.scrollIntoView?.({ behavior: "smooth", block: "start" });
+  }, [messages.length, done]);
   const newMessage = (question: string): Message => ({ id: ++lastId.current, question });
   // Updates are keyed by id, so a reply for a message that was reset meanwhile is dropped.
   const update = (id: number, change: (m: Message) => Message) =>
     setMessages((all) => all.map((m) => (m.id === id ? change(m) : m)));
   const updateSection = (id: number, index: number, change: Partial<Section>) =>
     update(id, (m) => ({ ...m, sections: m.sections?.map((s, i) => (i === index ? { ...s, ...change } : s)) }));
+  // Remembers the English query a Tamil question was searched as.
+  function searchedAs(message: Message, result: IdentifyResponse): Message {
+    if (!result.normalized_query) return message;
+    update(message.id, (m) => ({ ...m, query: result.normalized_query }));
+    return { ...message, query: result.normalized_query };
+  }
   const matchedIds = (m?: Message) => m?.sections?.flatMap((s) => (s.procedureId ? [s.procedureId] : [])) ?? [];
 
   async function run(step: Pending, action: () => Promise<void>, fallback: string) {
@@ -126,7 +148,21 @@ export default function CitizenPage() {
     setPending("guidance");
     // An already normalized query is English and is not normalized again.
     const reply = await askGuidance(id, asked(message), message.query ? "en" : language);
-    update(message.id, (m) => ({ ...m, answer: reply, query: reply.normalized_query ?? m.query }));
+    const source = reply.procedure_id === id ? undefined : (await getProcedure(reply.procedure_id)).name;
+    update(message.id, (m) => ({ ...m, answer: reply, source, query: reply.normalized_query ?? m.query }));
+    return reply;
+  }
+
+  // A follow-up is answered from the open procedure. When that page does not answer it,
+  // the question is searched again, and a different procedure that matches answers it
+  // (a fee asked about on the renewal page is on the fees page).
+  async function answerFollowUp(id: number, message: Message) {
+    const reply = await answer(id, message);
+    if (!reply.insufficient_evidence) return;
+    const query = reply.normalized_query;
+    const result = await identifyProcedure(query ?? message.question, query ? "en" : language);
+    const other = result.status === "matched" ? result.candidates[0].id : undefined;
+    if (other && other !== id) await showAndAnswer(other, message);
   }
 
   // Each need is answered on its own, one at a time, so one failure leaves the others intact.
@@ -166,10 +202,7 @@ export default function CitizenPage() {
 
   async function handleResult(result: IdentifyResponse, message: Message) {
     setMatches(result);
-    if (result.normalized_query) {
-      message = { ...message, query: result.normalized_query };
-      update(message.id, (m) => ({ ...m, query: result.normalized_query }));
-    }
+    message = searchedAs(message, result);
     if (result.status === "matched") await showAndAnswer(result.candidates[0].id, message);
     if (result.status === "multiple") await answerNeeds(message, result);
   }
@@ -179,12 +212,12 @@ export default function CitizenPage() {
   // unclear asks the citizen which procedure they mean.
   async function followUp(message: Message, active: number[]) {
     const result = await identifyProcedure(message.question, language);
-    if (result.normalized_query) {
-      message = { ...message, query: result.normalized_query };
-      update(message.id, (m) => ({ ...m, query: result.normalized_query }));
-    }
+    message = searchedAs(message, result);
     const hit = result.status === "matched" ? result.candidates[0].id : undefined;
-    if (hit && active.includes(hit)) return answer(hit, message);
+    if (hit && active.includes(hit)) {
+      await answer(hit, message);
+      return;
+    }
     if (result.status === "no_match" || result.status === "ambiguous") {
       const note = result.clarification ?? WHICH_ONE;
       if (result.clarification || !ASKS_RELATION.test(asked(message))) return update(message.id, (m) => ({ ...m, note }));
@@ -197,7 +230,9 @@ export default function CitizenPage() {
   }
 
   async function showAndAnswer(id: number, message: Message) {
-    setProcedure(await getProcedure(id));
+    const opened = await getProcedure(id);
+    setProcedure(opened);
+    update(message.id, (m) => ({ ...m, opened }));
     await answer(id, message);
   }
 
@@ -216,7 +251,7 @@ export default function CitizenPage() {
     const active = matchedIds(messages.find((m) => m.sections));
     if (procedure || active.length > 1) {
       setMessages((all) => [...all, message]);
-      void run("guidance", () => (procedure ? answer(procedure.id, message) : followUp(message, active)),
+      void run("guidance", () => (procedure ? answerFollowUp(procedure.id, message) : followUp(message, active)),
         "Unable to answer the question.");
       return;
     }
@@ -226,29 +261,37 @@ export default function CitizenPage() {
   }
 
   function renderAnswer(reply: Reply, refusal: ReactNode, names?: Record<number, string>) {
-    if (reply.insufficient_evidence) return <p className="feedback" role="status">{refusal}</p>;
     return (
       <div className="answer">
-        <ol className="citizen-steps">
-          {reply.claims.map((claim, index) => (
-            <li key={index}>
-              {names && claim.procedure_id !== undefined && <strong>{names[claim.procedure_id]}: </strong>}
-              {claim.text}
-              <details>
-                <summary>Official source</summary>
-                <blockquote>{claim.quote}</blockquote>
-                <a href={claim.source_url ?? ("source_url" in reply ? reply.source_url : "")} target="_blank" rel="noopener noreferrer">
-                  Open the official page
-                </a>
-              </details>
-            </li>
-          ))}
-        </ol>
-        <ReadAloud text={reply.claims.map((claim) => claim.text).join(" ")} />
-        {reply.omitted_claims > 0 && (
+        {reply.insufficient_evidence ? <p className="feedback" role="status">{refusal}</p> : (
+          <ol className="citizen-steps">
+            {reply.claims.map((claim, index) => (
+              <li key={index}>
+                {names && claim.procedure_id !== undefined && <strong>{names[claim.procedure_id]}: </strong>}
+                {claim.text}
+                <details>
+                  <summary>Official source</summary>
+                  <blockquote>{claim.quote}</blockquote>
+                  <a href={claim.source_url ?? ("source_url" in reply ? reply.source_url : "")} target="_blank" rel="noopener noreferrer">
+                    Open the official page
+                  </a>
+                </details>
+              </li>
+            ))}
+          </ol>
+        )}
+        {reply.omitted_claims > 0 && !reply.insufficient_evidence && (
           <p className="field-help">
             {reply.omitted_claims} statement(s) were left out because the official text did not support them.
           </p>
+        )}
+        {!reply.insufficient_evidence && (
+          <div className="answer-actions">
+            <ReadAloud text={reply.claims.map((claim) => claim.text).join(" ")} />
+            {"source_url" in reply && (
+              <a className="action-link" href={reply.source_url} target="_blank" rel="noopener noreferrer">Official page ↗</a>
+            )}
+          </div>
         )}
       </div>
     );
@@ -270,204 +313,228 @@ export default function CitizenPage() {
     </>
   ) : NO_RELATION);
 
+  function reset() {
+    setProcedure(null);
+    setMatches(null);
+    setMessages([]);
+    setError(null);
+  }
+
+  // Enter sends (Shift+Enter adds a line); never while an input method (Tamil keyboard) is composing.
+  function sendOnEnter(event: KeyboardEvent<HTMLTextAreaElement>) {
+    if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
+      event.preventDefault();
+      event.currentTarget.form?.requestSubmit();
+    }
+  }
+
   const busy = pending !== null;
+  const last = messages[messages.length - 1];
+  const working = pending === "identify" ? "Searching the approved procedures…"
+    : pending === "procedure" ? "Loading the procedure…"
+    : pending === "guidance" ? "Checking the official text… this can take up to a minute." : null;
 
   return (
-    <main className="admin-page citizen-page">
-      <header className="page-header">
-        <p className="eyebrow">ProcedureAssist</p>
-        <h1>Find the right government procedure</h1>
-        <p>Describe your situation in your own words. Answers come only from approved official pages.</p>
+    <div className="chat">
+      <header className="chat-header">
+        <span className="chat-brand">ProcedureAssist</span>
+        {(messages.length > 0 || procedure) && (
+          <button className="secondary-button" type="button" disabled={busy} onClick={reset}>New chat</button>
+        )}
       </header>
 
-      {matches?.status === "ambiguous" && !procedure && (
-        <section className="card review-card" aria-labelledby="choices-heading">
-          <h2 id="choices-heading">Which of these fits your situation?</h2>
-          <p className="section-intro">Several procedures could apply. Choose one, or add more detail below.</p>
-          <ul className="procedure-list">
-            {matches.candidates.map((candidate) => (
-              <li key={candidate.id}>
-                <div>
-                  <strong>{candidate.name}</strong>
-                  <span>{candidate.summary}</span>
-                </div>
-                <button className="secondary-button" type="button" disabled={busy} onClick={() => openProcedure(candidate.id)}>
-                  Choose
-                </button>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+      <main className="chat-thread">
+        {messages.length === 0 && (
+          <section className="chat-welcome">
+            <h1>Find the right government procedure</h1>
+            <p>Describe your situation in your own words, in English or Tamil. Answers come only from approved official pages.</p>
+            <div className="examples">
+              {EXAMPLES.map((example) => (
+                <button key={example} className="example" type="button" onClick={() => setSituation(example)}>{example}</button>
+              ))}
+            </div>
+          </section>
+        )}
 
-      {procedure && (
-        <section className="card review-card" aria-labelledby="procedure-heading">
-          <h2 id="procedure-heading">{procedure.name}</h2>
-          {procedure.department && <p className="section-intro">{procedure.department}</p>}
-          <p>{procedure.summary}</p>
-          {procedure.eligibility && (
-            <>
-              <h3>Who can apply</h3>
-              <p>{procedure.eligibility}</p>
-            </>
-          )}
-          <h3>Steps</h3>
-          <ol className="citizen-steps">
-            {procedure.steps.map((step, index) => <li key={index}>{step}</li>)}
-          </ol>
-          <p>
-            <a href={procedure.source_url} target="_blank" rel="noopener noreferrer">
-              Open the official page
-            </a>
-          </p>
-          <p className="field-help">
-            This is guidance only. Check the official page and apply there yourself;
-            ProcedureAssist does not submit applications.
-          </p>
-          {matches?.status === "ambiguous" && (
-            <button className="secondary-button" type="button" disabled={busy} onClick={() => setProcedure(null)}>
-              Back to choices
-            </button>
-          )}{" "}
-          <button className="secondary-button" type="button" disabled={busy} onClick={() => { setProcedure(null); setMatches(null); setMessages([]); }}>
-            Start a new search
-          </button>
-        </section>
-      )}
-
-      {messages.map((m) => (
-        <section className="card review-card" key={m.id}>
-          <p className="section-intro"><strong>You:</strong> {m.question}</p>
-          {m.query && m.query !== m.question && <p className="field-help">Searched as: {m.query}</p>}
-          {m.answer && renderAnswer(m.answer, refusal(m.answer))}
-          {m.note && <p className="feedback" role="status">{m.note}</p>}
-          {m.sections && (
-            <>
-              <p>I understood your request as:</p>
-              <ol>
-                {[...m.sections.flatMap((s) => s.need.phrases), ...(m.pending ?? []).map((p) => p.phrase)].map(
-                  (phrase, index) => <li key={index}>{phrase}</li>,
-                )}
-              </ol>
-              {m.sections.map((s, index) => {
-                const name = s.need.candidates.find((c) => c.id === s.procedureId)?.name;
-                return (
-                  <div key={index}>
-                    <h3>{name ?? s.need.phrases.join(" / ")}</h3>
-                    {s.need.status === "no_match" ? (
-                      <p className="feedback" role="status">We don't have an approved procedure for this yet.</p>
-                    ) : !s.procedureId ? (
-                      <ul className="procedure-list">
-                        {s.need.candidates.map((candidate) => (
-                          <li key={candidate.id}>
-                            <div><strong>{candidate.name}</strong><span>{candidate.summary}</span></div>
-                            <button className="secondary-button" type="button" disabled={busy}
-                              onClick={() => void run("guidance", () => answerSection(m.id, index, candidate.id, s.need.question), "Unable to answer the question.")}>
-                              Choose
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : s.error ? (
-                      failure(s.error, () => void run("guidance", () => answerSection(m.id, index, s.procedureId!, s.need.question), "Unable to answer the question."))
-                    ) : s.answer ? renderAnswer(s.answer, refusal(s.answer)) : (
-                      <p className="feedback" role="status">Waiting for the answer…</p>
-                    )}
-                    {s.procedureId && (
-                      <button className="secondary-button" type="button" disabled={busy}
-                        onClick={() => void run("procedure", async () => setProcedure(await getProcedure(s.procedureId!)), "Unable to load the procedure.")}>
-                        Ask more about this
+        {messages.map((m) => (
+          <section className="exchange" key={m.id} ref={m === last ? latest : undefined}>
+            <div className="user-message"><p>{m.question}</p></div>
+            {m.query && m.query !== m.question && <p className="searched-as">Searched as: {m.query}</p>}
+            <div className="assistant-message">
+              {m.opened && (
+                <div className="procedure-intro">
+                  <h2>{m.opened.name}</h2>
+                  <p className="field-help">
+                    {m.opened.department}
+                    {matches?.status === "ambiguous" && m.opened.id === procedure?.id && (
+                      <button className="link-button" type="button" disabled={busy} onClick={() => setProcedure(null)}>
+                        Back to choices
                       </button>
                     )}
-                  </div>
-                );
-              })}
-              {m.relation && (() => {
-                const comparing = COMPARES.test(m.relation.question);
-                const names = Object.fromEntries(m.sections.flatMap((s) => s.need.candidates).map((c) => [c.id, c.name]));
-                const uncovered = matchedIds(m).filter((id) => !m.relation?.answer?.claims.some((c) => c.procedure_id === id));
-                return (
+                  </p>
+                  <details className="procedure-details">
+                    <summary>About this procedure ({m.opened.steps.length} steps on the approved page)</summary>
+                    <p>{m.opened.summary}</p>
+                    {m.opened.eligibility && (
+                      <>
+                        <h3>Who can apply</h3>
+                        <p>{m.opened.eligibility}</p>
+                      </>
+                    )}
+                    <ol>
+                      {m.opened.steps.map((step, index) => <li key={index}>{step}</li>)}
+                    </ol>
+                  </details>
+                </div>
+              )}
+              {m.source && <p className="field-help">From the related official page: <strong>{m.source}</strong></p>}
+              {m.answer && renderAnswer(m.answer, refusal(m.answer))}
+              {m.note && <p className="feedback" role="status">{m.note}</p>}
+              {m.sections && (
                 <>
-                  <h3>{comparing ? "How they compare (official text)" : "How these relate (official text)"}</h3>
-                  {m.relation.answer ? (
-                    <>
-                      {renderAnswer(m.relation.answer, comparing ? NO_COMPARISON : NO_RELATION, comparing ? names : undefined)}
-                      {comparing && !m.relation.answer.insufficient_evidence && (
-                        <p className="field-help">
-                          The official pages do not compare these procedures directly; each point comes only from that
-                          procedure's own page.{uncovered.length > 0 && ` No comparable details were found for: ${uncovered.map((id) => names[id]).join(", ")}.`}
-                        </p>
-                      )}
-                    </>
-                  ) : m.relation.error ? (
-                    failure(m.relation.error, () => void run("guidance", () => relate(m.id, m.relation!.question, matchedIds(m)), "Unable to answer the question."))
-                  ) : matchedIds(m).length < 2 ? (
-                    <p className="feedback" role="status">At least two matched procedures are needed to compare them.</p>
-                  ) : (
-                    <p className="feedback" role="status">Waiting for the answer…</p>
+                  <p>I understood your request as:</p>
+                  <ol>
+                    {[...m.sections.flatMap((s) => s.need.phrases), ...(m.pending ?? []).map((p) => p.phrase)].map(
+                      (phrase, index) => <li key={index}>{phrase}</li>,
+                    )}
+                  </ol>
+                  {m.sections.map((s, index) => {
+                    const name = s.need.candidates.find((c) => c.id === s.procedureId)?.name;
+                    return (
+                      <div className="need" key={index}>
+                        <h3>{name ?? s.need.phrases.join(" / ")}</h3>
+                        {s.need.status === "no_match" ? (
+                          <p className="feedback" role="status">We don't have an approved procedure for this yet.</p>
+                        ) : !s.procedureId ? (
+                          <ul className="procedure-list">
+                            {s.need.candidates.map((candidate) => (
+                              <li key={candidate.id}>
+                                <div><strong>{candidate.name}</strong><span>{candidate.summary}</span></div>
+                                <button className="secondary-button" type="button" disabled={busy}
+                                  onClick={() => void run("guidance", () => answerSection(m.id, index, candidate.id, s.need.question), "Unable to answer the question.")}>
+                                  Choose
+                                </button>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : s.error ? (
+                          failure(s.error, () => void run("guidance", () => answerSection(m.id, index, s.procedureId!, s.need.question), "Unable to answer the question."))
+                        ) : s.answer ? renderAnswer(s.answer, refusal(s.answer)) : (
+                          <p className="feedback" role="status">Waiting for the answer…</p>
+                        )}
+                        {s.procedureId && (
+                          <button className="secondary-button" type="button" disabled={busy}
+                            onClick={() => void run("procedure", async () => setProcedure(await getProcedure(s.procedureId!)), "Unable to load the procedure.")}>
+                            Ask more about this
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
+                  {m.relation && (() => {
+                    const comparing = COMPARES.test(m.relation.question);
+                    const names = Object.fromEntries(m.sections.flatMap((s) => s.need.candidates).map((c) => [c.id, c.name]));
+                    const uncovered = matchedIds(m).filter((id) => !m.relation?.answer?.claims.some((c) => c.procedure_id === id));
+                    return (
+                      <div className="need">
+                        <h3>{comparing ? "How they compare (official text)" : "How these relate (official text)"}</h3>
+                        {m.relation.answer ? (
+                          <>
+                            {renderAnswer(m.relation.answer, comparing ? NO_COMPARISON : NO_RELATION, comparing ? names : undefined)}
+                            {comparing && !m.relation.answer.insufficient_evidence && (
+                              <p className="field-help">
+                                The official pages do not compare these procedures directly; each point comes only from that
+                                procedure's own page.{uncovered.length > 0 && ` No comparable details were found for: ${uncovered.map((id) => names[id]).join(", ")}.`}
+                              </p>
+                            )}
+                          </>
+                        ) : m.relation.error ? (
+                          failure(m.relation.error, () => void run("guidance", () => relate(m.id, m.relation!.question, matchedIds(m)), "Unable to answer the question."))
+                        ) : matchedIds(m).length < 2 ? (
+                          <p className="feedback" role="status">At least two matched procedures are needed to compare them.</p>
+                        ) : (
+                          <p className="feedback" role="status">Waiting for the answer…</p>
+                        )}
+                      </div>
+                    );
+                  })()}
+                  {m.pending && m.pending.length > 0 && (
+                    <p className="feedback" role="status">
+                      Not answered yet: {m.pending.map((p) => p.phrase).join("; ")}.{" "}
+                      <button className="secondary-button" type="button" disabled={busy}
+                        onClick={() => setSituation(m.pending!.map((p) => p.question).join(" "))}>
+                        Ask about these next
+                      </button>
+                    </p>
                   )}
                 </>
-                );
-              })()}
-              {m.pending && m.pending.length > 0 && (
+              )}
+
+              {m === last && matches?.status === "ambiguous" && !procedure && (
+                <div className="choices">
+                  <h2>Which of these fits your situation?</h2>
+                  <p className="field-help">Several procedures could apply. Choose one, or add more detail below.</p>
+                  <ul className="procedure-list">
+                    {matches.candidates.map((candidate) => (
+                      <li key={candidate.id}>
+                        <div>
+                          <strong>{candidate.name}</strong>
+                          <span>{candidate.summary}</span>
+                        </div>
+                        <button className="secondary-button" type="button" disabled={busy} onClick={() => openProcedure(candidate.id)}>
+                          Choose
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {m === last && matches?.status === "no_match" && !busy && (
                 <p className="feedback" role="status">
-                  Not answered yet: {m.pending.map((p) => p.phrase).join("; ")}.{" "}
-                  <button className="secondary-button" type="button" disabled={busy}
-                    onClick={() => setSituation(m.pending!.map((p) => p.question).join(" "))}>
-                    Ask about these next
-                  </button>
+                  {matches.clarification ?? (
+                    "We don't have an approved procedure that matches this yet. Try describing your " +
+                    "situation differently, for example which document or service you need."
+                  )}
                 </p>
               )}
-            </>
-          )}
-        </section>
-      ))}
+              {m === last && working && <p className="thinking" role="status">{working}</p>}
+              {m === last && error && failure(error.text, error.retry)}
+            </div>
+          </section>
+        ))}
+      </main>
 
-      {pending && pending !== "identify" && (
-        <p className="feedback" role="status">
-          {pending === "procedure" ? "Loading the procedure…" : "Checking the official text… this can take up to a minute."}
-        </p>
-      )}
-      {error && failure(error.text, error.retry)}
-
-      {matches?.status === "no_match" && (
-        <p className="feedback" role="status">
-          {matches.clarification ?? (
-            "We don't have an approved procedure that matches this yet. Try describing your " +
-            "situation differently, for example which document or service you need."
-          )}
-        </p>
-      )}
-
-      <form className="card" onSubmit={handleSend}>
-        <div className="form-field">
-          <label htmlFor="language">Language</label>
-          <select id="language" value={language} onChange={(event) => setLanguage(event.target.value as Language)}>
-            <option value="en">English</option>
-            <option value="ta">தமிழ் (Tamil)</option>
-          </select>
-          {language === "ta" && (
-            <p className="field-help">Ask in Tamil or Tamil-English. Answers are shown in English, quoted from the official pages.</p>
-          )}
-        </div>
-        <VoiceInput language={language} disabled={busy}
-          onTranscript={(text) => setSituation((current) => (current.trim() ? `${current.trim()} ${text}` : text))} />
-        <div className="form-field">
-          <label htmlFor="situation">{procedure ? "Ask about this procedure" : "Your situation or question"}</label>
+      <form className="composer" onSubmit={handleSend}>
+        {procedure && <p className="composer-context">Asking about: <strong>{procedure.name}</strong></p>}
+        <div className="composer-box">
           <textarea
             id="situation"
-            rows={3}
+            rows={1}
             maxLength={1000}
-            placeholder={procedure ? "For example: Which documents do I need?" : "For example: My passport has expired and I need a new one."}
+            aria-label={procedure ? "Ask about this procedure" : "Your situation or question"}
+            placeholder={procedure ? "Ask a follow-up question…" : "Ask about a government service…"}
             value={situation}
             onChange={(event) => setSituation(event.target.value)}
+            onKeyDown={sendOnEnter}
             required
           />
+          <div className="composer-tools">
+            <select aria-label="Language" value={language} onChange={(event) => setLanguage(event.target.value as Language)}>
+              <option value="en">English</option>
+              <option value="ta">தமிழ் (Tamil)</option>
+            </select>
+            <VoiceInput language={language} disabled={busy}
+              onTranscript={(text) => setSituation((current) => (current.trim() ? `${current.trim()} ${text}` : text))} />
+            <button className="send-button" type="submit" disabled={busy} aria-label={pending === "identify" ? "Searching…" : "Send"}>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" /></svg>
+            </button>
+          </div>
         </div>
-        <button className="primary-button" type="submit" disabled={busy}>
-          {pending === "identify" ? "Searching…" : "Send"}
-        </button>
+        <p className="composer-note">
+          {language === "ta" && "Tamil or Tamil-English is fine. Answers are shown in English, quoted from official pages. "}
+          Guidance only: ProcedureAssist does not submit applications; apply on the official page.
+        </p>
       </form>
-    </main>
+    </div>
   );
 }

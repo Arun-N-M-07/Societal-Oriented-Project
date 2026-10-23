@@ -22,8 +22,17 @@ from backend.database import get_db, get_read_only_db
 from backend.extractor import ExtractionError, extract_procedure
 from backend.models import Procedure
 from backend.normalize import needs_normalizing, normalize_query
-from backend.procedure_search import identify, identify_needs
-from backend.rag import COMPARISON, EmbeddingError, GuidanceError, answer_question, build_chunks, compare, relate
+from backend.procedure_search import identify, identify_needs, names_something
+from backend.rag import (
+    COMPARISON,
+    EmbeddingError,
+    GuidanceError,
+    answer_from_naming_pages,
+    answer_question,
+    build_chunks,
+    compare,
+    relate,
+)
 from backend.scraper import ScraperError, SourceUnavailableError, scrape_url
 from backend.schemas import (
     AdminProcedure,
@@ -320,6 +329,8 @@ def identify_procedure(
             return IdentifyResponse(status="no_match", candidates=[], clarification=CLARIFY)
         question = normalized["normalized_query"]
         extra = {"normalized_query": question}
+    if not names_something(question):
+        return IdentifyResponse(status="no_match", candidates=[], clarification=CLARIFY)
     try:
         multiple = identify_needs(db, question)
         if not isinstance(multiple, tuple):
@@ -335,7 +346,7 @@ def identify_procedure(
             **extra,
         )
     needs, pending, relation = multiple
-    return IdentifyResponse(**extra,
+    return IdentifyResponse(
         status="multiple",
         candidates=[],
         needs=[
@@ -344,6 +355,7 @@ def identify_procedure(
         ],
         pending=[PendingNeed(**n) for n in pending],
         relation_question=relation,
+        **extra,
     )
 
 
@@ -361,6 +373,9 @@ def guidance(
         extra = {"normalized_query": question}
     try:
         claims, omitted = answer_question(db, procedure.id, question)
+        # Only if its own page does not answer: the reply then carries the related page's id and link.
+        if not claims and (related := answer_from_naming_pages(db, procedure, question)):
+            procedure, claims, omitted = related
     except (EmbeddingError, GuidanceError) as error:
         raise HTTPException(
             status_code=502, detail="The answer service is unavailable. Try again."

@@ -41,7 +41,7 @@ type Props = { language: Language; disabled: boolean; onTranscript: (text: strin
 
 // Record a short question; the transcript is put in the question box to check and edit.
 export default function VoiceInput({ language, disabled, onTranscript }: Props) {
-  const [state, setState] = useState<"idle" | "recording" | "transcribing">("idle");
+  const [state, setState] = useState<"idle" | "starting" | "recording" | "transcribing">("idle");
   const [seconds, setSeconds] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const recorder = useRef<MediaRecorder | null>(null);
@@ -52,6 +52,10 @@ export default function VoiceInput({ language, disabled, onTranscript }: Props) 
     cancelled.current = cancel;
     if (recorder.current?.state === "recording") recorder.current.stop();
   };
+  // An old voice error is cleared once a new request starts.
+  useEffect(() => {
+    if (disabled) setError(null);
+  }, [disabled]);
   // Leaving the page while recording releases the microphone and discards the audio.
   useEffect(() => () => {
     window.clearInterval(timer.current);
@@ -59,16 +63,18 @@ export default function VoiceInput({ language, disabled, onTranscript }: Props) 
   }, []);
 
   if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined") {
-    return <p className="field-help">Voice input is not supported in this browser. Type your question instead.</p>;
+    return <span className="voice-note">Voice input is not supported in this browser. Type your question instead.</span>;
   }
 
   async function start() {
     setError(null);
+    setState("starting"); // the permission prompt can stay open; a second click must not open a second microphone
     let stream: MediaStream;
     try {
       stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     } catch (micError) {
       setError(MIC_ERRORS[(micError as DOMException).name] ?? "The microphone could not be started. Type your question instead.");
+      setState("idle");
       return;
     }
     const chunks: Blob[] = [];
@@ -107,16 +113,24 @@ export default function VoiceInput({ language, disabled, onTranscript }: Props) 
     <div className="voice-input">
       {state === "recording" ? (
         <>
-          <button className="secondary-button" type="button" onClick={() => stop(false)}>Stop and transcribe</button>{" "}
-          <button className="secondary-button" type="button" onClick={() => stop(true)}>Cancel</button>{" "}
-          <span role="status">Recording… {seconds}s / {MAX_SECONDS}s</span>
+          <span className="recording" role="status">Recording… {seconds}s / {MAX_SECONDS}s</span>
+          <button className="secondary-button" type="button" onClick={() => stop(true)}>Cancel</button>
+          <button className="mic-button recording" type="button" onClick={() => stop(false)} aria-label="Stop and transcribe" title="Stop and transcribe">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="2" /></svg>
+          </button>
         </>
       ) : (
-        <button className="secondary-button" type="button" disabled={disabled || state === "transcribing"} onClick={() => void start()}>
-          {state === "transcribing" ? "Transcribing…" : "Speak your question"}
-        </button>
+        <>
+          {state === "transcribing" && <span className="voice-note" role="status">Transcribing…</span>}
+          <button className="mic-button" type="button" disabled={disabled || state !== "idle"} onClick={() => void start()}
+            aria-label="Speak your question" title="Speak your question">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="9" y="3" width="6" height="11" rx="3" /><path d="M5 11a7 7 0 0 0 14 0M12 18v3" />
+            </svg>
+          </button>
+        </>
       )}
-      {error && <p className="feedback error" role="alert">{error}</p>}
+      {error && <p className="feedback error voice-error" role="alert">{error}</p>}
     </div>
   );
 }

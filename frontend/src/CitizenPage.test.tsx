@@ -67,7 +67,7 @@ describe("citizen workflow", () => {
     const steps = Array.from(card.querySelectorAll("ol > li")).map((item) => item.textContent);
     expect(steps).toEqual(passportDetail.steps);
     expect(screen.getByText("Indian citizens.")).toBeTruthy();
-    expect(screen.getByRole("link", { name: "Open the official page" }).getAttribute("href")).toBe(
+    expect(screen.getByRole("link", { name: "official page" }).getAttribute("href")).toBe(
       passportDetail.source_url,
     );
     expect(screen.getByText(/does not submit applications/)).toBeTruthy();
@@ -258,7 +258,7 @@ describe("several needs in one message", () => {
     expect(await screen.findByText("Link PAN before filing.")).toBeTruthy();
     expect(api.askRelation).toHaveBeenCalledWith([13, 30], "Which should I do first?");
     expect(screen.queryAllByRole("heading", { level: 2 })).toHaveLength(0);
-    expect(document.querySelectorAll("section.card")).toHaveLength(1);
+    expect(document.querySelectorAll("section.exchange")).toHaveLength(1);
 
     fireEvent.click(screen.getAllByRole("button", { name: "Choose" })[1]);
     expect(await screen.findByText("Answer for 20.")).toBeTruthy();
@@ -464,5 +464,78 @@ describe("read aloud", () => {
     search();
     await screen.findByText("Create a Passport Seva account.");
     expect(screen.queryByRole("button", { name: "Read aloud" })).toBeNull();
+  });
+});
+
+describe("follow-ups the open procedure cannot answer", () => {
+  const fees = { ...passport, id: 27, name: "Driving Licence Fees and Charges", summary: "Fee table." };
+  const refusal = { procedure_id: 13, source_url: passportDetail.source_url, insufficient_evidence: true, claims: [], omitted_claims: 0 };
+  const feeAnswer = {
+    procedure_id: 27, source_url: "https://parivahan.gov.in/fees", insufficient_evidence: false, omitted_claims: 0,
+    claims: [{ text: "Renewal costs Rs. 200.", chunk_id: 69, quote: "Renewal of driving licence Rs. 200.00/-" }],
+  };
+
+  async function openPassport() {
+    vi.mocked(api.identifyProcedure).mockResolvedValueOnce({ status: "matched", candidates: [passport] });
+    render(<CitizenPage />);
+    search();
+    await screen.findByRole("heading", { name: passport.name });
+  }
+
+  it("are searched again and answered by the procedure whose page has the answer", async () => {
+    await openPassport();
+    vi.mocked(api.askGuidance).mockResolvedValueOnce(refusal).mockResolvedValueOnce(feeAnswer);
+    vi.mocked(api.identifyProcedure).mockResolvedValueOnce({ status: "matched", candidates: [fees] });
+    vi.mocked(api.getProcedure).mockResolvedValueOnce({ ...fees, eligibility: null, steps: ["Pay."], source_url: feeAnswer.source_url });
+    ask("How much is the renewal fee?");
+
+    expect(await screen.findByText("Renewal costs Rs. 200.")).toBeTruthy();
+    expect(api.askGuidance).toHaveBeenNthCalledWith(2, 13, "How much is the renewal fee?", "en");
+    expect(api.askGuidance).toHaveBeenNthCalledWith(3, 27, "How much is the renewal fee?", "en");
+    expect(screen.getByRole("heading", { name: fees.name })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: passport.name })).toBeTruthy(); // the earlier answer keeps its own
+    // Only the opening answer's refusal remains; the follow-up's was replaced by the fee answer.
+    expect(screen.getAllByText(/does not answer this question/)).toHaveLength(1);
+  });
+
+  it("keep the refusal when the search finds the same procedure or nothing", async () => {
+    await openPassport();
+    vi.mocked(api.askGuidance).mockResolvedValue(refusal);
+    vi.mocked(api.identifyProcedure).mockResolvedValueOnce({ status: "matched", candidates: [passport] });
+    ask("What is the fee for a passport?");
+    await waitFor(() => expect(screen.getAllByText(/does not answer this question/)).toHaveLength(2));
+
+    vi.mocked(api.identifyProcedure).mockResolvedValueOnce({ status: "no_match", candidates: [] });
+    ask("Can I pay in cash?");
+    await waitFor(() => expect(screen.getAllByText(/does not answer this question/)).toHaveLength(3));
+    expect(api.askGuidance).toHaveBeenCalledTimes(3);
+  });
+
+  it("are not searched again when the open procedure answers them", async () => {
+    await openPassport();
+    vi.mocked(api.askGuidance).mockResolvedValueOnce({ ...feeAnswer, procedure_id: 13 });
+    ask("Which documents do I need?");
+    expect(await screen.findByText("Renewal costs Rs. 200.")).toBeTruthy();
+    expect(api.identifyProcedure).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("answers from a related official page", () => {
+  it("say which page answered", async () => {
+    vi.mocked(api.identifyProcedure).mockResolvedValue({ status: "matched", candidates: [passport] });
+    vi.mocked(api.askGuidance).mockResolvedValue({
+      procedure_id: 27, source_url: "https://parivahan.gov.in/fees", insufficient_evidence: false, omitted_claims: 0,
+      claims: [{ text: "The permit costs Rs. 1000.", chunk_id: 69, quote: "Issue of International Driving Permit Rs. 1000.00/-" }],
+    });
+    vi.mocked(api.getProcedure)
+      .mockResolvedValueOnce(passportDetail)
+      .mockResolvedValueOnce({ ...passportDetail, id: 27, name: "Driving Licence Fees and Charges" });
+    render(<CitizenPage />);
+    search("What is the fee for an International Driving Permit?");
+
+    expect(await screen.findByText("The permit costs Rs. 1000.")).toBeTruthy();
+    expect(screen.getByText("Driving Licence Fees and Charges")).toBeTruthy();
+    expect(screen.getByText(/From the related official page/)).toBeTruthy();
+    expect(screen.getByRole("link", { name: "Official page ↗" }).getAttribute("href")).toBe("https://parivahan.gov.in/fees");
   });
 });
