@@ -1,0 +1,28 @@
+verified with B off: 9
+  B REJECTS kinds=['registration'] missing=['registration']
+     claim: The documents required to renew your vehicle RC include the application in Form 25.
+     quote: Application in Form 25 | heading: ''
+  B REJECTS kinds=['control', 'registration'] missing=['registration']
+     claim: The documents required to renew your vehicle RC include the pollution under control certificate.
+     quote: Pollution under control certificate | heading: ''
+  B REJECTS kinds=['fitness', 'registration'] missing=['registration']
+     claim: The documents required to renew your vehicle RC include the fitness certificate.
+     quote: Fitness certificate* | heading: ''
+  B REJECTS kinds=['registration'] missing=['registration']
+     claim: The documents required to renew your vehicle RC include the proof for the payment of up-to-date road tax paid.
+     quote: Proof for the payment of up-to-date road tax paid* | heading: ''
+  B REJECTS kinds=['insurance', 'registration'] missing=['registration']
+     claim: The documents required to renew your vehicle RC include the insurance certificate.
+     quote: Insurance certificate* | heading: ''
+  B REJECTS kinds=['pan', 'registration'] missing=['registration']
+     claim: The documents required to renew your vehicle RC include the copy of PAN card or Form 60 & Form 61 (as applicable).
+     quote: Copy of PAN card or Form 60 & Form 61 (as applicable) * | heading: ''
+  B REJECTS kinds=['registration'] missing=['registration']
+     claim: The documents required to renew your vehicle RC include the pencil print of chassis & engine number.
+     quote: Pencil Print of Chassis & Engine Number * | heading: ''
+  B REJECTS kinds=['registration'] missing=['registration']
+     claim: The documents required to renew your vehicle RC include the signature identification of owner.
+     quote: Signature Identification of owner* | heading: ''
+  KEPT   kinds=[] missing=[]
+     claim: Documents marked with asterisk (*) may be required in some states.
+     quote: Documents marked with asterisk (*) may be required in some states. | heading: ''

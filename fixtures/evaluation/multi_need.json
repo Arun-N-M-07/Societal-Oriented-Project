@@ -1,19 +1,19 @@
 {
   "_comment": "Expected procedures are matched by a substring of the approved procedure's source_url; null means no approved procedure exists. pending counts needs over MAX_NEEDS (3).",
   "cases": [
-    {"message": "Update my Aadhaar address.", "expected": ["uidai"], "relation": false},
-    {"message": "Update my Aadhaar address and renew my passport.", "expected": ["uidai", "passportindia"], "relation": false},
-    {"message": "Update my Aadhaar address and check which documents are required for that update.", "expected": ["uidai"], "relation": false},
-    {"message": "File my ITR-2 for capital gains, renew my passport, and update my Aadhaar address.", "expected": ["incometax", "passportindia", "uidai"], "relation": false},
-    {"message": "How do I update my Aadhaar address, and what documents and fees are needed for it?", "expected": ["uidai"], "relation": false},
+    {"message": "Update my Aadhaar address.", "expected": ["updating-data-on-aadhaar"], "relation": false},
+    {"message": "Update my Aadhaar address and renew my passport.", "expected": ["updating-data-on-aadhaar", "psp/Apply"], "relation": false},
+    {"message": "Update my Aadhaar address and check which documents are required for that update.", "expected": ["updating-data-on-aadhaar"], "relation": false},
+    {"message": "File my ITR-2 for capital gains, renew my passport, and update my Aadhaar address.", "expected": ["incometax", "psp/Apply", "updating-data-on-aadhaar"], "relation": false},
+    {"message": "How do I update my Aadhaar address, and what documents and fees are needed for it?", "expected": ["updating-data-on-aadhaar"], "relation": false},
     {"message": "I need to file ITR-2, which covers salary, capital gains and income from house property.", "expected": ["incometax"], "relation": false},
-    {"message": "My passport expired. What should I do?", "expected": ["passportindia"], "relation": false},
+    {"message": "My passport expired. What should I do?", "expected": ["psp/Apply"], "relation": false},
     {"message": "How do I apply for a driving licence in India?", "expected": [null], "relation": false},
-    {"message": "Renew my passport and get a driving licence.", "expected": ["passportindia", null], "relation": false},
-    {"message": "Update my Aadhaar address and renew my passport. Which should I do first, and can I reuse documents?", "expected": ["uidai", "passportindia"], "relation": true},
-    {"message": "I updated my Aadhaar last week. Now I need to renew my passport.", "expected": ["passportindia"], "relation": false},
-    {"message": "How can I edit my CAN details on the TN e-Sevai portal?", "expected": ["tnesevai"], "relation": false},
-    {"message": "I want to renew my passport, file my ITR-2 and update my Aadhaar address. Also, how do I get a voter ID?", "expected": ["passportindia", "incometax", "uidai"], "pending": 1, "relation": false},
+    {"message": "Renew my passport and get a driving licence.", "expected": ["psp/Apply", null], "relation": false},
+    {"message": "Update my Aadhaar address and renew my passport. Which should I do first, and can I reuse documents?", "expected": ["updating-data-on-aadhaar", "psp/Apply"], "relation": true},
+    {"message": "I updated my Aadhaar last week. Now I need to renew my passport.", "expected": ["psp/Apply"], "relation": false},
+    {"message": "How can I edit my CAN details on the TN e-Sevai portal?", "expected": [null], "relation": false, "note": "27 Oct 2026: page 17 deleted (owner decision); this set runs on staging only."},
+    {"message": "I want to renew my passport, file my ITR-2 and update my Aadhaar address. Also, how do I get a voter ID?", "expected": ["psp/Apply", "incometax", "updating-data-on-aadhaar"], "pending": 1, "relation": false},
     {"message": "How do I file my income tax return?", "expected": ["incometax"], "relation": false}
   ]
 }

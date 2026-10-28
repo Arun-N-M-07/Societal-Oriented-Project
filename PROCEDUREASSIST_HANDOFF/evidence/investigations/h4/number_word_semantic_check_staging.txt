@@ -1,0 +1,39 @@
+DB: procedureassist_staging
+
+## age control: 20 for transport  (official: correct)
+   verify_claims (deterministic): KEPT
+   check_claims (model) x3: ['KEPT', 'KEPT', 'KEPT']
+
+## age WRONG: 18 against a quote saying 20  (official: WRONG)
+   verify_claims (deterministic): KEPT
+   check_claims (model) x3: ['REJECTED', 'REJECTED', 'REJECTED']
+
+## age control: 18 for non-transport  (official: correct)
+   verify_claims (deterministic): KEPT
+   check_claims (model) x3: ['KEPT', 'KEPT', 'KEPT']
+
+## age WRONG: 20 against a quote saying 18  (official: WRONG)
+   verify_claims (deterministic): KEPT
+   check_claims (model) x3: ['KEPT', 'KEPT', 'KEPT']
+   >>> WRONG CLAIM REACHES THE CITIZEN
+
+## deadline control: three months  (official: correct)
+   verify_claims (deterministic): KEPT
+   check_claims (model) x3: ['KEPT', 'KEPT', 'KEPT']
+
+## deadline WRONG: six months against three  (official: WRONG)
+   verify_claims (deterministic): KEPT
+   check_claims (model) x3: ['REJECTED', 'REJECTED', 'REJECTED']
+
+## deadline WRONG: thirty days against fourteen  (official: WRONG)
+   verify_claims (deterministic): KEPT
+   check_claims (model) x3: ['KEPT', 'KEPT', 'KEPT']
+   >>> WRONG CLAIM REACHES THE CITIZEN
+
+## deadline WRONG: 30 (digits) against fourteen  (official: WRONG)
+   verify_claims (deterministic): REJECTED
+
+## count WRONG: three copies against two  (official: WRONG)
+   verify_claims (deterministic): KEPT
+   check_claims (model) x3: ['REJECTED', 'REJECTED', 'REJECTED']
+python exit code: 0

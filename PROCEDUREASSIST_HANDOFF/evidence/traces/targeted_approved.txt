@@ -1,0 +1,69 @@
+DB: procedureassist
+
+### What is the fee for an International Driving Permit? -> matched ['International Driving Permit']
+   insufficient=False partial=None
+   - [27] The fee for the issue of an International Driving Permit is Rs. 1000.00/-
+
+### Who can join Atal Pension Yojana? -> matched ['Atal Pension Yojana']
+   insufficient=False partial=None
+   - [34] Any individual or existing Swavalamban Yojana subscriber who has completed 18 Years of age and is below 40 Years of Age on the day of applying can open an Atal Pension Yo
+
+### Driving licence renew panna evlo fees? -> matched ['Driving Licence Fees and Charges']
+   insufficient=False partial=None
+   - [27] The fee for renewal of a driving licence is Rs. 200.00/-.
+
+### What is the fee for renewing my driving licence after the grace period? -> matched ['Renewal of Driving Licence']
+   insufficient=False partial=None
+   - [27] The fee for renewal of a driving licence for which application is made after the grace period is Rs. 300.00/- (Additional fee at the rate of Rupees One Thousand Only for 
+
+### How much is the fee to renew a driving licence? -> matched ['Driving Licence Fees and Charges']
+   insufficient=False partial=None
+   - [27] The fee for renewal of a driving licence is Rs. 200.00/-.
+
+### What are the driving licence fees? -> matched ['Driving Licence Fees and Charges']
+   insufficient=False partial=None
+   - [27] The fee for the issue of a driving licence is Rs. 200.00/-.
+   - [27] The fee for the renewal of a driving licence is Rs. 200.00/-.
+   - [27] The fee for the issue of International Driving Permit is Rs. 1000.00/-.
+   - [27] The fee for the addition of another class of vehicle to driving licence is Rs. 500.00/-.
+
+### What is the fee for a duplicate driving licence? -> ambiguous ['Driving Licence Fees and Charges', 'Duplicate Driving Licence']
+
+### What is the duplicate licence fee for a driving school? -> matched ['Driving Licence Fees and Charges']
+   insufficient=False partial=None
+   - [27] The duplicate licence fee for a driving school is Rs. 5000.00/-
+
+### How much pension will I get under Atal Pension Yojana? -> matched ['Atal Pension Yojana']
+   insufficient=True partial=None
+
+### Can an income tax payer join Atal Pension Yojana? -> matched ['Atal Pension Yojana']
+   insufficient=True partial=None
+
+### What is the fee to renew the registration certificate of my motorcycle? -> matched ['Renewal of Vehicle Registration Certificate']
+   insufficient=True partial=None
+
+### What is the RC renewal fee for an imported car older than 20 years? -> matched ['Renewal of Vehicle Registration Certificate']
+   insufficient=True partial=None
+
+### I just turned 18 and want to vote. -> matched ['Register to Vote']
+   insufficient=False partial=None
+   - [19] You can enroll as a Voter if you: are an Indian citizen. have attained the age of 18 years on the qualifying date i.e. 1 Jan, 1 April, 1 July and 1 Oct of the year of rev
+   - [19] Citizen, can enroll himself/herself as General Voter and fill Form 6 online at National Voters' Service Portal.
+   - [19] The application accompanied by copies of the relevant documents can be filed in person before the concerned Electoral Registration Officer / Assistant Electoral Registrat
+
+### Can apprentices become EPF members? -> matched ["Employees' Provident Fund Scheme"]
+   insufficient=False partial=True
+   - [36] Apprentices can become EPF members.
+
+### What documents are needed for an income certificate in Tamil Nadu? -> matched ['REV-101 Community Certificate']
+   insufficient=False partial=True
+   - [17] Proof of Income (Payslip, Income Certificate, etc)
+
+### What happens at the polling booth when I go to vote? -> matched ['How to Vote']
+   insufficient=False partial=None
+   - [20] First polling official will check your name on the voter list and check your ID proof
+   - [20] Second polling official will ink your finger, give you a slip and take your signature on a register (Form 17A)
+   - [20] You will have to deposit the slip at the third polling official and show your inked finger and then proceed to the polling booth
+   - [20] Record your vote by pressing the ballot button opposite the symbol of the candidate of your choice on the Electronic Voting Machine (EVM); You will hear a beep sound
+   - [20] Check the slip that appears in the transparent window of the VVPAT machine. The slip with the Candidate serial No., Name and Symbol shall be visible for 7 seconds before 
+   - [20] You can press NOTA, None of the Above, if you don't like any candidate; it's the last button on the EVM

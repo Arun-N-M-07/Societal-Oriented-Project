@@ -1,0 +1,7 @@
+R2   staging80.txt                [19/147] 'You can enroll as a Voter if you: are an Indian citizen.' <- 'You can enroll as a Voter if you: are an Indian citizen.'
+R2   staging80.txt                [30/77] 'Transfer of ownership in case of normal sale Where the ownership of a motor vehicle is transferred, the transferor shall' <- 'Transfer of ownership in case of normal sale Where the ownership of a motor vehicle is transferred, the transferor shall'
+R2   staging80.txt                [28/348] 'Certificate of registration' <- 'Certificate of registration*'
+R2   stagingheld.txt              [30/77] 'Within fourteen days of the transfer, application for the transfer of ownership of a motor vehicle shall be made by the ' <- 'within fourteen days of the transfer, application for the transfer of ownership of a motor vehicle shall be made by the '
+R3   staging_safety.txt           [39/595] 'The fitness test fee for a motorcycle is Rupees Two Hundred Only.' <- '11. Grant or renewal of certificate of fitness for motor vehicle Rupees Two Hundred Only. 62(2) ---'
+
+239 distinct verified claims replayed; would reject: {'R2': 4, 'R3': 1}

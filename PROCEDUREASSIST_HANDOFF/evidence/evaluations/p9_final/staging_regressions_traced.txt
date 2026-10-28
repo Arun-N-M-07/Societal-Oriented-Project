@@ -1,0 +1,27 @@
+[asked] How do I apply for a marriage certificate?
+   identify: matched ['Apply for Police Clearance Certificate (PCC)'] named=False -> no card; 0 claims
+   top 3 by score: Apply for Police Clearance Certificate ( 0.531; Apply for Fresh / Re-issue Ordinary Pass 0.501; Register to Vote 0.462
+[asked] How do I get a marriage certificate?
+   identify: no_match [] named=False -> no card; no approved procedure (NO_MATCH); 0 claims
+   top 3 by score: Apply for Fresh / Re-issue Ordinary Pass 0.492; Apply for Police Clearance Certificate ( 0.489; Registration of Births and Deaths 0.447
+[asked] What documents are needed for a community certificate in Tamil Nadu?
+   identify: matched ['Registration of Births and Deaths'] named=False -> no card; 0 claims
+   top 3 by score: Registration of Births and Deaths 0.553; Aadhaar Enrolment 0.478; Transfer of Vehicle Ownership 0.437
+[asked] What documents do I need for a nativity certificate in Tamil Nadu?
+   identify: matched ['Registration of Births and Deaths'] named=False -> no card; 0 claims
+   top 3 by score: Registration of Births and Deaths 0.605; Aadhaar Enrolment 0.456; Apply for Fresh / Re-issue Ordinary Pass 0.424
+[asked] Where do I get a marriage certificate in Tamil Nadu?
+   identify: matched ['Registration of Births and Deaths'] named=False -> no card; 0 claims
+   top 3 by score: Registration of Births and Deaths 0.579; Apply for Fresh / Re-issue Ordinary Pass 0.430; Aadhaar Enrolment 0.423
+[asked] How do I register a property in Tamil Nadu?
+   identify: matched ['Registration of Births and Deaths'] named=False -> no card; 0 claims
+   top 3 by score: Registration of Births and Deaths 0.553; Register to Vote 0.458; Change of Address in Vehicle Registratio 0.451
+[asked] What is the fee for a marriage certificate in Tamil Nadu?
+   identify: matched ['Registration of Births and Deaths'] named=False -> no card; 0 claims
+   top 3 by score: Registration of Births and Deaths 0.611; Vehicle Registration Fees and User Charg 0.523; Aadhaar Enrolment and Update at Post Off 0.425
+[asked] How do I register my marriage in Tamil Nadu?
+   identify: matched ['Registration of Births and Deaths'] named=False -> no card; 0 claims
+   top 3 by score: Registration of Births and Deaths 0.607; Register to Vote 0.463; Register on the e-Filing Portal 0.439
+[asked] My child has no documents. Can she still get an Aadhaar?
+   identify: ambiguous ['Updating Data on Aadhaar', 'Aadhaar Enrolment and Update at Post Offices', 'Aadhaar Enrolment'] named=False -> choice: Updating Data on Aadhaar / Aadhaar Enrolment and Update at Post Offices / Aadhaar Enrolment; 0 claims
+   top 3 by score: Aadhaar Enrolment 0.605; Aadhaar Enrolment and Update at Post Off 0.593; Updating Data on Aadhaar 0.580

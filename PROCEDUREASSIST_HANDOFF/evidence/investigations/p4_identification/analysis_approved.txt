@@ -1,0 +1,59 @@
+214 questions; validator answers: {'yes': 314, 'no': 122}
+
+policy            | in scope: correct  wrong  missed  asks | out of scope: false match  correct | ambiguous forced
+today             |               154      5       9     9 |                        7       25 |     2
+veto A            |               127      2      40     8 |                        1       31 |     2
+veto B            |               135      3      30     9 |                        1       31 |     2
+veto A + recover  |               132      2      35     8 |                        1       31 |     2
+veto B + recover  |               139      3      26     9 |                        2       30 |     2
+
+questions whose outcome changes under any policy:
+  page  answers[1]         today correct      vetoA correct      vetoB MISSED       +recA correct      +recB MISSED       checks(A/B) {'31': 'yes/no'} | How do I link my PAN with Aadhaar?
+  page  answers[14]        today correct      vetoA MISSED       vetoB correct      +recA MISSED       +recB correct      checks(A/B) {'22': 'no/yes'} | At what age can I drive a transport vehicle?
+  page  answers[18]        today correct      vetoA MISSED       vetoB correct      +recA MISSED       +recB correct      checks(A/B) {'21': 'no/yes'} | What documents must an NRI voter submit with Form 6A?
+  page  answers[30]        today correct      vetoA MISSED       vetoB correct      +recA MISSED       +recB correct      checks(A/B) {'38': 'no/yes'} | How quickly are EDLI claims processed?
+  page  answers[36]        today correct      vetoA correct      vetoB MISSED       +recA correct      +recB MISSED       checks(A/B) {'36': 'yes/no'} | Can I withdraw my full EPF before retirement?
+  page  answers[53]        today correct      vetoA MISSED       vetoB correct      +recA MISSED       +recB correct      checks(A/B) {'38': 'no/yes'} | EDLI la family ku evlo panam kidaikkum?
+  none  answers[75]        today correct      vetoA correct      vetoB correct      +recA correct      +recB FALSE MATCH  checks(A/B) {'32': 'no/yes'} | How do I register for GST?
+  page  answers[79]        today correct      vetoA MISSED       vetoB MISSED       +recA MISSED       +recB MISSED       checks(A/B) {'34': 'no/no'} | How many days does it take to open an Atal Pension Yojana account?
+  page  heldout[3]         today WRONG PAGE   vetoA MISSED       vetoB WRONG PAGE   +recA MISSED       +recB WRONG PAGE   checks(A/B) {'24': 'no/yes'} | What is the fee for renewing my driving licence after the grace period
+  page  heldout[7]         today correct      vetoA MISSED       vetoB correct      +recA MISSED       +recB correct      checks(A/B) {'22': 'no/yes'} | Who are the licensing authorities for driving licences?
+  page  heldout[10]        today asks         vetoA MISSED       vetoB asks         +recA MISSED       +recB asks         checks(A/B) {'21': 'no/yes', '19': 'no/no'} | Which form is used to correct entries in the electoral roll?
+  page  heldout[11]        today correct      vetoA MISSED       vetoB correct      +recA MISSED       +recB correct      checks(A/B) {'30': 'no/yes'} | Within how many days must a buyer apply for ownership transfer of a ve
+  page  heldout[13]        today correct      vetoA MISSED       vetoB correct      +recA MISSED       +recB correct      checks(A/B) {'38': 'no/yes'} | How quickly must employers remit EDLI contributions?
+  page  heldout[14]        today correct      vetoA MISSED       vetoB correct      +recA MISSED       +recB correct      checks(A/B) {'38': 'no/yes'} | What percentage of wages does the employer contribute to EDLI?
+  page  heldout[15]        today correct      vetoA correct      vetoB MISSED       +recA correct      +recB MISSED       checks(A/B) {'36': 'yes/no'} | At what age can I withdraw my full EPF?
+  page  heldout[16]        today correct      vetoA MISSED       vetoB correct      +recA MISSED       +recB correct      checks(A/B) {'20': 'no/yes'} | What is the voter helpline number?
+  page  heldout[17]        today correct      vetoA MISSED       vetoB correct      +recA MISSED       +recB correct      checks(A/B) {'20': 'no/yes'} | Can I take my mobile phone into the polling booth?
+  page  heldout[18]        today correct      vetoA MISSED       vetoB correct      +recA MISSED       +recB correct      checks(A/B) {'20': 'no/yes'} | How long is the VVPAT slip visible?
+  page  heldout[22]        today correct      vetoA correct      vetoB MISSED       +recA correct      +recB MISSED       checks(A/B) {'15': 'yes/no'} | How much is the passport fee for 36 pages?
+  page  population[26]     today correct      vetoA correct      vetoB MISSED       +recA correct      +recB MISSED       checks(A/B) {'25': 'yes/no'} | I registered as a voter last year. Now I need a duplicate driving lice
+  none  population[38]     today FALSE MATCH  vetoA correct      vetoB correct      +recA correct      +recB correct      checks(A/B) {'31': 'no/no'} | How do I change the name on my PAN card?
+  none  population[39]     today FALSE MATCH  vetoA correct      vetoB correct      +recA correct      +recB correct      checks(A/B) {'17': 'no/no'} | How do I get a marriage certificate?
+  page  demo_services[22]  today WRONG PAGE   vetoA MISSED       vetoB MISSED       +recA MISSED       +recB MISSED       checks(A/B) {'17': 'no/no'} | What documents do I need to file my income tax return?
+  none  demo_services[26]  today FALSE MATCH  vetoA correct      vetoB correct      +recA correct      +recB correct      checks(A/B) {'17': 'no/no'} | How do I apply for a marriage certificate?
+  page  identification[19] today MISSED       vetoA MISSED       vetoB MISSED       +recA correct      +recB correct      checks(A/B) {'15': 'yes/yes'} | My Indian passport has expired. How do I get it reissued?
+  page  identification[20] today MISSED       vetoA MISSED       vetoB MISSED       +recA correct      +recB correct      checks(A/B) {'15': 'yes/yes'} | I need a passport for the first time and I live in Bengaluru.
+  page  audit_probe        today correct      vetoA MISSED       vetoB MISSED       +recA MISSED       +recB MISSED       checks(A/B) {'22': 'no/no'} | What is the minimum age for a transport vehicle licence?
+  page  audit_probe        today correct      vetoA MISSED       vetoB correct      +recA MISSED       +recB correct      checks(A/B) {'22': 'no/yes'} | Can I apply at 20?
+  page  audit_probe        today correct      vetoA MISSED       vetoB MISSED       +recA MISSED       +recB MISSED       checks(A/B) {'22': 'no/no'} | Am I eligible for a commercial driving licence?
+  page  audit_probe        today correct      vetoA MISSED       vetoB MISSED       +recA MISSED       +recB MISSED       checks(A/B) {'22': 'no/no'} | Can a 19-year-old obtain this licence?
+  page  audit_probe        today correct      vetoA MISSED       vetoB MISSED       +recA MISSED       +recB MISSED       checks(A/B) {'22': 'no/no'} | What's the age requirement for a transport DL?
+  page  audit_probe        today correct      vetoA MISSED       vetoB MISSED       +recA MISSED       +recB MISSED       checks(A/B) {'22': 'no/no'} | How old must I be to drive a truck or bus?
+  page  audit_probe        today correct      vetoA MISSED       vetoB MISSED       +recA MISSED       +recB MISSED       checks(A/B) {'22': 'no/no'} | I am 19. Can I get a licence to drive a lorry?
+  page  audit_probe        today MISSED       vetoA MISSED       vetoB MISSED       +recA correct      +recB correct      checks(A/B) {'24': 'yes/yes'} | How much do I pay to get my DL renewed?
+  page  audit_probe        today MISSED       vetoA MISSED       vetoB MISSED       +recA correct      +recB MISSED       checks(A/B) {'30': 'yes/no'} | I sold my bike. What does the buyer have to do and by when?
+  page  audit_probe        today WRONG PAGE   vetoA MISSED       vetoB MISSED       +recA MISSED       +recB MISSED       checks(A/B) {'20': 'no/no'} | How do I get my name on the voters list?
+  page  audit_probe        today correct      vetoA correct      vetoB MISSED       +recA correct      +recB MISSED       checks(A/B) {'36': 'yes/no'} | When can I take out my whole PF money?
+  page  audit_probe        today correct      vetoA MISSED       vetoB correct      +recA MISSED       +recB correct      checks(A/B) {'38': 'no/yes'} | What does the family get from EDLI if a worker dies?
+  page  audit_probe        today correct      vetoA MISSED       vetoB MISSED       +recA MISSED       +recB MISSED       checks(A/B) {'34': 'no/no'} | How much pension can I get under APY?
+  page  audit_probe        today correct      vetoA MISSED       vetoB MISSED       +recA MISSED       +recB MISSED       checks(A/B) {'33': 'no/no'} | Can an NRI file ITR-1?
+  page  audit_probe        today correct      vetoA MISSED       vetoB correct      +recA MISSED       +recB correct      checks(A/B) {'33': 'no/yes'} | What is the income limit for filing ITR-1?
+  page  audit_probe        today correct      vetoA MISSED       vetoB MISSED       +recA MISSED       +recB MISSED       checks(A/B) {'33': 'no/no'} | Can I use ITR-1 if I have capital gains?
+  page  safety[13]         today correct      vetoA MISSED       vetoB MISSED       +recA MISSED       +recB MISSED       checks(A/B) {'17': 'no/no'} | What documents are needed for an income certificate in Tamil Nadu?
+  page  safety[14]         today correct      vetoA MISSED       vetoB MISSED       +recA MISSED       +recB MISSED       checks(A/B) {'17': 'no/no'} | What documents are needed for a community certificate in Tamil Nadu?
+  page  safety[15]         today correct      vetoA MISSED       vetoB MISSED       +recA MISSED       +recB MISSED       checks(A/B) {'17': 'no/no'} | What documents do I need for a nativity certificate in Tamil Nadu?
+  none  generalisation[0]  today FALSE MATCH  vetoA correct      vetoB correct      +recA correct      +recB correct      checks(A/B) {'24': 'no/no'} | how do i renew my uk driving licence
+  none  generalisation[4]  today FALSE MATCH  vetoA correct      vetoB correct      +recA correct      +recB correct      checks(A/B) {'31': 'no/no'} | How do I correct the spelling of my name on my PAN card?
+  none  generalisation[5]  today FALSE MATCH  vetoA correct      vetoB correct      +recA correct      +recB correct      checks(A/B) {'31': 'no/no'} | How do I apply for a new PAN card?
+  page  generalisation[15] today MISSED       vetoA MISSED       vetoB MISSED       +recA correct      +recB correct      checks(A/B) {'19': 'yes/yes'} | I am 18 and live in Chennai. How do I register as a voter?

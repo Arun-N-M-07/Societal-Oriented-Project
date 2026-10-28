@@ -1,0 +1,47 @@
+### procedureassist_staging: 288 distinct labelled questions: {'page': 218, 'ambiguous': 5, 'none': 59, 'clarify': 6}; 10 romanised Tamil skipped
+
+## questions whose verdict changes (V0 -> each variant)
+  answers[60]                  page      | V0:asks (among) | F6take:correct | F4F5F6take:correct | ALLtake:correct | I just turned 18 and want to vote.
+  heldout[26]                  ambiguous | V0:correct | F3:clarified | F3+:clarified | How do I apply for a licence?
+  population[19]               page      | V0:WRONG PAGE | F6ask:asks (among) | F6take:correct | F4F5F6take:correct | ALLask:asks (among) | ALLtake:correct | ALL+F7:asks (among) | I turned 18, how do I get on the voter list?
+  population[38]               none      | V0:FALSE MATCH | F1:asks | ALLask:asks | ALLtake:asks | ALL+F7:asks | How do I change the name on my PAN card?
+  population[40]               none      | V0:correct | F7:asks | ALL+F7:asks | Someone stole my bag with my passport inside. Where do I file a police complaint
+  demo_services[1]             page      | V0:WRONG PAGE | F6ask:asks (among) | F6take:correct | F4F5F6take:correct | ALLask:asks (among) | ALLtake:correct | ALL+F7:asks (among) | I turned 18, how can I get my name on the voter list?
+  audit_probe                  page      | V0:MISSED | F7:asks (among) | ALL+F7:asks (among) | How much do I pay to get my DL renewed?
+  audit_probe                  page      | V0:WRONG PAGE | F5:asks (among) | F4F5:asks (among) | F4F5F6take:asks (among) | ALLask:asks (among) | ALLtake:asks (among) | ALL+F7:asks (among) | I work in Dubai. Can I vote in India?
+  generalisation[0]            none      | V0:FALSE MATCH | F2:correct | ALLask:correct | ALLtake:correct | ALL+F7:correct | how do i renew my uk driving licence
+  generalisation[3]            none      | V0:correct | ALL+F7:asks | How do I apply for the Tamil Nadu old age pension?
+  generalisation[9]            clarify   | V0:FALSE MATCH | F3:correct | F3+:correct | F3s:correct | ALLask:correct | ALLtake:correct | ALL+F7:correct | How do I apply for a certificate in Tamil Nadu?
+  identification_failures[9]   none      | V0:asks | F6take:FALSE MATCH | F4F5F6take:FALSE MATCH | ALLtake:FALSE MATCH | I lost my PAN card. How do I get a duplicate?
+  identification_failures[10]  none      | V0:FALSE MATCH | F1:asks | ALLask:asks | ALLtake:asks | ALL+F7:asks | How do I reprint my PAN card?
+  identification_failures[16]  page      | V0:WRONG PAGE | F1:correct | ALLask:correct | ALLtake:correct | ALL+F7:correct | How do I register on the income tax e-filing portal with my PAN?
+  identification_failures[21]  clarify   | V0:FALSE MATCH | F3+:correct | F3s:correct | ALLask:correct | ALLtake:correct | ALL+F7:correct | I need a certificate from the Tamil Nadu government. How do I apply?
+  identification_failures[22]  clarify   | V0:FALSE MATCH | F3:correct | F3+:correct | F3s:correct | ALLask:correct | ALLtake:correct | ALL+F7:correct | How do I get a certificate?
+  identification_failures[23]  clarify   | V0:FALSE MATCH | F3:correct | F3+:correct | F3s:correct | ALLask:correct | ALLtake:correct | ALL+F7:correct | Which documents are required for a certificate in Tamil Nadu?
+  identification_failures[24]  clarify   | V0:FALSE MATCH | F3+:correct | F3s:correct | ALLask:correct | ALLtake:correct | ALL+F7:correct | How do I apply for a certificate online?
+  identification_failures[25]  clarify   | V0:FALSE MATCH | F3:correct | F3+:correct | F3s:correct | ALLask:correct | ALLtake:correct | ALL+F7:correct | What is the fee for a certificate?
+  identification_failures[26]  page      | V0:correct | F3:clarified | F3+:clarified | How do I renew my registration certificate?
+  identification_failures[34]  page      | V0:WRONG PAGE | F5:asks (among) | F4F5:asks (among) | F4F5F6take:asks (among) | ALLask:asks (among) | ALLtake:asks (among) | ALL+F7:asks (among) | I study in Canada. Can I still vote in Indian elections?
+  identification_failures[37]  page      | V0:WRONG PAGE | F6ask:asks (among) | F6take:correct | F4F5F6take:correct | ALLask:asks (among) | ALLtake:correct | ALL+F7:asks (among) | I am an NRI. How do I register as a voter?
+  identification_failures[45]  none      | V0:FALSE MATCH | F2:correct | ALLask:correct | ALLtake:correct | ALL+F7:correct | how do i apply for a uk passport
+  identification_failures[46]  none      | V0:asks | F2:correct | ALLask:correct | ALLtake:correct | ALL+F7:correct | how do i renew my uk driving licence online
+  identification_failures[51]  page      | V0:MISSED | F4:correct | F4F5:correct | F4F5F6take:correct | ALLask:correct | ALLtake:correct | ALL+F7:correct | How do I register to vote in Kerala?
+  identification_failures[54]  page      | V0:MISSED | F4:correct | F4F5:correct | F4F5F6take:correct | ALLask:correct | ALLtake:correct | ALL+F7:correct | How do I transfer ownership of a car I bought in Karnataka?
+
+## totals
+  V0          in scope: correct 185, wrong page 15, missed 8, asks 10, clarified 0, multiple 0 | out of scope: correct 44, false match 10, asks 5, clarified 0 | unnamed: asked which 0, false match 6, other 0 | ambiguous: ok 3, forced 0
+  F1          in scope: correct 186, wrong page 14, missed 8, asks 10, clarified 0, multiple 0 | out of scope: correct 44, false match 8, asks 7, clarified 0 | unnamed: asked which 0, false match 6, other 0 | ambiguous: ok 3, forced 0
+  F2          in scope: correct 185, wrong page 15, missed 8, asks 10, clarified 0, multiple 0 | out of scope: correct 47, false match 8, asks 4, clarified 0 | unnamed: asked which 0, false match 6, other 0 | ambiguous: ok 3, forced 0
+  F3          in scope: correct 184, wrong page 15, missed 8, asks 10, clarified 1, multiple 0 | out of scope: correct 44, false match 10, asks 5, clarified 0 | unnamed: asked which 4, false match 2, other 0 | ambiguous: ok 2, forced 0
+  F3+         in scope: correct 184, wrong page 15, missed 8, asks 10, clarified 1, multiple 0 | out of scope: correct 44, false match 10, asks 5, clarified 0 | unnamed: asked which 6, false match 0, other 0 | ambiguous: ok 2, forced 0
+  F3s         in scope: correct 185, wrong page 15, missed 8, asks 10, clarified 0, multiple 0 | out of scope: correct 44, false match 10, asks 5, clarified 0 | unnamed: asked which 6, false match 0, other 0 | ambiguous: ok 3, forced 0
+  F4          in scope: correct 187, wrong page 15, missed 6, asks 10, clarified 0, multiple 0 | out of scope: correct 44, false match 10, asks 5, clarified 0 | unnamed: asked which 0, false match 6, other 0 | ambiguous: ok 3, forced 0
+  F5          in scope: correct 185, wrong page 13, missed 8, asks 12, clarified 0, multiple 0 | out of scope: correct 44, false match 10, asks 5, clarified 0 | unnamed: asked which 0, false match 6, other 0 | ambiguous: ok 3, forced 0
+  F4F5        in scope: correct 187, wrong page 13, missed 6, asks 12, clarified 0, multiple 0 | out of scope: correct 44, false match 10, asks 5, clarified 0 | unnamed: asked which 0, false match 6, other 0 | ambiguous: ok 3, forced 0
+  F6ask       in scope: correct 185, wrong page 12, missed 8, asks 13, clarified 0, multiple 0 | out of scope: correct 44, false match 10, asks 5, clarified 0 | unnamed: asked which 0, false match 6, other 0 | ambiguous: ok 3, forced 0
+  F6take      in scope: correct 189, wrong page 12, missed 8, asks 9, clarified 0, multiple 0 | out of scope: correct 44, false match 11, asks 4, clarified 0 | unnamed: asked which 0, false match 6, other 0 | ambiguous: ok 3, forced 0
+  F4F5F6take  in scope: correct 191, wrong page 10, missed 6, asks 11, clarified 0, multiple 0 | out of scope: correct 44, false match 11, asks 4, clarified 0 | unnamed: asked which 0, false match 6, other 0 | ambiguous: ok 3, forced 0
+  F7          in scope: correct 185, wrong page 15, missed 7, asks 11, clarified 0, multiple 0 | out of scope: correct 43, false match 10, asks 6, clarified 0 | unnamed: asked which 0, false match 6, other 0 | ambiguous: ok 3, forced 0
+  ALLask      in scope: correct 188, wrong page 9, missed 6, asks 15, clarified 0, multiple 0 | out of scope: correct 47, false match 6, asks 6, clarified 0 | unnamed: asked which 6, false match 0, other 0 | ambiguous: ok 3, forced 0
+  ALLtake     in scope: correct 192, wrong page 9, missed 6, asks 11, clarified 0, multiple 0 | out of scope: correct 47, false match 7, asks 5, clarified 0 | unnamed: asked which 6, false match 0, other 0 | ambiguous: ok 3, forced 0
+  ALL+F7      in scope: correct 188, wrong page 9, missed 5, asks 16, clarified 0, multiple 0 | out of scope: correct 45, false match 6, asks 8, clarified 0 | unnamed: asked which 6, false match 0, other 0 | ambiguous: ok 3, forced 0

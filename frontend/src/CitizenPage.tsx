@@ -31,8 +31,8 @@ type Message = {
   note?: string;
   // The procedure this message's answer introduces (shown once, above the answer).
   opened?: ProcedureDetail;
-  // Set when a related official page answered instead (a fee table naming this procedure).
-  source?: string;
+  // Names of related official pages some claims come from (a fee table naming this procedure).
+  sources?: Record<number, string>;
 };
 
 // A follow-up across several procedures is only sent to the relationship check
@@ -52,6 +52,14 @@ const EXAMPLES = [
 const NO_RELATION =
   "The approved official sources do not confirm an order, dependency or document reuse between these procedures. " +
   "Use “Ask more about this” to ask about one procedure.";
+const NO_MATCH =
+  "We don't have an approved procedure that matches this yet. Try describing your " +
+  "situation differently, for example which document or service you need.";
+// A procedure found only by similar words, whose page has no verified answer: no card, and no claim
+// that nothing matched.
+const NO_ANSWER =
+  "No approved official information answers this question yet. Try describing your " +
+  "situation differently, for example which document or service you need.";
 
 const message = (error: unknown, fallback: string) =>
   error instanceof Error ? error.message : fallback;
@@ -148,21 +156,30 @@ export default function CitizenPage() {
     setPending("guidance");
     // An already normalized query is English and is not normalized again.
     const reply = await askGuidance(id, asked(message), message.query ? "en" : language);
-    const source = reply.procedure_id === id ? undefined : (await getProcedure(reply.procedure_id)).name;
-    update(message.id, (m) => ({ ...m, answer: reply, source, query: reply.normalized_query ?? m.query }));
+    const related = [...new Set(reply.claims.flatMap((c) => (c.procedure_id ? [c.procedure_id] : [])))];
+    const sources = related.length
+      ? Object.fromEntries(await Promise.all(related.map(async (pid) => [pid, (await getProcedure(pid)).name])))
+      : undefined;
+    update(message.id, (m) => ({ ...m, answer: reply, sources, query: reply.normalized_query ?? m.query }));
     return reply;
   }
 
-  // A follow-up is answered from the open procedure. When that page does not answer it,
-  // the question is searched again, and a different procedure that matches answers it
-  // (a fee asked about on the renewal page is on the fees page).
+  // A follow-up is answered from the open procedure, unless it names another procedure
+  // ("What about EPS?" on the EPF page), which then answers it. A different procedure that
+  // only matches it answers it when the open page does not (a fee asked about on the
+  // renewal page is on the fees page).
   async function answerFollowUp(id: number, message: Message) {
+    const result = await identifyProcedure(message.question, language);
+    const other = result.status === "matched" && result.candidates[0].id !== id ? result.candidates[0].id : undefined;
+    if (other && result.named) {
+      await showAndAnswer(other, message, true);
+      return;
+    }
     const reply = await answer(id, message);
-    if (!reply.insufficient_evidence) return;
-    const query = reply.normalized_query;
-    const result = await identifyProcedure(query ?? message.question, query ? "en" : language);
-    const other = result.status === "matched" ? result.candidates[0].id : undefined;
-    if (other && other !== id) await showAndAnswer(other, message);
+    // When neither page answers, the open procedure and its own reply stay.
+    if (reply.insufficient_evidence && other && (await showAndAnswer(other, message, false)).insufficient_evidence) {
+      update(message.id, (m) => ({ ...m, answer: reply }));
+    }
   }
 
   // Each need is answered on its own, one at a time, so one failure leaves the others intact.
@@ -203,7 +220,11 @@ export default function CitizenPage() {
   async function handleResult(result: IdentifyResponse, message: Message) {
     setMatches(result);
     message = searchedAs(message, result);
-    if (result.status === "matched") await showAndAnswer(result.candidates[0].id, message);
+    if (result.status === "matched") {
+      const named = result.named === true;
+      const reply = await showAndAnswer(result.candidates[0].id, message, named);
+      if (!named && reply.insufficient_evidence) update(message.id, (m) => ({ ...m, answer: undefined, note: NO_ANSWER }));
+    }
     if (result.status === "multiple") await answerNeeds(message, result);
   }
 
@@ -229,17 +250,24 @@ export default function CitizenPage() {
     await handleResult(result, message);
   }
 
-  async function showAndAnswer(id: number, message: Message) {
+  // A procedure the citizen named or chose is shown at once. One found only by similar words is shown with the
+  // answer from its page, and not at all when that page answers nothing: it would present an unrelated procedure.
+  async function showAndAnswer(id: number, message: Message, named: boolean) {
     const opened = await getProcedure(id);
-    setProcedure(opened);
-    update(message.id, (m) => ({ ...m, opened }));
-    await answer(id, message);
+    const show = () => {
+      setProcedure(opened);
+      update(message.id, (m) => ({ ...m, opened }));
+    };
+    if (named) show();
+    const reply = await answer(id, message);
+    if (!named && !reply.insufficient_evidence) show();
+    return reply;
   }
 
   function openProcedure(id: number) {
     const message = { ...newMessage(messages[0].question), query: messages[0].query };
     setMessages([message]);
-    void run("procedure", () => showAndAnswer(id, message), "Unable to load the procedure.");
+    void run("procedure", async () => { await showAndAnswer(id, message, true); }, "Unable to load the procedure.");
   }
 
   function handleSend(event: FormEvent<HTMLFormElement>) {
@@ -279,6 +307,9 @@ export default function CitizenPage() {
               </li>
             ))}
           </ol>
+        )}
+        {"partial" in reply && reply.partial && (
+          <p className="field-help">The official text found may not cover every part of your question.</p>
         )}
         {reply.omitted_claims > 0 && !reply.insufficient_evidence && (
           <p className="field-help">
@@ -387,8 +418,7 @@ export default function CitizenPage() {
                   </details>
                 </div>
               )}
-              {m.source && <p className="field-help">From the related official page: <strong>{m.source}</strong></p>}
-              {m.answer && renderAnswer(m.answer, refusal(m.answer))}
+              {m.answer && renderAnswer(m.answer, refusal(m.answer), m.sources)}
               {m.note && <p className="feedback" role="status">{m.note}</p>}
               {m.sections && (
                 <>
@@ -490,12 +520,7 @@ export default function CitizenPage() {
                 </div>
               )}
               {m === last && matches?.status === "no_match" && !busy && (
-                <p className="feedback" role="status">
-                  {matches.clarification ?? (
-                    "We don't have an approved procedure that matches this yet. Try describing your " +
-                    "situation differently, for example which document or service you need."
-                  )}
-                </p>
+                <p className="feedback" role="status">{matches.clarification ?? NO_MATCH}</p>
               )}
               {m === last && working && <p className="thinking" role="status">{working}</p>}
               {m === last && error && failure(error.text, error.retry)}

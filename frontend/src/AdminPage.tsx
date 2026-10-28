@@ -3,7 +3,6 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import {
   approveProcedure,
   extractProcedure,
-  reExtractProcedure,
   type ProcedureDraft,
 } from "./api";
 
@@ -111,28 +110,6 @@ export default function AdminPage({ onSaved }: { onSaved?: () => void }) {
       setExtractedSourceText("");
       setProvenanceToken("");
       setError(requestError instanceof Error ? requestError.message : "Unable to extract procedure.");
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  async function handleReExtract() {
-    if (!procedure) return;
-
-    setError("");
-    setSavedMessage("");
-    setIsLoading(true);
-
-    try {
-      const extractedProcedure = await reExtractProcedure({
-        source_url: procedure.source_url,
-        source_text: extractedSourceText,
-        provenance_token: provenanceToken,
-      });
-      setProcedure(extractedProcedure);
-      setSteps(toStepItems(extractedProcedure.steps));
-    } catch (requestError) {
-      setError(requestError instanceof Error ? requestError.message : "Unable to re-extract procedure.");
     } finally {
       setIsLoading(false);
     }
@@ -415,14 +392,6 @@ export default function AdminPage({ onSaved }: { onSaved?: () => void }) {
                 disabled={isLoading || isSaving}
               >
                 Discard
-              </button>
-              <button
-                className="secondary-button"
-                type="button"
-                onClick={handleReExtract}
-                disabled={isLoading || isSaving || Boolean(savedMessage)}
-              >
-                {isLoading ? "Re-extracting…" : "Re-extract"}
               </button>
               <button
                 className="primary-button"

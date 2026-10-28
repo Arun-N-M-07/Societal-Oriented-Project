@@ -1,0 +1,84 @@
+
+## How do I get a birth certificate in Tamil Nadu?
+   identify: matched [17] | guidance on 17: 10 claims, 9 CAN-editing
+   CAN Go to https://www.tnesevai.tn.gov.in/ on your web browser.
+   CAN In the Sign In section, click on 'Citizen Login'.
+   CAN Enter the login credentials.
+   CAN Correctly enter the Captcha Code (Not case sensitive) and click on 'Login'.
+   CAN In the 'Services' tab, select 'DEPARTMENT WISE' and then click on 'Revenue Department'.
+   CAN Click on 'REV-101 Community Certificate'. This will open a new browser tab.
+   CAN Click on the 'Proceed' button.
+   CAN In this Search section, look for your CAN using any of the six fields provided.
+       Once found, select it by clicking the Radio button. This will auto-fill the 'Mobile Number' field at the bottom.
+   CAN Click on 'Generate OTP' and then enter the OTP that has been sent to your registered phone number. Click on 'Confirm OTP' once done.
+
+## How do I get a death certificate in Tamil Nadu?
+   identify: matched [17] | guidance on 17: 10 claims, 9 CAN-editing
+   CAN Go to https://www.tnesevai.tn.gov.in/ on your web browser.
+   CAN In the Sign In section, click on 'Citizen Login'.
+   CAN Enter the login credentials.
+   CAN Correctly enter the Captcha Code (Not case sensitive) and click on 'Login'.
+   CAN In the 'Services' tab, select 'DEPARTMENT WISE' and then click on 'Revenue Department'.
+   CAN Click on 'REV-101 Community Certificate'. This will open a new browser tab.
+   CAN Click on the 'Proceed' button.
+   CAN In this Search section, look for your CAN using any of the six fields provided.
+       Once found, select it by clicking the Radio button. This will auto-fill the 'Mobile Number' field at the bottom.
+   CAN Click on 'Generate OTP' and then enter the OTP that has been sent to your registered phone number. Click on 'Confirm OTP' once done.
+
+## How do I get a legal heir certificate in Tamil Nadu?
+   identify: no_match [] | guidance on 17: abstained
+
+## How do I apply for a community certificate in Tamil Nadu?
+   identify: matched [17] | guidance on 17: 10 claims, 9 CAN-editing
+   CAN Go to https://www.tnesevai.tn.gov.in/ on your web browser.
+   CAN In the Sign In section, click on "Citizen Login".
+   CAN Enter the login credentials.
+   CAN Correctly enter the Captcha Code (Not case sensitive) and click on "Login".
+   CAN In the "Services" tab, select "DEPARTMENT WISE" and then click on "Revenue Department".
+   CAN Click on "REV-101 Community Certificate". This will open a new browser tab.
+   CAN Click on the "Proceed" button.
+   CAN In this Search section, look for your CAN using any of the six fields provided.
+       Once found, select it by clicking the Radio button. This will auto-fill the "Mobile Number" field at the bottom.
+   CAN Click on "Generate OTP" and then enter the OTP that has been sent to your registered phone number. Click on "Confirm OTP" once done.
+
+## How do I apply for an income certificate online in Tamil Nadu?
+   identify: matched [17] | guidance on 17: 10 claims, 9 CAN-editing
+   CAN Go to https://www.tnesevai.tn.gov.in/ on your web browser.
+   CAN In the Sign In section, click on "Citizen Login".
+   CAN Enter the login credentials.
+   CAN Correctly enter the Captcha Code (Not case sensitive) and click on "Login".
+   CAN In the "Services" tab, select "DEPARTMENT WISE" and then click on "Revenue Department".
+   CAN Click on "REV-101 Community Certificate". This will open a new browser tab.
+   CAN Click on the "Proceed" button.
+   CAN In this Search section, look for your CAN using any of the six fields provided.
+       Once found, select it by clicking the Radio button. This will auto-fill the "Mobile Number" field at the bottom.
+   CAN Click on "Generate OTP" and then enter the OTP that has been sent to your registered phone number. Click on "Confirm OTP" once done.
+
+## How do I get a nativity certificate?
+   identify: no_match [] | guidance on 17: abstained
+
+## What documents are needed for an income certificate in Tamil Nadu?
+   identify: matched [17] | guidance on 17: 1 claims (partial)
+       Proof of Income (Payslip, Income Certificate, etc)
+
+## What documents do I need for a nativity certificate in Tamil Nadu?
+   identify: matched [17] | guidance on 17: 8 claims
+       You need to provide a Photo.
+       You need to provide Address Proof.
+       You need to provide Community Certificate of Father or Community Certificate of Mother or Community Certificate of Siblings.
+       You need to provide Birth Certificate.
+       You need to provide School Education Certificate (or) Employment Details (or) other proof to prove continuous residence of last 5 years.
+       You need to provide Self-Declaration of Applicant.
+       You need to provide Income Tax Return.
+       You need to provide Proof of Income (Payslip, Income Certificate, etc).
+
+## How do I apply for an OBC certificate?
+   identify: no_match [] | guidance on 17: abstained
+
+## How do I get a marriage certificate?
+   identify: matched [17] | guidance on 17: abstained
+
+## How do I edit my CAN details on e-Sevai?
+   identify: matched [17] | guidance on 17: 2 claims, 2 CAN-editing
+   CAN Click on 'Generate OTP' and then enter the OTP that has been sent to your registered phone number. Click on 'Confirm OTP' once done.
+   CAN Now you will be able to see the 'Edit CAN Detail' button. Click it and you will be able to update your CAN details.

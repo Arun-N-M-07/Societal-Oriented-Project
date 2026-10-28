@@ -122,6 +122,8 @@ procedures, writes nothing).
 `.venv/bin/python scripts/evaluate_answers.py` asks the 80 questions in
 `fixtures/evaluation/answers.json` through the real API, checks each answer's quotes and
 citations, and names the stage where each failure happened (uses Ollama, writes nothing).
+Pass `fixtures/evaluation/heldout.json` to run 27 questions that were never used to tune the
+prompts.
 
 ## Troubleshooting
 
@@ -136,15 +138,36 @@ citations, and names the stage where each failure happened (uses Ollama, writes 
 
 ## Limitations
 
-- Only HTML pages work; PDFs and login- or bot-protected sites are not supported.
-- Hosts are checked before every request, but DNS rebinding is not fully prevented.
-- Answers are checked for a word-for-word quote with the same numbers and negation, not
-  for every possible change in meaning.
+- Only HTML pages work; PDFs and login- or bot-protected sites are not supported. A page the
+  server will not serve directly (for example an incomplete certificate chain) is loaded in the
+  browser, which still verifies the certificate; a short error page served as success
+  ("404 … not found") is rejected.
+- Only official domains can be extracted (`OFFICIAL_SOURCE_DOMAINS`, default `gov.in`,
+  `nic.in`, `pfrda.org.in`), checked before the first request and after redirects.
+- Hosts are checked before every request, and the address actually connected to is checked
+  before a page is read. Scripts and styles a rendered page loads are checked only before
+  their request, so DNS rebinding is not fully prevented for them.
+- Answers are checked for a word-for-word quote with the same numbers, periods (with their
+  units), negation, document, form numbers and fee service, not for every possible change in
+  meaning. A quote cut short before a condition ("… within thirty days") can still drop it.
+- Identification compares wording; it has no general notion of intent. "US" and "UK" (and
+  longer place names) must appear on the page, and a procedure for one Indian state is not
+  matched to a question naming another state. A question naming no particular certificate
+  or licence is asked which one. Where the citizen says they live (abroad, a foreign country,
+  or nowhere) decides between a service and its overseas variant; a city it cannot place
+  ("Dubai") leaves the choice to the citizen. Lower-case abbreviations of stored procedures
+  ("idp") are read as abbreviations. The page shows no procedure the citizen did not name
+  without an answer from it. A model check of the chosen page was measured and not adopted:
+  it removed some wrong matches but also rejected about one correct match in eight.
+- The backend cannot start while the database is unreachable (tables are created on
+  start-up). If the database fails while it runs, citizens get "The procedure database is
+  unavailable. Try again."
 - Search thresholds come from a small labelled set (32 questions over 10 pages). The app
   asks the citizen to choose only when the top matches score within 0.03 of each other.
 - Admin sessions are signed cookies that last 12 hours; logging out does not revoke a
-  copied cookie, and login attempts are not rate limited. Changing `SECRET_KEY` signs
-  everyone out.
+  copied cookie. Changing `SECRET_KEY` signs everyone out. After 5 failed sign-ins from one
+  address, that address waits 15 minutes (counted in the server's memory; behind a proxy, run
+  uvicorn with `--proxy-headers`).
 - Deleting a procedure is permanent.
 - Tamil support is tested on 36 questions written for this project (also used to tune the
   prompt), not on real citizens' speech or Chennai slang in general. The 8B model sometimes

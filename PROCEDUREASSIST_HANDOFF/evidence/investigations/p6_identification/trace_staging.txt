@@ -1,0 +1,174 @@
+### procedureassist_staging
+
+## 'I am an Indian citizen working in Saudi Arabia. How can I register to vote?'
+  names_something -> True
+  extract_needs (multi-need gate passed) -> ([{'phrase': 'register to vote', 'question': 'How can I register to vote as an Indian citizen working in Saudi Arabia?'}], None)
+    _decide('register to vote', context='register to vote How can I register to vote as an Indian citizen working in Saudi Arabia?')
+      ranked 19:Register to Vote 0.715, 20:How to Vote 0.592, 21:Overseas (NRI) Voter Registr 0.519
+      classify -> ('matched', [19])
+      mentions(19:Register to Vote) -> True
+      covers('India') -> True
+    => matched ['19:Register to Vote']
+    _decide('How can I register to vote as an Indian citizen working in Saudi Arabia?')
+      ranked 19:Register to Vote 0.599, 21:Overseas (NRI) Voter Registr 0.566, 20:How to Vote 0.519
+      classify -> ('matched', [19])
+      mentions(19:Register to Vote) -> True
+      covers('India') -> True
+    => matched ['19:Register to Vote']
+    _decide('I am an Indian citizen working in Saudi Arabia. How can I register to vote?')
+      ranked 19:Register to Vote 0.582, 21:Overseas (NRI) Voter Registr 0.546, 20:How to Vote 0.526
+      classify -> ('matched', [19])
+      mentions(19:Register to Vote) -> True
+      covers('India') -> True
+    => matched ['19:Register to Vote']
+  RESULT status=matched candidates=['19:Register to Vote'] named=True clarification=None
+
+## 'I moved to Singapore for work. How do I enrol as a voter?'
+  names_something -> True
+  extract_needs (multi-need gate passed) -> ([{'phrase': 'enrol as a voter', 'question': 'How do I enrol as a voter in Singapore?'}], None)
+    _decide('enrol as a voter', context='enrol as a voter How do I enrol as a voter in Singapore?')
+      ranked 19:Register to Vote 0.719, 20:How to Vote 0.638, 21:Overseas (NRI) Voter Registr 0.618
+      classify -> ('matched', [19])
+      mentions(19:Register to Vote) -> True
+      covers('India') -> True
+    => matched ['19:Register to Vote']
+    _decide('How do I enrol as a voter in Singapore?')
+      ranked 19:Register to Vote 0.638, 20:How to Vote 0.593, 21:Overseas (NRI) Voter Registr 0.556
+      classify -> ('matched', [19])
+      mentions(19:Register to Vote) -> False
+    => no_match []
+    _decide('I moved to Singapore for work. How do I enrol as a voter?')
+      ranked 19:Register to Vote 0.580, 21:Overseas (NRI) Voter Registr 0.562, 20:How to Vote 0.538
+      classify -> ('ambiguous', [19, 21])
+      mentions(19:Register to Vote) -> True
+      covers('India') -> True
+      mentions(21:Overseas (NRI) Voter Registr) -> True
+      covers('India') -> True
+    => ambiguous ['19:Register to Vote', '21:Overseas (NRI) Voter Registr']
+  RESULT status=matched candidates=['19:Register to Vote'] named=False clarification=None
+
+## 'i work in dubai, can i vote in india'
+  names_something -> True
+  extract_needs (multi-need gate passed) -> ([{'phrase': 'vote in india', 'question': 'Can someone working in Dubai vote in India?'}], None)
+    _decide('vote in india', context='vote in india Can someone working in Dubai vote in India?')
+      ranked 19:Register to Vote 0.678, 20:How to Vote 0.583, 21:Overseas (NRI) Voter Registr 0.521
+      classify -> ('matched', [19])
+      mentions(19:Register to Vote) -> True
+      covers('India') -> True
+    => matched ['19:Register to Vote']
+    _decide('Can someone working in Dubai vote in India?')
+      ranked 21:Overseas (NRI) Voter Registr 0.549, 19:Register to Vote 0.501, 20:How to Vote 0.456
+      classify -> ('matched', [21])
+      mentions(21:Overseas (NRI) Voter Registr) -> True
+      covers('India') -> True
+    => matched ['21:Overseas (NRI) Voter Registr']
+    _decide('i work in dubai, can i vote in india')
+      ranked 19:Register to Vote 0.597, 21:Overseas (NRI) Voter Registr 0.569, 20:How to Vote 0.532
+      classify -> ('ambiguous', [19, 21])
+      mentions(19:Register to Vote) -> True
+      covers('India') -> True
+      mentions(21:Overseas (NRI) Voter Registr) -> True
+      covers('India') -> True
+    => ambiguous ['19:Register to Vote', '21:Overseas (NRI) Voter Registr']
+  RESULT status=matched candidates=['19:Register to Vote'] named=False clarification=None
+
+## 'How do I change my address in the electoral roll?'
+  names_something -> True
+    _decide('How do I change my address in the electoral roll?')
+      ranked 21:Overseas (NRI) Voter Registr 0.709, 19:Register to Vote 0.613, 29:Change of Address in Vehicle 0.523
+      classify -> ('matched', [21])
+      mentions(21:Overseas (NRI) Voter Registr) -> True
+      covers('India') -> True
+    => matched ['21:Overseas (NRI) Voter Registr']
+  RESULT status=matched candidates=['21:Overseas (NRI) Voter Registr'] named=False clarification=None
+
+## 'I have shifted to a new house in Madurai. How do I change my address in the voter list?'
+  names_something -> True
+  extract_needs (multi-need gate passed) -> ([{'phrase': 'change my address in the voter list', 'question': 'How do I change my address in the voter list?'}], None)
+    _decide('change my address in the voter list', context='change my address in the voter list How do I change my address in the voter list?')
+      ranked 21:Overseas (NRI) Voter Registr 0.648, 19:Register to Vote 0.586, 20:How to Vote 0.533
+      classify -> ('matched', [21])
+      mentions(21:Overseas (NRI) Voter Registr) -> True
+      covers('India') -> True
+    => matched ['21:Overseas (NRI) Voter Registr']
+    _decide('How do I change my address in the voter list?')
+      ranked 21:Overseas (NRI) Voter Registr 0.642, 19:Register to Vote 0.606, 20:How to Vote 0.556
+      classify -> ('matched', [21])
+      mentions(21:Overseas (NRI) Voter Registr) -> True
+      covers('India') -> True
+    => matched ['21:Overseas (NRI) Voter Registr']
+    _decide('I have shifted to a new house in Madurai. How do I change my address in the voter list?')
+      ranked 21:Overseas (NRI) Voter Registr 0.652, 19:Register to Vote 0.630, 18:Updating Data on Aadhaar 0.543
+      classify -> ('ambiguous', [21, 19])
+      mentions(21:Overseas (NRI) Voter Registr) -> False
+      mentions(19:Register to Vote) -> False
+    => no_match []
+  RESULT status=matched candidates=['21:Overseas (NRI) Voter Registr'] named=False clarification=None
+
+## 'how do i get an idp'
+  names_something -> True
+    _decide('how do i get an idp')
+      ranked 15:Apply for Fresh / Re-issue O 0.517, 32:Register on the e-Filing Por 0.437, 18:Updating Data on Aadhaar 0.435
+      classify -> ('no_match', [])
+    => no_match []
+  RESULT status=no_match candidates=[] named=False clarification=None
+
+## 'How do I get a marriage certificate?'
+  names_something -> True
+    _decide('How do I get a marriage certificate?')
+      ranked 17:REV-101 Community Certificat 0.625, 15:Apply for Fresh / Re-issue O 0.492, 19:Register to Vote 0.424
+      classify -> ('matched', [17])
+      mentions(17:REV-101 Community Certificat) -> True
+      covers('Tamil Nadu') -> True
+    => matched ['17:REV-101 Community Certificat']
+  RESULT status=matched candidates=['17:REV-101 Community Certificat'] named=False clarification=None
+
+## 'sold my bike, need to transfer the RC'
+  names_something -> True
+  extract_needs (multi-need gate passed) -> ([{'phrase': 'transfer the RC', 'question': 'How do I transfer the RC after selling my bike?'}], None)
+    _decide('transfer the RC', context='transfer the RC How do I transfer the RC after selling my bike?')
+      ranked 30:Transfer of Vehicle Ownershi 0.382, 28:Renewal of Vehicle Registrat 0.345, 39:Vehicle Registration Fees an 0.345
+      classify -> ('no_match', [])
+    => no_match []
+    _decide('How do I transfer the RC after selling my bike?')
+      ranked 30:Transfer of Vehicle Ownershi 0.437, 39:Vehicle Registration Fees an 0.416, 28:Renewal of Vehicle Registrat 0.330
+      classify -> ('no_match', [])
+    => no_match []
+    _decide('sold my bike, need to transfer the RC')
+      ranked 30:Transfer of Vehicle Ownershi 0.445, 39:Vehicle Registration Fees an 0.434, 29:Change of Address in Vehicle 0.377
+      classify -> ('no_match', [])
+    => no_match []
+  RESULT status=no_match candidates=[] named=False clarification=None
+
+## 'How much does a duplicate RC cost?'
+  names_something -> True
+    _decide('How much does a duplicate RC cost?')
+      ranked 39:Vehicle Registration Fees an 0.492, 25:Duplicate Driving Licence 0.445, 27:Driving Licence Fees and Cha 0.408
+      classify -> ('no_match', [])
+    => no_match []
+  RESULT status=no_match candidates=[] named=False clarification=None
+
+## 'How much do I pay to get my DL renewed?'
+  names_something -> True
+    _decide('How much do I pay to get my DL renewed?')
+      ranked 24:Renewal of Driving Licence 0.518, 27:Driving Licence Fees and Cha 0.491, 39:Vehicle Registration Fees an 0.480
+      classify -> ('no_match', [])
+    => no_match []
+  RESULT status=no_match candidates=[] named=False clarification=None
+
+## 'I sold my bike. What does the buyer have to do and by when?'
+  names_something -> True
+  extract_needs (multi-need gate passed) -> ([{'phrase': 'What does the buyer have to do and by when?', 'question': 'What steps does the buyer need to take after purchasing the bike and by what deadline?'}], None)
+    _decide('What does the buyer have to do and by when?', context='What does the buyer have to do and by when? What steps does the buyer need to take after purchasing the bike and by what deadline?')
+      ranked 30:Transfer of Vehicle Ownershi 0.506, 29:Change of Address in Vehicle 0.371, 39:Vehicle Registration Fees an 0.370
+      classify -> ('no_match', [])
+    => no_match []
+    _decide('What steps does the buyer need to take after purchasing the bike and by what deadline?')
+      ranked 30:Transfer of Vehicle Ownershi 0.508, 39:Vehicle Registration Fees an 0.417, 29:Change of Address in Vehicle 0.384
+      classify -> ('no_match', [])
+    => no_match []
+    _decide('I sold my bike. What does the buyer have to do and by when?')
+      ranked 30:Transfer of Vehicle Ownershi 0.529, 39:Vehicle Registration Fees an 0.440, 28:Renewal of Vehicle Registrat 0.394
+      classify -> ('no_match', [])
+    => no_match []
+  RESULT status=no_match candidates=[] named=False clarification=None

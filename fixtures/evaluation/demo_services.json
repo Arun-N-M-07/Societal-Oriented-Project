@@ -116,7 +116,7 @@
   {
    "message": "How do I update my Aadhaar address online?",
    "expected": [
-    "uidai"
+    "updating-data-on-aadhaar"
    ],
    "relation": false
   },
@@ -144,16 +144,17 @@
   {
    "message": "My passport has expired. How do I get a new one?",
    "expected": [
-    "passportindia"
+    "psp/Apply"
    ],
    "relation": false
   },
   {
    "message": "How can I edit my CAN details on the TN e-Sevai portal?",
    "expected": [
-    "tnesevai"
+    null
    ],
-   "relation": false
+   "relation": false,
+   "note": "27 Oct 2026: page 17 deleted (owner decision); this set runs on staging only."
   },
   {
    "message": "What documents do I need to file my income tax return?",
@@ -179,9 +180,10 @@
   {
    "message": "How do I get a birth certificate?",
    "expected": [
-    null
+    "krishnagiri"
    ],
-   "relation": false
+   "relation": false,
+   "note": "Relabelled 28 Oct 2026, the same label as answers.json and safety.json (decided 27 Oct before any run): N8, Registration of Births and Deaths, states how the birth certificate is issued. This set runs on staging only, where N8 is stored."
   },
   {
    "message": "How do I apply for a marriage certificate?",
@@ -214,8 +216,8 @@
   {
    "message": "Update my Aadhaar address and renew my passport.",
    "expected": [
-    "uidai",
-    "passportindia"
+    "updating-data-on-aadhaar",
+    "psp/Apply"
    ],
    "relation": false
   },

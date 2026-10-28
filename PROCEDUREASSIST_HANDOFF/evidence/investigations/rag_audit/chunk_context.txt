@@ -1,0 +1,50 @@
+{'later chunks': 114, 'start at heading': 40, 'repeat previous paragraph (overlap)': 50, 'start mid-section': 24}
+chunks starting mid-section (page, chunk, first paragraph, last heading in previous chunk):
+   (15, 9, 'Once on your dashboard, click on ‘Services’ button on the ‘Overview pa', '-')
+   (15, 10, 'Prerequisite step: Select RPO (Regional Passport Office) based on your', '-')
+   (15, 13, 'Portal. The Appointment Confirmation screen is displayed along with ap', '-')
+   (16, 490, 'You can edit your contact details, filing status, residential status a', 'ITR-2 has the following sections that you need to fill (appl')
+   (16, 491, 'An assessee having income from a business or profession can opt out of', '3. Filing Status:')
+   (16, 493, '3.5 Schedule 112A and Schedule-115AD(1)(iii) proviso', '4. Bank Details:')
+   (16, 494, '3.7 Schedule Other Sources', '-')
+   (18, 515, 'Since an individual can enrol anywhere in India, it may happen that a ', 'Demographic data update, the need could arise from:')
+   (19, 147, 'fill form 7 (link to online form) Please fill Form 8 (Link to online f', '-')
+   (19, 148, 'Registration Officers and Booth Level Officers. The application accomp', '-')
+   (20, 529, 'Resources QR Code Advt. published on 16.07.2023 Newspapers in State By', 'When is the Election?')
+   (27, 156, '10 Issue or renewal of licence to a school or establishment for impart', '-')
+   (30, 76, 'Transfer of ownership of vehicle purchased in public auction When a ve', '-')
+   (30, 78, 'Vehicle Rules 1989', '-')
+   (30, 80, 'Transfer of ownership on death of owner of the vehicle Form 31 Certifi', '-')
+   (30, 81, 'Transfer of ownership of vehicle purchased in public auction Form 32 C', '-')
+   (33, 557, 'Step 11: On the Preview and Submit Your Return page, select the declar', 'Note:')
+   (33, 560, 'Where the return of is uploaded but e-verification or ITR-V is submitt', 'Note:')
+   (39, 589, '4. Issue or renewal of certificate of registration and assignment of n', '4. Issue or renewal of certificate of registration and assig')
+   (39, 590, '4. Issue or renewal of certificate of registration and assignment of n', '-')
+   (39, 591, '4. Issue or renewal of certificate of registration and assignment of n', '-')
+   (39, 593, '8. Recording alteration in the certificate of registration Half of the', '-')
+   (39, 598, 'Note 2: Where the certificate of registration issued is in the form of', '-')
+   (40, 586, 'prescribed contribution amount from the age of joining APY till age 60', '-')
+
+== procedureassist_staging: sentences cut across a chunk boundary
+  page 15: chunk 12 ends '...payment, applicant is redirected to the Passport Seva Online' | chunk 13 starts 'Portal. The Appointment Confirmation screen is displayed alo...'
+  page 19: chunk 146 ends '... to online form) For Deletion or Objection in electoral roll' | chunk 147 starts 'fill form 7 (link to online form) Please fill Form 8 (Link t...'
+  page 19: chunk 147 ends '...ces of Electoral Registration Officers / Assistant Electoral' | chunk 148 starts 'Registration Officers and Booth Level Officers. The applicat...'
+  page 20: chunk 528 ends '...0 Im Ready Girl.jpg By Director (SVEEP) , September 13, 2018' | chunk 529 starts 'Resources QR Code Advt. published on 16.07.2023 Newspapers i...'
+  page 30: chunk 75 ends '...ath of the owner and of his own intention to use the vehicle' | chunk 76 starts 'Transfer of ownership of vehicle purchased in public auction...'
+  page 30: chunk 77 ends '...ate fee and tax as specified in rule 81 of the Central Motor' | chunk 78 starts 'Vehicle Rules 1989...'
+  page 30: chunk 80 ends '...n Form 20 * Passport size photograph * Proof of succession *' | chunk 81 starts 'Transfer of ownership of vehicle purchased in public auction...'
+  page 40: chunk 585 ends '...e subscriber. The subscribers are required to contribute the' | chunk 586 starts 'prescribed contribution amount from the age of joining APY t...'
+  total: 8
+
+== procedureassist: sentences cut across a chunk boundary
+  page 15: chunk 12 ends '...payment, applicant is redirected to the Passport Seva Online' | chunk 13 starts 'Portal. The Appointment Confirmation screen is displayed alo...'
+  page 19: chunk 47 ends '... to online form) For Deletion or Objection in electoral roll' | chunk 48 starts 'fill form 7 (link to online form) Please fill Form 8 (Link t...'
+  page 19: chunk 48 ends '...ces of Electoral Registration Officers / Assistant Electoral' | chunk 49 starts 'Registration Officers and Booth Level Officers. The applicat...'
+  page 20: chunk 55 ends '... 2018 0 Poster BSF.jpg By Director (SVEEP) , October 3, 2018' | chunk 56 starts 'Resources QR Code Advt. published on 16.07.2023 Newspapers i...'
+  page 30: chunk 75 ends '...ath of the owner and of his own intention to use the vehicle' | chunk 76 starts 'Transfer of ownership of vehicle purchased in public auction...'
+  page 30: chunk 77 ends '...ate fee and tax as specified in rule 81 of the Central Motor' | chunk 78 starts 'Vehicle Rules 1989...'
+  page 30: chunk 80 ends '...n Form 20 * Passport size photograph * Proof of succession *' | chunk 81 starts 'Transfer of ownership of vehicle purchased in public auction...'
+  page 31: chunk 82 ends '...ons on which I can get tax benefit Assisted filing Downloads' | chunk 83 starts 'Company Domestic Company Return / Forms applicable to me Tax...'
+  page 32: chunk 91 ends '...ons on which I can get tax benefit Assisted filing Downloads' | chunk 92 starts 'Company Domestic Company Return / Forms applicable to me Tax...'
+  page 33: chunk 96 ends '...ons on which I can get tax benefit Assisted filing Downloads' | chunk 97 starts 'Company Domestic Company Return / Forms applicable to me Tax...'
+  total: 10

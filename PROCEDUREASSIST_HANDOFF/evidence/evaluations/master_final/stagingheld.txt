@@ -1,0 +1,66 @@
+ok   [fees] What is the fee to add another class of vehicle to my drivin 1 claims (4s)
+       claim {"procedure_id": 27, "chunk_id": 155, "text": "The fee for adding another class of vehicle to a driving licence is Rs. 500.00/-", "quote": "Addition of another class of vehicle to driving licence Rs. 500.00/-."}
+ok   [fees] How much does it cost to appeal against an order of the lice 1 claims (4s)
+       claim {"procedure_id": 27, "chunk_id": 156, "text": "12 An appeal against the orders of licensing authority referred to in rule 29 Rs. 500.00/-", "quote": "12 An appeal against the orders of licensing authority referred to in rule 29 Rs. 500.00/-"}
+ok   [fees] What is the fee for a duplicate licence for my driving schoo 1 claims (4s)
+       claim {"procedure_id": 27, "chunk_id": 156, "text": "The fee for a duplicate licence for a school or establishment for imparting instructions in driving is Rs. 5000.00/-.", "quote": "Issue of duplicate licence to a school or establishment for imparting instructions in driving Rs. 5000.00/-."}
+FAIL [fees] What is the fee for renewing my driving licence after the gr identify: ['https://parivahan.gov.in/en/content/renewal'] (6s)
+ok   [fees] How much does a demographic update cost at a post office if  1 claims (4s)
+       claim {"procedure_id": 35, "chunk_id": 158, "text": "6 Demographic update: Update of enrolled name, gender, date of birth, address, mobile number or email address, or any combination - If done separately ₹75", "quote": "6 Demographic update: Update of enrolled name, gender, date of birth, address, mobile number or email address, or any combination - If done separately ₹75"}
+ok   [fees] Is Aadhaar enrolment free at the post office?                1 claims (partial) (6s)
+       claim {"procedure_id": 35, "chunk_id": 157, "text": "Aadhaar Enrolment is done free of cost in Post Offices", "quote": "The Aadhaar Enrolments are done free of cost in Post Offices"}
+ok   [eligibility] Can someone under 18 get a learner's licence?                1 claims (4s)
+       claim {"procedure_id": 22, "chunk_id": 346, "text": "An applicant under the age of eighteen years shall be granted a learner's license to drive a motor cycle without gear except with the consent in writing of the person having the care of the person desiring a learner's license.", "quote": "An applicant under the age of eighteen years shall be granted a learner's license to drive a motor cycle without gear except with the consent in writing of the person having the care of the person desiring a learner's license."}
+ok   [eligibility] Who are the licensing authorities for driving licences?      2 claims (4s)
+       claim {"procedure_id": 22, "chunk_id": 346, "text": "The Licensing Authorities are the Joint Commissioner/ Deputy Commissioner and the Regional Transport Officers.", "quote": "The Joint Commissioner/ Deputy Commissioner and the Regional Transport Officers are the Licensing Authorities."}
+       claim {"procedure_id": 22, "chunk_id": 346, "text": "The Additional Licensing Authorities are the Administrative Officers and Motor Vehicle Inspectors.", "quote": "The Administrative Officers and Motor Vehicle Inspectors are the Additional Licensing Authorities."}
+ok   [documents] Which form is used to apply for a permanent driving licence? 1 claims (3s)
+       claim {"procedure_id": 23, "chunk_id": 535, "text": "The form used to apply for a permanent driving licence is Form 4.", "quote": "An application in Form 4, for a permanent driving licence shall be made along with the Learners' Licence obtained for such class of vehicle."}
+ok   [documents] Which form do NRI voters fill to register?                   2 claims (7s)
+       claim {"procedure_id": 21, "chunk_id": 530, "text": "The form to be filled by NRI voters to register is Form 6A.", "quote": "Fill Form 6A online at https://voterportal.eci.gov.in/ and upload the requisite proofs."}
+       claim {"procedure_id": 21, "chunk_id": 531, "text": "Form 6A can be filled online or downloaded from the ECI website.", "quote": "Fill Form 6A online at https://voterportal.eci.gov.in/ and upload the requisite proofs. Alternatively download Form 6A from ECI website www.eci.gov.in ."}
+FAIL [documents] Which form is used to correct entries in the electoral roll? asks to choose: ['https://ecisveep.nic.in/voters/overseas-voters', 'https://ecisveep.nic.in/voters/general-voters'] (0s)
+ok   [deadlines] Within how many days must a buyer apply for ownership transf 1 claims (5s)
+       claim {"procedure_id": 30, "chunk_id": 77, "text": "Within fourteen days of the transfer, application for the transfer of ownership of a motor vehicle shall be made by the transferee in Form 30 to the registering authorities", "quote": "within fourteen days of the transfer, application for the transfer of ownership of a motor vehicle shall be made by the transferee in Form 30 to the registering authorities"}
+ok   [deadlines] How long can a legal heir use a vehicle after the owner dies 1 claims (6s)
+       claim {"procedure_id": 30, "chunk_id": 75, "text": "The person succeeding to the possession of the vehicle may for a period of three months, use the vehicle as if it has been transferred to him where such person has, within thirty days of the death of the owner informs the registering authority of the occurrence of the death of the owner and of his own intention to use the vehicle", "quote": "The person succeeding to the possession of the vehicle may for a period of three months, use the vehicle as if it has been transferred to him where such person has, within thirty days of the death of the owner informs the registering authority of the occurrence of the death of the owner and of his own intention to use the vehicle"}
+ok   [deadlines] How quickly must employers remit EDLI contributions?         1 claims (5s)
+       claim {"procedure_id": 38, "chunk_id": 573, "text": "Employers must remit contributions within 15 days of the close of every month by bank draft, cheque, cash, or electronic transfer.", "quote": "Employers must remit contributions within 15 days of the close of every month by bank draft, cheque, cash, or electronic transfer."}
+ok   [amounts] What percentage of wages does the employer contribute to EDL 2 claims (6s)
+       claim {"procedure_id": 38, "chunk_id": 575, "text": "An employer also pays 0.5% of Pay in EDLI Scheme.", "quote": "An employer also pays 0.5% of Pay in EDLI Scheme."}
+       claim {"procedure_id": 38, "chunk_id": 572, "text": "Employers contribute 0.5% of wages, with no deduction from employees.", "quote": "Employers contribute 0.5% of wages, with no deduction from employees."}
+ok   [amounts] At what age can I withdraw my full EPF?                      1 claims (5s)
+       claim {"procedure_id": 36, "chunk_id": 564, "text": "Full withdrawal allowed at retirement (58 years), permanent disability, or unemployment (after 2 months).", "quote": "Full withdrawal allowed at retirement (58 years), permanent disability, or unemployment (after 2 months)."}
+ok   [voting] What is the voter helpline number?                           1 claims (5s)
+       claim {"procedure_id": 20, "chunk_id": 525, "text": "Voters can call the Voter Helpline, the number is 1950 (please add your STD code before dialling)", "quote": "Voters can call the Voter Helpline, the number is 1950 (please add your STD code before dialling)"}
+ok   [voting] Can I take my mobile phone into the polling booth?           1 claims (6s)
+       claim {"procedure_id": 20, "chunk_id": 525, "text": "Mobile phones, cameras or any other gadget is not allowed inside a polling booth.", "quote": "Mobile phones, cameras or any other gadget is not allowed inside a polling booth."}
+ok   [voting] How long is the VVPAT slip visible?                          1 claims (6s)
+       claim {"procedure_id": 20, "chunk_id": 526, "text": "Check the slip that appears in the transparent window of the VVPAT machine. The slip with the Candidate serial No., Name and Symbol shall be visible for 7 seconds before it drops in the sealed VVPAT box", "quote": "Check the slip that appears in the transparent window of the VVPAT machine. The slip with the Candidate serial No., Name and Symbol shall be visible for 7 seconds before it drops in the sealed VVPAT box"}
+ok   [Tamil] EPF la employer evlo percentage contribute pannuvanga?       1 claims (partial) (7s)
+       claim {"procedure_id": 36, "chunk_id": 563, "text": "Both employee and employer contribute 12% of basic wages + dearness allowance.", "quote": "Both employee and employer contribute 12% of basic wages + dearness allowance."}
+FAIL [Tamil] வாக்காளர் உதவி எண் என்ன?                                     missed answer: no verified claim (5s)
+ok   [Tamil] International driving permit ku enna documents venum?        2 claims (5s)
+       claim {"procedure_id": 26, "chunk_id": 68, "text": "The applicant must provide a valid driving Licence held by them and copies thereon.", "quote": "Valid driving Licence held by the applicant and copies thereon."}
+       claim {"procedure_id": 26, "chunk_id": 68, "text": "The applicant must provide copies of Passport, Visa (where applicable) and Air ticket for verification.", "quote": "Copies of Passport, Visa ( where applicable) and Air ticket for verification."}
+ok   [not stated] How much is the passport fee for 36 pages?                   abstained (2s)
+ok   [not stated] What is the fee to renew my vehicle RC?                      abstained (1s)
+ok   [outside] How do I apply for an Ayushman Bharat card?                  [None] (0s)
+FAIL [ambiguous] What is the fee?                                             asks which service: Which service or document is your question about? For example: passport renewal or Aadhaar address update. (0s)
+ok   [ambiguous] How do I apply for a licence?                                ['ambiguous'] (0s)
+
+23/27 as expected end to end
+  Tamil: 2/3
+  ambiguous: 1/2
+  amounts: 2/2
+  deadlines: 3/3
+  documents: 2/3
+  eligibility: 2/2
+  fees: 5/6
+  not stated: 2/2
+  outside: 1/1
+  voting: 3/3
+outcomes: {'correct': 17, 'appropriate abstention or no match': 3, 'correct (partial, flagged)': 2, 'clarification': 2, 'retrieval failure': 1, 'missed answer': 1, 'clarification (expected)': 1}
+failures by stage: {'identify': 1, 'asks to choose': 1, 'missed answer': 1, 'asks which service': 1}
+identification: {'correct': 24, 'asked': 2, 'confident wrong page': 1}
+latency per question: median 5s, max 7s

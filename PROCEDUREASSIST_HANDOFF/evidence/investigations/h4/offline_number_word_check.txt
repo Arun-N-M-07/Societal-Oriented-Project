@@ -1,0 +1,5 @@
+KEPT     correct, in words
+REJECTED correct, in digits
+KEPT     WRONG age in words
+REJECTED WRONG age in digits
+REJECTED model's actual quote (The applicant)

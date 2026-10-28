@@ -58,7 +58,7 @@ describe("citizen workflow", () => {
   });
 
   it("shows the matched procedure with steps, eligibility, link and disclaimer", async () => {
-    vi.mocked(api.identifyProcedure).mockResolvedValue({ status: "matched", candidates: [passport] });
+    vi.mocked(api.identifyProcedure).mockResolvedValue({ status: "matched", candidates: [passport], named: true });
     render(<CitizenPage />);
     search();
 
@@ -76,13 +76,41 @@ describe("citizen workflow", () => {
   });
 
   it("hides eligibility when the approved record has none", async () => {
-    vi.mocked(api.identifyProcedure).mockResolvedValue({ status: "matched", candidates: [passport] });
+    vi.mocked(api.identifyProcedure).mockResolvedValue({ status: "matched", candidates: [passport], named: true });
     vi.mocked(api.getProcedure).mockResolvedValue({ ...passportDetail, eligibility: null });
     render(<CitizenPage />);
     search();
 
     await screen.findByRole("heading", { name: passport.name });
     expect(screen.queryByText("Who can apply")).toBeNull();
+  });
+
+  it("does not present a procedure the citizen did not name when its page answers nothing", async () => {
+    vi.mocked(api.identifyProcedure).mockResolvedValue({ status: "matched", candidates: [passport] });
+    render(<CitizenPage />);
+    search("How do I get a marriage certificate?");
+
+    expect(await screen.findByText(/No approved official information answers this question yet/)).toBeTruthy();
+    expect(screen.queryByRole("heading", { name: passport.name })).toBeNull();
+    expect(screen.queryByText(/does not answer this question/)).toBeNull();
+    // Nothing is left open: the next question is searched afresh.
+    await waitFor(() => expect(screen.getByRole("button", { name: "Send" }).hasAttribute("disabled")).toBe(false));
+    search("How do I renew my passport?");
+    await waitFor(() => expect(api.identifyProcedure).toHaveBeenCalledTimes(2));
+  });
+
+  it("shows a procedure the citizen did not name once its page answers", async () => {
+    vi.mocked(api.identifyProcedure).mockResolvedValue({ status: "matched", candidates: [passport] });
+    vi.mocked(api.askGuidance).mockResolvedValue({
+      procedure_id: 13, source_url: passportDetail.source_url, insufficient_evidence: false, omitted_claims: 0,
+      claims: [{ text: "Register on the portal first.", chunk_id: 1, quote: "Register on the portal" }],
+    });
+    render(<CitizenPage />);
+    search();
+
+    expect(await screen.findByText("Register on the portal first.")).toBeTruthy();
+    expect(screen.getByRole("heading", { name: passport.name })).toBeTruthy();
+    expect(screen.getByText(passport.name, { selector: "strong" })).toBeTruthy(); // open for follow-ups
   });
 
   it("lets the citizen choose between plausible procedures", async () => {
@@ -112,7 +140,7 @@ describe("citizen workflow", () => {
   it("shows errors and retries without losing the question", async () => {
     vi.mocked(api.identifyProcedure)
       .mockRejectedValueOnce(new Error("The search service is unavailable. Try again."))
-      .mockResolvedValueOnce({ status: "matched", candidates: [passport] });
+      .mockResolvedValueOnce({ status: "matched", candidates: [passport], named: true });
     render(<CitizenPage />);
     search();
 
@@ -134,7 +162,7 @@ describe("citizen workflow", () => {
 
 describe("follow-up questions", () => {
   beforeEach(async () => {
-    vi.mocked(api.identifyProcedure).mockResolvedValue({ status: "matched", candidates: [passport] });
+    vi.mocked(api.identifyProcedure).mockResolvedValue({ status: "matched", candidates: [passport], named: true });
     render(<CitizenPage />);
     search();
     await screen.findByRole("heading", { name: passport.name });
@@ -394,7 +422,7 @@ describe("Tamil questions", () => {
   });
 
   it("follow-ups about the open procedure are sent with the selected language", async () => {
-    vi.mocked(api.identifyProcedure).mockResolvedValue({ status: "matched", candidates: [passport] });
+    vi.mocked(api.identifyProcedure).mockResolvedValue({ status: "matched", candidates: [passport], named: true });
     vi.mocked(api.askGuidance).mockResolvedValueOnce({
       procedure_id: 13, source_url: passportDetail.source_url, insufficient_evidence: true, claims: [], omitted_claims: 0,
     }).mockResolvedValueOnce({
@@ -476,7 +504,7 @@ describe("follow-ups the open procedure cannot answer", () => {
   };
 
   async function openPassport() {
-    vi.mocked(api.identifyProcedure).mockResolvedValueOnce({ status: "matched", candidates: [passport] });
+    vi.mocked(api.identifyProcedure).mockResolvedValueOnce({ status: "matched", candidates: [passport], named: true });
     render(<CitizenPage />);
     search();
     await screen.findByRole("heading", { name: passport.name });
@@ -498,6 +526,22 @@ describe("follow-ups the open procedure cannot answer", () => {
     expect(screen.getAllByText(/does not answer this question/)).toHaveLength(1);
   });
 
+  it("stay with the open procedure when the page the search finds cannot answer either", async () => {
+    await openPassport();
+    vi.mocked(api.askGuidance).mockResolvedValueOnce(refusal)
+      .mockResolvedValueOnce({ ...refusal, procedure_id: 27, source_url: "https://parivahan.gov.in/fees" });
+    vi.mocked(api.identifyProcedure).mockResolvedValueOnce({ status: "matched", candidates: [fees] });
+    vi.mocked(api.getProcedure).mockResolvedValueOnce({ ...fees, eligibility: null, steps: ["Pay."], source_url: "https://parivahan.gov.in/fees" });
+    ask("Can I pay in cash?");
+
+    await waitFor(() => expect(api.askGuidance).toHaveBeenLastCalledWith(27, "Can I pay in cash?", "en"));
+    await waitFor(() => expect(screen.getAllByText(/does not answer this question/)).toHaveLength(2));
+    expect(screen.queryByRole("heading", { name: fees.name })).toBeNull();
+    expect(screen.getByText(passport.name, { selector: "strong" })).toBeTruthy(); // still asking about the passport
+    const links = screen.getAllByRole("link", { name: "official page" }).map((link) => link.getAttribute("href"));
+    expect(links).toEqual([passportDetail.source_url, passportDetail.source_url]);
+  });
+
   it("keep the refusal when the search finds the same procedure or nothing", async () => {
     await openPassport();
     vi.mocked(api.askGuidance).mockResolvedValue(refusal);
@@ -511,21 +555,63 @@ describe("follow-ups the open procedure cannot answer", () => {
     expect(api.askGuidance).toHaveBeenCalledTimes(3);
   });
 
-  it("are not searched again when the open procedure answers them", async () => {
+  it("stay with the open procedure when it answers them and they name no other procedure", async () => {
     await openPassport();
+    // Another page matches the words, but the follow-up does not name it ("the certificate", "the pension").
+    vi.mocked(api.identifyProcedure).mockResolvedValueOnce({ status: "matched", candidates: [fees] });
     vi.mocked(api.askGuidance).mockResolvedValueOnce({ ...feeAnswer, procedure_id: 13 });
     ask("Which documents do I need?");
     expect(await screen.findByText("Renewal costs Rs. 200.")).toBeTruthy();
-    expect(api.identifyProcedure).toHaveBeenCalledTimes(1);
+    expect(api.askGuidance).toHaveBeenLastCalledWith(13, "Which documents do I need?", "en");
+    expect(api.askGuidance).toHaveBeenCalledTimes(2);
+    expect(screen.queryByRole("heading", { name: fees.name })).toBeNull();
+  });
+});
+
+describe("follow-ups that name another procedure", () => {
+  const eps = { ...passport, id: 37, name: "Employees' Pension Scheme (EPS)", summary: "Pension." };
+  const epsAnswer = {
+    procedure_id: 37, source_url: "https://www.epfo.gov.in/pension-scheme-eps", insufficient_evidence: false, omitted_claims: 0,
+    claims: [{ text: "EPS gives a monthly pension.", chunk_id: 567, quote: "monthly pension" }],
+  };
+
+  async function openPassport() {
+    vi.mocked(api.identifyProcedure).mockResolvedValueOnce({ status: "matched", candidates: [passport], named: true });
+    render(<CitizenPage />);
+    search();
+    await screen.findByRole("heading", { name: passport.name });
+  }
+
+  it("are answered by the procedure they name, never by the open one", async () => {
+    await openPassport();
+    vi.mocked(api.identifyProcedure).mockResolvedValueOnce({ status: "matched", candidates: [eps], named: true });
+    vi.mocked(api.getProcedure).mockResolvedValueOnce({ ...eps, eligibility: null, steps: ["Join."], source_url: epsAnswer.source_url });
+    vi.mocked(api.askGuidance).mockResolvedValueOnce(epsAnswer);
+    ask("What about EPS?");
+
+    expect(await screen.findByText("EPS gives a monthly pension.")).toBeTruthy();
+    expect(api.askGuidance).toHaveBeenLastCalledWith(37, "What about EPS?", "en");
+    expect(api.askGuidance).not.toHaveBeenCalledWith(13, "What about EPS?", "en");
+    expect(screen.getByRole("heading", { name: eps.name })).toBeTruthy();
+  });
+
+  it("stay with the open procedure when the one they name is already open", async () => {
+    await openPassport();
+    vi.mocked(api.identifyProcedure).mockResolvedValueOnce({ status: "matched", candidates: [passport], named: true });
+    ask("What is the passport fee?");
+
+    await waitFor(() => expect(api.askGuidance).toHaveBeenLastCalledWith(13, "What is the passport fee?", "en"));
+    expect(api.getProcedure).toHaveBeenCalledTimes(1);
   });
 });
 
 describe("answers from a related official page", () => {
-  it("say which page answered", async () => {
+  it("name the page each related claim comes from", async () => {
     vi.mocked(api.identifyProcedure).mockResolvedValue({ status: "matched", candidates: [passport] });
     vi.mocked(api.askGuidance).mockResolvedValue({
-      procedure_id: 27, source_url: "https://parivahan.gov.in/fees", insufficient_evidence: false, omitted_claims: 0,
-      claims: [{ text: "The permit costs Rs. 1000.", chunk_id: 69, quote: "Issue of International Driving Permit Rs. 1000.00/-" }],
+      procedure_id: 13, source_url: passportDetail.source_url, insufficient_evidence: false, omitted_claims: 0,
+      claims: [{ text: "The permit costs Rs. 1000.", chunk_id: 69, quote: "Issue of International Driving Permit Rs. 1000.00/-",
+                 procedure_id: 27, source_url: "https://parivahan.gov.in/fees" }],
     });
     vi.mocked(api.getProcedure)
       .mockResolvedValueOnce(passportDetail)
@@ -533,9 +619,19 @@ describe("answers from a related official page", () => {
     render(<CitizenPage />);
     search("What is the fee for an International Driving Permit?");
 
-    expect(await screen.findByText("The permit costs Rs. 1000.")).toBeTruthy();
-    expect(screen.getByText("Driving Licence Fees and Charges")).toBeTruthy();
-    expect(screen.getByText(/From the related official page/)).toBeTruthy();
-    expect(screen.getByRole("link", { name: "Official page ↗" }).getAttribute("href")).toBe("https://parivahan.gov.in/fees");
+    expect(await screen.findByText("Driving Licence Fees and Charges:")).toBeTruthy();
+    expect(screen.getByText("The permit costs Rs. 1000.")).toBeTruthy();
+    expect(screen.getByRole("link", { name: "Open the official page" }).getAttribute("href")).toBe("https://parivahan.gov.in/fees");
+  });
+
+  it("say when the answer covers only part of the question", async () => {
+    vi.mocked(api.identifyProcedure).mockResolvedValue({ status: "matched", candidates: [passport] });
+    vi.mocked(api.askGuidance).mockResolvedValue({
+      procedure_id: 13, source_url: passportDetail.source_url, insufficient_evidence: false, omitted_claims: 0, partial: true,
+      claims: [{ text: "Register on the portal first.", chunk_id: 1, quote: "Register on the portal" }],
+    });
+    render(<CitizenPage />);
+    search();
+    expect(await screen.findByText(/may not cover every part of your question/)).toBeTruthy();
   });
 });

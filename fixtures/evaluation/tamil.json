@@ -7,7 +7,7 @@
    "meaning": "How to renew my passport",
    "accept": "How do I renew my passport?",
    "expected": [
-    "passportindia"
+    "psp/Apply"
    ],
    "relation": false,
    "keep": [
@@ -49,7 +49,7 @@
    "meaning": "I need to renew my passport",
    "accept": "How do I renew my passport?",
    "expected": [
-    "passportindia"
+    "psp/Apply"
    ],
    "relation": false,
    "keep": [
@@ -174,7 +174,7 @@
    "meaning": "unchanged",
    "accept": "(not normalized)",
    "expected": [
-    "passportindia"
+    "psp/Apply"
    ],
    "relation": false,
    "bypass": true
@@ -208,7 +208,7 @@
    "meaning": "Difference between applying for and renewing a passport",
    "accept": "What is the difference between applying for a passport and renewing one?",
    "expected": [
-    "passportindia"
+    "psp/Apply"
    ],
    "relation": false,
    "keep": [
@@ -269,7 +269,7 @@
    "meaning": "Can a passport be renewed without police verification",
    "accept": "Can I renew my passport without police verification?",
    "expected": [
-    "passportindia"
+    "psp/Apply"
    ],
    "relation": false,
    "keep": [
@@ -414,7 +414,7 @@
    "meaning": "What is needed to renew a passport",
    "accept": "What is needed to renew my passport?",
    "expected": [
-    "passportindia"
+    "psp/Apply"
    ],
    "relation": false,
    "keep": [
@@ -455,7 +455,7 @@
    "meaning": "Can I apply for a passport using Aadhaar as proof",
    "accept": "Can I apply for a passport using Aadhaar as proof?",
    "expected": [
-    "passportindia"
+    "psp/Apply"
    ],
    "relation": false,
    "keep": [

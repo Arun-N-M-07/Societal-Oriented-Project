@@ -1,0 +1,13 @@
+Sat Oct 24 00:59:35 IST 2026
+test_a_question_or_colon_heading_still_wins_over_a_lead_in (test_guidance.VerifyClaimsTest.test_a_question_or_colon_heading_still_wins_over_a_lead_in) ... ok
+test_the_document_kind_may_come_from_a_lead_in_without_a_colon (test_guidance.VerifyClaimsTest.test_the_document_kind_may_come_from_a_lead_in_without_a_colon) ... ok
+test_the_document_kind_may_come_from_the_question_a_list_answers (test_guidance.VerifyClaimsTest.test_the_document_kind_may_come_from_the_question_a_list_answers) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.001s
+
+OK
+--- full suite
+Ran 207 tests in 1.894s
+
+OK

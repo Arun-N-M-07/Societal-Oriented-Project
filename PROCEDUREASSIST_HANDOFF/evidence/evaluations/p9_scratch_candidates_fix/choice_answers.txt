@@ -1,0 +1,12 @@
+## I lost my PAN card. How do I get a duplicate?
+   identify: ambiguous ['Register on the e-Filing Portal', 'Instant e-PAN']
+   chose Register on the e-Filing Portal: abstained
+   chose Instant e-PAN: ['To get a duplicate PAN card, you can apply for an Instant e-PAN if you do not already have a PAN, have a valid Aadhaar linked to an active mobile numb', 'To apply for new e-PAN, click ‘Get New e-PAN’ on the e-PAN page on the e-Filing portal homepage.', 'During the process, you are redirected to DigiLocker to fetch your date of birth details and supporting proof, which are used as part of the PAN gener', 'If the document is available only in physical form, you can upload a self-attested scanned copy to DigiLocker and e-sign it, where this option is supp', 'If you do not have a DigiLocker account, you can create it during the e-PAN flow itself using your Aadhaar-linked mobile number for OTP verification, ', 'Once your e-PAN has been generated and allotted, you can click ‘View e-PAN’ to view it, ‘Download e-PAN’ to download a copy, or ‘Create e-Filing Accou']
+## What is the fee to apply for a PAN card?
+   identify: ambiguous ['Instant e-PAN', 'Link PAN with Aadhaar']
+   chose Instant e-PAN: ['No. The service is free of cost.']
+   chose Link PAN with Aadhaar: abstained
+## What is the fee for a passport?
+   identify: ambiguous ['Apply for Fresh / Re-issue Ordinary Passport', 'Apply for Police Clearance Certificate (PCC)']
+   chose Apply for Fresh / Re-issue Ordinary Passport: abstained
+   chose Apply for Police Clearance Certificate (PCC): abstained

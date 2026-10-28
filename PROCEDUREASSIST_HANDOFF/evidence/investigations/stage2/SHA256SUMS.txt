@@ -1,0 +1,16 @@
+Copied 25 Oct 2026 from /private/tmp/claude-501/-Users-arunnm-Projects-SOP/bebaf14e-7bdf-4da2-8b3f-9c2a6edb540d/scratchpad/stage2 with cp -p; byte-identical (cmp).
+  25 Oct 09:01  993664e4317ce676fc52b9d675326a0cfd2f4248c534d5fe1bb8bc2bf611f61f  w1_followups.py
+  25 Oct 09:01  e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  w1_followups_staging.err
+  25 Oct 09:03  55bc5e0c840dc6760789159920eb71d76aefe92bb155f887b71a8232c131c95f  w1_followups_staging.jsonl
+  25 Oct 09:04  92c87bc87fcb9605898c3f156022f7ba1d0cf08b6fb2c7104eb57d0f4920559a  w1_guard_sim.py
+  25 Oct 09:04  3b5fc7f8c13aca6b63bcec8b4aa9a4b4a0cc9a6577396fd4446180a79352cf5c  w1_guard_sim.txt
+  25 Oct 09:05  1c1b67ad7862512695e175fd396bb36f99b0a308ebb23c8b664cf3cfe38dcba8  w1_refined_sim.py
+  25 Oct 09:05  d939d6af550a3126442239f3a7ded8e2f972f555674b642db606068cb7578586  w1_refined_sim.txt
+  25 Oct 10:10  1e07834e4640a05ee6e1e4007e5323ba8a61a3f94e020fc21ec766484b73f5be  w2_real_compare.py
+  25 Oct 10:10  14250dd3cf0d2fc41223c46b38da18bcd4cc13d682531a10dcef32000eee69f2  w2_real_compare.txt
+  25 Oct 09:06  7747020d43c417a890616bcae3db1663e81c72c22a52cbe8e197a9fed01c4ad5  w2_w11_sim.py
+  25 Oct 09:06  dbcb31b39947933c29967b3acb8734e8c058faaef7a5c84ea903323a58bc75a9  w2_w11_sim.txt
+  25 Oct 09:06  a4483e95e2d013858fe7062dd9dbb08012faa63f99741737b3521e2ffc99b9fb  w3_identifiers.txt
+  25 Oct 09:08  087ff239a5340c508ca118cc38d6b4ee18fed66ba82a2f89207ca6a5900ee9a8  w3_reproduction.txt
+  25 Oct 09:08  7b4edf50f46446b6b50b81c6441e97bd6b9389c6435974c9cfd88abf8af1cf08  w3c4_w10.py
+  25 Oct 09:09  d6adbcea84a4f37b2324ab7a223ee3436b8dafcde0e5c07513815f61fc373960  w3c4_w10.txt

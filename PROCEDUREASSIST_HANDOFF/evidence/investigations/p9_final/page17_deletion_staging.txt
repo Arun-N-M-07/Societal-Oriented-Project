@@ -1,0 +1,10 @@
+database: procedureassist_staging
+DELETE 204
+pages 26 -> 25; chunks 140 -> 134; orphan chunks 0; every other procedure unchanged: True; every other chunk unchanged: True
+pages|25
+chunks|134
+procedures_md5|96697b50b666c5937d9e6bc10186123e
+chunks_md5|73da35b39dc3956bbaed33125ef6f6ca
+orphan_chunks|0
+embedding_dims|1024
+pages_with_index_gaps|0

@@ -1,0 +1,84 @@
+
+## What is the fee to renew my vehicle RC?
+   1. chunk 595 0.626 items 11,12,13,14,15,16 
+   2. chunk 587 0.606 items 1,2,3,4      
+   3. chunk 596 0.606 items 16           
+   4. chunk 594 0.590 items 10,11        
+   5. chunk 597 0.582 items 16           
+   6. chunk 591 0.567 items 4,5,6        <- RC renewal rows
+   7. chunk 593 0.564 items 8,9,10       
+   8. chunk 590 0.544 items 4            <- RC renewal rows
+   9. chunk 588 0.520 items 4            <- RC renewal rows
+  10. chunk 598 0.509 items              
+  11. chunk 589 0.501 items 4            <- RC renewal rows
+  12. chunk 592 0.468 items 6,7          
+
+## What is the fee to renew the RC of a motorcycle?
+   1. chunk 587 0.654 items 1,2,3,4      
+   2. chunk 595 0.647 items 11,12,13,14,15,16 
+   3. chunk 596 0.641 items 16           
+   4. chunk 591 0.623 items 4,5,6        <- RC renewal rows
+   5. chunk 594 0.621 items 10,11        
+   6. chunk 593 0.595 items 8,9,10       
+   7. chunk 597 0.580 items 16           
+   8. chunk 590 0.577 items 4            <- RC renewal rows
+   9. chunk 588 0.554 items 4            <- RC renewal rows
+  10. chunk 589 0.536 items 4            <- RC renewal rows
+  11. chunk 598 0.501 items              
+  12. chunk 592 0.467 items 6,7          
+
+## What is the fee to renew the registration certificate of my motorcycle?
+   1. chunk 591 0.738 items 4,5,6        <- RC renewal rows
+   2. chunk 587 0.730 items 1,2,3,4      
+   3. chunk 595 0.720 items 11,12,13,14,15,16 
+   4. chunk 596 0.714 items 16           
+   5. chunk 590 0.681 items 4            <- RC renewal rows
+   6. chunk 597 0.665 items 16           
+   7. chunk 593 0.658 items 8,9,10       
+   8. chunk 594 0.657 items 10,11        
+   9. chunk 588 0.634 items 4            <- RC renewal rows
+  10. chunk 589 0.613 items 4            <- RC renewal rows
+  11. chunk 598 0.590 items              
+  12. chunk 592 0.533 items 6,7          
+
+## RC renewal fee for a car
+   1. chunk 595 0.623 items 11,12,13,14,15,16 
+   2. chunk 596 0.603 items 16           
+   3. chunk 597 0.591 items 16           
+   4. chunk 591 0.565 items 4,5,6        <- RC renewal rows
+   5. chunk 587 0.560 items 1,2,3,4      
+   6. chunk 594 0.550 items 10,11        
+   7. chunk 593 0.531 items 8,9,10       
+   8. chunk 590 0.529 items 4            <- RC renewal rows
+   9. chunk 588 0.513 items 4            <- RC renewal rows
+  10. chunk 598 0.492 items              
+  11. chunk 589 0.480 items 4            <- RC renewal rows
+  12. chunk 592 0.460 items 6,7          
+
+## What is the fitness test fee for a motorcycle?
+   1. chunk 594 0.690 items 10,11        
+   2. chunk 593 0.571 items 8,9,10       
+   3. chunk 595 0.529 items 11,12,13,14,15,16 
+   4. chunk 587 0.507 items 1,2,3,4      
+   5. chunk 591 0.473 items 4,5,6        <- RC renewal rows
+   6. chunk 590 0.454 items 4            <- RC renewal rows
+   7. chunk 598 0.437 items              
+   8. chunk 596 0.434 items 16           
+   9. chunk 592 0.408 items 6,7          
+  10. chunk 588 0.392 items 4            <- RC renewal rows
+  11. chunk 597 0.388 items 16           
+  12. chunk 589 0.387 items 4            <- RC renewal rows
+
+## How much does a duplicate RC cost?
+   1. chunk 587 0.492 items 1,2,3,4      
+   2. chunk 591 0.464 items 4,5,6        <- RC renewal rows
+   3. chunk 595 0.428 items 11,12,13,14,15,16 
+   4. chunk 598 0.422 items              
+   5. chunk 596 0.401 items 16           
+   6. chunk 588 0.401 items 4            <- RC renewal rows
+   7. chunk 590 0.399 items 4            <- RC renewal rows
+   8. chunk 593 0.393 items 8,9,10       
+   9. chunk 589 0.392 items 4            <- RC renewal rows
+  10. chunk 594 0.381 items 10,11        
+  11. chunk 597 0.371 items 16           
+  12. chunk 592 0.326 items 6,7          

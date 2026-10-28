@@ -33,6 +33,20 @@ describe("admin requests", () => {
   });
 });
 
+describe("failed requests", () => {
+  it("have a time limit and say whether the server is unreachable or too slow", async () => {
+    const fetchMock = vi.fn().mockRejectedValue(new TypeError("Failed to fetch"));
+    vi.stubGlobal("fetch", fetchMock);
+    vi.resetModules();
+    const { extractProcedure, UNREACHABLE } = await import("./api");
+
+    await expect(extractProcedure("https://example.gov.in/x")).rejects.toThrow(UNREACHABLE);
+    expect(fetchMock.mock.calls[0][1].signal).toBeDefined();
+    fetchMock.mockRejectedValue(new DOMException("The operation timed out.", "TimeoutError"));
+    await expect(extractProcedure("https://example.gov.in/x")).rejects.toThrow("took too long");
+  });
+});
+
 afterEach(() => {
   vi.unstubAllEnvs();
   vi.unstubAllGlobals();

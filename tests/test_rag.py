@@ -16,8 +16,10 @@ from backend.rag import (
     QUERY_INSTRUCTION,
     EmbeddingError,
     backfill,
+    _is_heading,
     chunk_text,
     embed_texts,
+    retrieve,
 )
 from db_support import DatabaseTestCase, unit_vector
 
@@ -62,6 +64,23 @@ class ChunkTextTest(unittest.TestCase):
         self.assertEqual(len(chunks), 2)
         self.assertTrue(chunks[1].startswith("Required documents"))
 
+    def test_starts_the_next_chunk_at_the_heading_of_a_list_it_would_split(self):
+        steps = [f"Step {n}: the polling official does task number {n} for you." * 2 for n in range(1, 8)]
+        text = "Intro " + "y" * 700 + "\n\nHow do I vote in person?\n\n" + "\n\n".join(steps)
+        chunks = chunk_text(text)
+
+        self.assertEqual(len(chunks), 2)
+        self.assertTrue(chunks[1].startswith("How do I vote in person?\n\nStep 1:"))
+        self.assertTrue(all(step in chunks[1] for step in steps))
+
+    def test_only_questions_and_lead_ins_are_headings(self):
+        for heading in ["How do I vote in person?", "Who It Covers?", "Prerequisites:",
+                        "7. What are the documents required for applying Community Certificate?"]:
+            self.assertTrue(_is_heading(heading), heading)
+        for item in ["Photo", "Address Proof", "Valid mobile number", "Requirements",
+                     "8 Renewal of driving licence Rs. 200.00/-", "Age group: 18-54 years."]:
+            self.assertFalse(_is_heading(item), item)
+
     def test_is_deterministic(self):
         text = "\n\n".join("Paragraph " + "z " * i for i in range(200))
         self.assertEqual(chunk_text(text), chunk_text(text))
@@ -101,6 +120,20 @@ class EmbedTextsTest(unittest.TestCase):
                 post.return_value = None if isinstance(outcome, Exception) else outcome
                 with self.assertRaises(EmbeddingError):
                     embed_texts(["one text"])
+
+    @patch("backend.rag.httpx.post")
+    def test_retries_a_transient_failure_once_but_never_a_timeout(self, post):
+        for first in (self.response([], status=400), self.response([], status=503), httpx.ConnectError("reset")):
+            with self.subTest(first=getattr(first, "status_code", type(first).__name__)):
+                post.reset_mock()
+                post.side_effect = [first, self.response([unit_vector()])]
+                self.assertEqual(len(embed_texts(["one text"])), 1)
+                self.assertEqual(post.call_count, 2)
+        post.reset_mock()
+        post.side_effect = [httpx.ReadTimeout("slow"), self.response([unit_vector()])]
+        with self.assertRaises(EmbeddingError):
+            embed_texts(["one text"])
+        self.assertEqual(post.call_count, 1)
 
 
 class IndexingTest(DatabaseTestCase):
@@ -170,3 +203,59 @@ class IndexingTest(DatabaseTestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+RC = "4. Issue or renewal of certificate of registration and assignment of new registration mark"
+
+
+class RetrieveTest(DatabaseTestCase):
+    def page(self, name, contents):
+        procedure = Procedure(name=name, summary="s", source_url=f"https://example.gov.in/{name}", source_text="\n\n".join(contents),
+                              structured_data={"eligibility": None, "steps": ["One"]})
+        self.session.add(procedure)
+        self.session.flush()
+        chunks = [ProcedureChunk(procedure_id=procedure.id, chunk_index=i, content=c, embedding=unit_vector(i)) for i, c in enumerate(contents)]
+        self.session.add_all(chunks)
+        self.session.flush()
+        return procedure, [c.id for c in chunks]
+
+    def retrieved(self, procedure, closest, limit=1, question="What is the fee to renew the registration certificate?"):
+        self.embed.side_effect = lambda texts, query=False: [unit_vector(closest)]
+        return [c.id for c in retrieve(self.session, procedure.id, question, limit)]
+
+    def test_a_table_item_running_over_chunks_comes_with_the_chunk_it_starts_in(self):
+        fees, ids = self.page("Fee table", [
+            f"3. Recording of change of address Rupees Two Hundred Only\n\n{RC}:",
+            f"{RC}: (a) Invalid Carriage Rupees Fifty Only\n\n{RC}: (b) Motor cycle Rupees Three Hundred Only",
+            f"{RC}: (c) Light Motor Vehicles Rupees Six Hundred Only\n\n5. Issue of duplicate certificate of registration Half of the fee",
+            "9. Endorsing hire purchase/lease/hypothecation agreement: (c) Medium or heavy vehicle Rupees Three Thousand Only",
+            "10. Conducting test of a vehicle for grant or renewal of certificate of fitness: (a) Motorcycle Rupees Two Hundred Only",
+        ])
+        # Another page whose chunk starts with the same item is never added.
+        self.page("Other", ["Intro", f"{RC}: (b) Motor cycle Rupees Nine Hundred Only"])
+        self.assertEqual(self.retrieved(fees, 0), [ids[0], ids[1], ids[2]])  # the retrieved chunk first, then item 4's rows
+        # Item 9 never brings item 10, and a chunk that ends with an item's last row brings nothing.
+        self.assertEqual(self.retrieved(fees, 3), [ids[3]])
+        self.assertEqual(self.retrieved(fees, 2), [ids[2]])
+
+    def test_an_item_continues_only_under_exactly_the_same_label(self):
+        page, ids = self.page("Permits", ["1. Issue of a permit for goods carriage:",
+                                          "1. Issue of a permit for goods carriage vehicles: (a) Rupees One Thousand Only"])
+        self.assertEqual(self.retrieved(page, 0, question="What is the fee for a goods carriage permit?"), [ids[0]])
+
+    def test_an_item_the_question_is_not_about_does_not_come_along(self):
+        fitness = "10. Conducting test of a vehicle for grant or renewal of certificate of fitness"
+        fees, ids = self.page("Fees", [
+            f"9. Endorsing hire purchase/lease/hypothecation agreement: (b) Light motor vehicle Rupees One Thousand Only\n\n{fitness}:",
+            f"{fitness}: (a) Motorcycle (i) Manual: Rupees Two Hundred Only",
+        ])
+        # A hypothecation question retrieves the chunk that happens to end with item 10, but not item 10's rows.
+        self.assertEqual(self.retrieved(fees, 0, question="What is the hypothecation endorsement fee for a car?"), [ids[0]])
+        self.assertEqual(self.retrieved(fees, 0, question="What is the fitness test fee for a motorcycle?"), [ids[0], ids[1]])
+        # "RC" is spelled out: an RC question uses the registration item's words.
+        rc, rc_ids = self.page("RC fees", [f"{RC}:", f"{RC}: (b) Motor cycle Rupees Three Hundred Only"])
+        self.assertEqual(self.retrieved(rc, 0, question="What is the fee to renew the RC of a motorcycle?"), rc_ids)
+
+    def test_pages_without_numbered_table_items_are_retrieved_as_before(self):
+        page, ids = self.page("Plain", ["How to apply:", "Step 1: Log in.", "Step 2: Fill the form."])
+        self.assertEqual(self.retrieved(page, 0, limit=2), [ids[0], ids[1]])

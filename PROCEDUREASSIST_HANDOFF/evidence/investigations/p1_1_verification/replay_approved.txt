@@ -1,0 +1,5 @@
+R2   approved80.txt               [30/77] 'Transfer of ownership in case of normal sale Where the ownership of a motor vehicle is transferred, the transferor shall' <- 'Transfer of ownership in case of normal sale Where the ownership of a motor vehicle is transferred, the transferor shall'
+R2   approvedheld.txt             [30/77] 'Within fourteen days of the transfer, application for the transfer of ownership of a motor vehicle shall be made by the ' <- 'within fourteen days of the transfer, application for the transfer of ownership of a motor vehicle shall be made by the '
+R1b  approved_safety.txt          [36/122] 'Apprentices can become EPF members.' <- 'Yes'
+
+202 distinct verified claims replayed; would reject: {'R2': 2, 'R1b': 1}

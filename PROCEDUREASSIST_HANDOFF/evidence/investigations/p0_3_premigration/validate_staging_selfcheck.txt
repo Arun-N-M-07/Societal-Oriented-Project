@@ -1,0 +1,115 @@
+ok   26 pages (found 26)
+ok   same URLs as staging (missing [], extra [])
+ok   text equals the reviewed staging text: Apply for Fresh / Re-issue Ordinary Passport
+ok   chunk indexes 0..n-1: Apply for Fresh / Re-issue Ordinary Passport
+ok   chunks equal chunk_text(source_text): Apply for Fresh / Re-issue Ordinary Passport
+ok   1024-value embeddings: Apply for Fresh / Re-issue Ordinary Passport
+ok   text equals the reviewed staging text: Filing of ITR-2
+ok   chunk indexes 0..n-1: Filing of ITR-2
+ok   chunks equal chunk_text(source_text): Filing of ITR-2
+ok   1024-value embeddings: Filing of ITR-2
+ok   text equals the reviewed staging text: REV-101 Community Certificate
+ok   chunk indexes 0..n-1: REV-101 Community Certificate
+ok   chunks equal chunk_text(source_text): REV-101 Community Certificate
+ok   1024-value embeddings: REV-101 Community Certificate
+FAIL page 17 renamed from its CAN-editing service name (now 'REV-101 Community Certificate')
+FAIL page 17 summary rewritten for the FAQ
+ok   text equals the reviewed staging text: Updating Data on Aadhaar
+ok   chunk indexes 0..n-1: Updating Data on Aadhaar
+ok   chunks equal chunk_text(source_text): Updating Data on Aadhaar
+ok   1024-value embeddings: Updating Data on Aadhaar
+ok   text equals the reviewed staging text: Register to Vote
+ok   chunk indexes 0..n-1: Register to Vote
+ok   chunks equal chunk_text(source_text): Register to Vote
+ok   1024-value embeddings: Register to Vote
+ok   text equals the reviewed staging text: How to Vote
+ok   chunk indexes 0..n-1: How to Vote
+ok   chunks equal chunk_text(source_text): How to Vote
+ok   1024-value embeddings: How to Vote
+ok   text equals the reviewed staging text: Overseas (NRI) Voter Registration
+ok   chunk indexes 0..n-1: Overseas (NRI) Voter Registration
+ok   chunks equal chunk_text(source_text): Overseas (NRI) Voter Registration
+ok   1024-value embeddings: Overseas (NRI) Voter Registration
+ok   text equals the reviewed staging text: Learner's Licence
+ok   chunk indexes 0..n-1: Learner's Licence
+ok   chunks equal chunk_text(source_text): Learner's Licence
+ok   1024-value embeddings: Learner's Licence
+ok   text equals the reviewed staging text: Permanent Driving Licence
+ok   chunk indexes 0..n-1: Permanent Driving Licence
+ok   chunks equal chunk_text(source_text): Permanent Driving Licence
+ok   1024-value embeddings: Permanent Driving Licence
+ok   text equals the reviewed staging text: Renewal of Driving Licence
+ok   chunk indexes 0..n-1: Renewal of Driving Licence
+ok   chunks equal chunk_text(source_text): Renewal of Driving Licence
+ok   1024-value embeddings: Renewal of Driving Licence
+ok   text equals the reviewed staging text: Duplicate Driving Licence
+ok   chunk indexes 0..n-1: Duplicate Driving Licence
+ok   chunks equal chunk_text(source_text): Duplicate Driving Licence
+ok   1024-value embeddings: Duplicate Driving Licence
+ok   text equals the reviewed staging text: International Driving Permit
+ok   chunk indexes 0..n-1: International Driving Permit
+ok   chunks equal chunk_text(source_text): International Driving Permit
+ok   1024-value embeddings: International Driving Permit
+ok   text equals the reviewed staging text: Driving Licence Fees and Charges
+ok   chunk indexes 0..n-1: Driving Licence Fees and Charges
+ok   chunks equal chunk_text(source_text): Driving Licence Fees and Charges
+ok   1024-value embeddings: Driving Licence Fees and Charges
+ok   text equals the reviewed staging text: Renewal of Vehicle Registration Certificate
+ok   chunk indexes 0..n-1: Renewal of Vehicle Registration Certificate
+ok   chunks equal chunk_text(source_text): Renewal of Vehicle Registration Certificate
+ok   1024-value embeddings: Renewal of Vehicle Registration Certificate
+ok   text equals the reviewed staging text: Change of Address in Vehicle Registration
+ok   chunk indexes 0..n-1: Change of Address in Vehicle Registration
+ok   chunks equal chunk_text(source_text): Change of Address in Vehicle Registration
+ok   1024-value embeddings: Change of Address in Vehicle Registration
+ok   text equals the reviewed staging text: Transfer of Vehicle Ownership
+ok   chunk indexes 0..n-1: Transfer of Vehicle Ownership
+ok   chunks equal chunk_text(source_text): Transfer of Vehicle Ownership
+ok   1024-value embeddings: Transfer of Vehicle Ownership
+ok   text equals the reviewed staging text: Link PAN with Aadhaar
+ok   chunk indexes 0..n-1: Link PAN with Aadhaar
+ok   chunks equal chunk_text(source_text): Link PAN with Aadhaar
+ok   1024-value embeddings: Link PAN with Aadhaar
+ok   text equals the reviewed staging text: Register on the e-Filing Portal
+ok   chunk indexes 0..n-1: Register on the e-Filing Portal
+ok   chunks equal chunk_text(source_text): Register on the e-Filing Portal
+ok   1024-value embeddings: Register on the e-Filing Portal
+ok   text equals the reviewed staging text: File ITR-1 (Sahaj) Online
+ok   chunk indexes 0..n-1: File ITR-1 (Sahaj) Online
+ok   chunks equal chunk_text(source_text): File ITR-1 (Sahaj) Online
+ok   1024-value embeddings: File ITR-1 (Sahaj) Online
+ok   text equals the reviewed staging text: Atal Pension Yojana
+ok   chunk indexes 0..n-1: Atal Pension Yojana
+ok   chunks equal chunk_text(source_text): Atal Pension Yojana
+ok   1024-value embeddings: Atal Pension Yojana
+ok   text equals the reviewed staging text: Aadhaar Enrolment and Update at Post Offices
+ok   chunk indexes 0..n-1: Aadhaar Enrolment and Update at Post Offices
+ok   chunks equal chunk_text(source_text): Aadhaar Enrolment and Update at Post Offices
+ok   1024-value embeddings: Aadhaar Enrolment and Update at Post Offices
+ok   text equals the reviewed staging text: Employees' Provident Fund Scheme
+ok   chunk indexes 0..n-1: Employees' Provident Fund Scheme
+ok   chunks equal chunk_text(source_text): Employees' Provident Fund Scheme
+ok   1024-value embeddings: Employees' Provident Fund Scheme
+ok   every FAQ question is followed by its answer: Employees' Provident Fund Scheme
+ok   text equals the reviewed staging text: Employees' Pension Scheme (EPS)
+ok   chunk indexes 0..n-1: Employees' Pension Scheme (EPS)
+ok   chunks equal chunk_text(source_text): Employees' Pension Scheme (EPS)
+ok   1024-value embeddings: Employees' Pension Scheme (EPS)
+ok   every FAQ question is followed by its answer: Employees' Pension Scheme (EPS)
+ok   text equals the reviewed staging text: Employees' Deposit Linked Insurance (EDLI)
+ok   chunk indexes 0..n-1: Employees' Deposit Linked Insurance (EDLI)
+ok   chunks equal chunk_text(source_text): Employees' Deposit Linked Insurance (EDLI)
+ok   1024-value embeddings: Employees' Deposit Linked Insurance (EDLI)
+ok   every FAQ question is followed by its answer: Employees' Deposit Linked Insurance (EDLI)
+ok   text equals the reviewed staging text: Vehicle Registration Fees and User Charges
+ok   chunk indexes 0..n-1: Vehicle Registration Fees and User Charges
+ok   chunks equal chunk_text(source_text): Vehicle Registration Fees and User Charges
+ok   1024-value embeddings: Vehicle Registration Fees and User Charges
+ok   text equals the reviewed staging text: Atal Pension Yojana (PFRDA scheme details)
+ok   chunk indexes 0..n-1: Atal Pension Yojana (PFRDA scheme details)
+ok   chunks equal chunk_text(source_text): Atal Pension Yojana (PFRDA scheme details)
+ok   1024-value embeddings: Atal Pension Yojana (PFRDA scheme details)
+FAIL page 40 eligibility keeps 'is or has been an income-tax payer'
+ok   no orphan chunks (found 0)
+
+3 failed check(s)

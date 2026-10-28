@@ -1,0 +1,163 @@
+UNVERIFIABLE (source incomplete): How much do I pay to get my DL renewed?
+UNVERIFIABLE (source incomplete): What is the fee for an International Driving Permit?
+UNVERIFIABLE (source incomplete): And how much does it cost?
+UNVERIFIABLE (source incomplete): What is the fee?
+ok   [A jurisdiction] How do I renew my driving licence in the UK?                 [None] (0s)
+ok   [A jurisdiction] How do I apply for a US passport?                            [None] (0s)
+ok   [A jurisdiction] How do I apply for a UK passport online?                     [None] (0s)
+ok   [A jurisdiction] How do I apply for a driving licence in the UK?              [None] (0s)
+FAIL [A jurisdiction] I work in Dubai. Can I vote in India?                        identify: ['https://ecisveep.nic.in/voters/general-voters'] (2s)
+FAIL [A jurisdiction] I live abroad. How do I register to vote?                    asks to choose: ['https://ecisveep.nic.in/voters/general-voters', 'https://ecisveep.nic.in/voters/overseas-voters'] (1s)
+ok   [A jurisdiction] I live in the UK. How do I register as an overseas voter?    ['https://ecisveep.nic.in/voters/overseas-voters'] (1s)
+ok   [A jurisdiction] I am going to the USA next month. How do I get an Internatio ['https://parivahan.gov.in/en/content/international-driving-permit'] (1s)
+ok   [A jurisdiction] I am travelling to the UK. How do I get an International Dri ['https://parivahan.gov.in/en/content/international-driving-permit'] (1s)
+ok   [A jurisdiction] How do I get an International Driving Permit to drive abroad ['https://parivahan.gov.in/en/content/international-driving-permit'] (0s)
+FAIL [B document type] How do I get a marriage certificate?                         identify: ['https://tnesevai.tn.gov.in/Citizen/FAQ.html'] (0s)
+FAIL [B document type] How do I apply for a marriage certificate?                   identify: ['https://tnesevai.tn.gov.in/Citizen/FAQ.html'] (0s)
+FAIL [B document type] How do I change the name on my PAN card?                     identify: ['https://www.incometax.gov.in/iec/foportal/help/how-to-link-aadhaar?mobile-app=1'] (0s)
+FAIL [B document type] What documents are needed for an income certificate in Tamil misleading card: REV-101 Community Certificate The procedure allows users to generate an OTP and edit their (9s)
+       claim {"procedure_id": 17, "chunk_id": 509, "text": "Applicant Photo", "quote": "Applicant Photo"}
+       claim {"procedure_id": 17, "chunk_id": 509, "text": "Address Proof", "quote": "Address Proof"}
+       claim {"procedure_id": 17, "chunk_id": 509, "text": "TIN Number and the Trade", "quote": "TIN Number and the Trade"}
+       claim {"procedure_id": 17, "chunk_id": 509, "text": "Details of Land Holdings", "quote": "Details of Land Holdings"}
+       claim {"procedure_id": 17, "chunk_id": 509, "text": "Details of houses owned ward wise", "quote": "Details of houses owned ward wise"}
+       claim {"procedure_id": 17, "chunk_id": 509, "text": "Family or Smart Card", "quote": "Family or Smart Card"}
+       claim {"procedure_id": 17, "chunk_id": 509, "text": "Self-Declaration of Applicant", "quote": "Self-Declaration of Applicant"}
+       claim {"procedure_id": 17, "chunk_id": 509, "text": "Salary Certificate (Latest Copy)", "quote": "Salary Certificate (Latest Copy)"}
+       claim {"procedure_id": 17, "chunk_id": 509, "text": "PAN card", "quote": "PAN card"}
+FAIL [B document type] What documents are needed for a community certificate in Tam missed answer: no verified claim (3s)
+ok   [B document type] What documents do I need for a nativity certificate in Tamil 5 claims (5s)
+       claim {"procedure_id": 17, "chunk_id": 509, "text": "Photo", "quote": "Photo"}
+       claim {"procedure_id": 17, "chunk_id": 509, "text": "Address Proof", "quote": "Address Proof"}
+       claim {"procedure_id": 17, "chunk_id": 509, "text": "Birth Certificate", "quote": "Birth Certificate"}
+       claim {"procedure_id": 17, "chunk_id": 509, "text": "School Education Certificate(or) Employment Details(or)other proof to prove continuous residence of last 5 years", "quote": "School Education Certificate(or) Employment Details(or)other proof to prove continuous residence of last 5 years"}
+       claim {"procedure_id": 17, "chunk_id": 509, "text": "Self-Declaration of Applicant", "quote": "Self-Declaration of Applicant"}
+ok   [B document type] How do I renew the registration certificate of my vehicle?   4 claims (13s)
+       claim {"procedure_id": 28, "chunk_id": 348, "text": "Apply for renewal of certificate of registration in Form 25 to the Registering Authority in whose jurisdiction the vehicle is, not more than 60 days before the date of its expiry", "quote": "Apply for renewal of certificate of registration in Form 25 to the Registering Authority in whose jurisdiction the vehicle is, not more than 60 days before the date of its expiry"}
+       claim {"procedure_id": 28, "chunk_id": 348, "text": "Pay the due taxes on vehicle, if any", "quote": "Pay the due taxes on vehicle, if any"}
+       claim {"procedure_id": 28, "chunk_id": 348, "text": "Pay appropriate fee as specified in Rule 81 of the Central Motor Vehicle Rules 1989", "quote": "Pay appropriate fee as specified in Rule 81 of the Central Motor Vehicle Rules 1989"}
+       claim {"procedure_id": 28, "chunk_id": 348, "text": "Documents required include Application in Form 25, Pollution under control certificate, Fitness certificate, Certificate of registration, Proof for the payment of up-to-date road tax paid, Insurance certificate, Copy of PAN card or Form 60 & Form 61 (as applicable), Pencil Print of Chassis & Engine Number, Signature Identification of owner", "quote": "Documents required\nApplication in Form 25\nPollution under control certificate\nFitness certificate*\nCertificate of registration*\nProof for the payment of up-to-date road tax paid*\nInsurance certificate*\nCopy of PAN card or Form 60 & Form 61 (as applicable) *\nPencil Print of Chassis & Engine Number *\nSignature Identification of owner*"}
+FAIL [C identification miss] sold my bike, need to transfer the RC                        identify: [None] (1s)
+FAIL [C identification miss] How much does a duplicate RC cost?                           identify: [None] (0s)
+FAIL [C identification miss] How much do I pay to get my DL renewed?                      identify: [None] (0s)
+FAIL [C identification miss] I sold my bike. What does the buyer have to do and by when?  identify: [None] (1s)
+ok   [D source data] Can apprentices become EPF members?                          1 claims (6s)
+       claim {"procedure_id": 36, "chunk_id": 566, "text": "Apprentices cannot become EPF members.", "quote": "Can apprentices become EPF members? No. But, when he ceases to be an apprentice he should be enrolled immediately."}
+ok   [D source data] Can an employer deduct the employer's share from my wages?   1 claims (6s)
+       claim {"procedure_id": 36, "chunk_id": 565, "text": "An employer cannot deduct the employer's share from employee wages.", "quote": "No. It is not permissible. Any such deduction is a criminal offence."}
+FAIL [D source data] Can I keep contributing to EPF after leaving my job?         missed answer: no verified claim (5s)
+FAIL [D source data] My dad passed away; can I keep using his car?                incomplete: ['When the registered owner of a vehicle dies, transfer of ownership is '] (partial) (19s)
+       claim {"procedure_id": 30, "chunk_id": 75, "text": "When the registered owner of a vehicle dies, transfer of ownership is affected in favour of the legal heirs of the deceased registered owner.", "quote": "When the registered owner of a vehicle dies, transfer of ownership is affected in favour of the legal heirs of the deceased registered owner."}
+ok   [E verification] What is the fee to renew the registration certificate of my  1 claims (12s)
+       claim {"procedure_id": 39, "chunk_id": 588, "text": "The fee for renewal of certificate of registration for a motorcycle is Rupees Three Hundred Only.", "quote": "4. Issue or renewal of certificate of registration and assignment of new registration mark: (b) Motor cycle Rupees Three Hundred Only 47(1) 52(1) 54(1) 76(1) and 78(1) ---"}
+ok   [E verification] What is the fee to renew the RC of a motorcycle?             1 claims (partial) (4s)
+       claim {"procedure_id": 28, "chunk_id": 348, "text": "Pay appropriate fee as specified in Rule 81 of the Central Motor Vehicle Rules 1989", "quote": "Pay appropriate fee as specified in Rule 81 of the Central Motor Vehicle Rules 1989"}
+FAIL [E verification] What is the fee to renew the RC of a motorcycle?             incomplete: ['The fee for renewing the certificate of registration for a motorcycle '] (13s)
+       claim {"procedure_id": 39, "chunk_id": 596, "text": "The fee for renewing the certificate of registration for a motorcycle older than 20 years from the date of first registration is Two thousand rupees.", "quote": "16. Renewal of certificate of registration for motor vehicle older than 20 years from date of first registration (b) Motor Cycle Two thousand rupees 52(1) --"}
+FAIL [E verification] What is the fitness test fee for a motorcycle?               missed answer: no verified claim (7s)
+ok   [E verification] What is the hypothecation endorsement fee for a car?         3 claims (partial) (9s)
+       claim {"procedure_id": 39, "chunk_id": 593, "text": "The hypothecation endorsement fee for a motorcycle is Rupees Five Hundred Only.", "quote": "9. Endorsing hire purchase/lease/hypothecation agreement: (a) Motorcycle Rupees Five Hundred Only 60 ---"}
+       claim {"procedure_id": 39, "chunk_id": 593, "text": "The hypothecation endorsement fee for a three wheeler/quadricycle/light motor vehicle is Rupees One Thousand and Five Hundred Only.", "quote": "9. Endorsing hire purchase/lease/hypothecation agreement: (b) Three wheeler/quadricycle/light motor vehicle Rupees One Thousand and Five Hundred Only 60 ---"}
+       claim {"procedure_id": 39, "chunk_id": 593, "text": "The hypothecation endorsement fee for a medium or heavy vehicle is Rupees Three Thousand Only.", "quote": "9. Endorsing hire purchase/lease/hypothecation agreement: (c) Medium or heavy vehicle Rupees Three Thousand Only 60 ---"}
+FAIL [E verification] What is the RC renewal fee for an imported car older than 20 follow-up routing: ['https://parivahan.gov.in/en/content/renewal-of-rc'] (9s)
+ok   [E verification] What is the fee for renewing a driving licence?              1 claims (6s)
+       claim {"procedure_id": 27, "chunk_id": 155, "text": "The fee for renewal of a driving licence is Rs. 200.00/-.", "quote": "Renewal of driving licence Rs. 200.00/-."}
+ok   [E verification] What is the fee for an International Driving Permit?         1 claims (5s)
+       claim {"procedure_id": 27, "chunk_id": 155, "text": "The fee for the issue of an International Driving Permit is Rs. 1000.00/-", "quote": "Issue of International Driving Permit Rs. 1000.00/-."}
+ok   [E verification] Which form do NRI voters fill to register?                   2 claims (8s)
+       claim {"procedure_id": 21, "chunk_id": 530, "text": "The form to be filled by NRI voters to register is Form 6A.", "quote": "Fill Form 6A online at https://voterportal.eci.gov.in/ and upload the requisite proofs."}
+       claim {"procedure_id": 21, "chunk_id": 531, "text": "Form 6A can be filled online or downloaded from the ECI website.", "quote": "Fill Form 6A online at https://voterportal.eci.gov.in/ and upload the requisite proofs. Alternatively download Form 6A from ECI website www.eci.gov.in ."}
+ok   [E verification] Can an NRI file ITR-1?                                       1 claims (7s)
+       claim {"procedure_id": 33, "chunk_id": 548, "text": "An NRI cannot file ITR-1.", "quote": "ITR-1 cannot be filed by an individual who: is a Resident Not Ordinarily Resident (RNOR), and Non-Resident Indian (NRI)"}
+ok   [E verification] If I renew my driving licence 40 days after it expired, from 1 claims (7s)
+       claim {"procedure_id": 24, "chunk_id": 66, "text": "If the application is made more than 30 days after the date of expiry of the licence, the renewal will be made with effect from the date of receipt of proper application.", "quote": "If the application is made more than 30 days after the date of expiry of the licence, the renewal will be made with effect from the date of receipt of proper application."}
+ok   [F follow-up] What about EPS?                                              9 claims (28s)
+       claim {"procedure_id": 37, "chunk_id": 567, "text": "EPS provides pensionary benefits to eligible employees of establishments covered under the Act.", "quote": "The Employees' Pension Scheme, 1995, notified under Section 6A of the EPF & MP Act, 1952, provides pensionary benefits to eligible employees of establishments covered under the Act."}
+       claim {"procedure_id": 37, "chunk_id": 569, "text": "Pension is disbursed monthly to eligible members or beneficiaries.", "quote": "Pension is disbursed monthly to eligible members or beneficiaries (through banks/post offices)."}
+       claim {"procedure_id": 37, "chunk_id": 569, "text": "Pension= (Pensionable Salary (average of last 60 months) X Pensionable Service)/70.", "quote": "Pension= (Pensionable Salary (average of last 60 months) X Pensionable Service)/70."}
+       claim {"procedure_id": 37, "chunk_id": 568, "text": "Benefits include monthly superannuation pension, family pension, disablement pension, and withdrawal benefit.", "quote": "Benefits of the Scheme: Monthly Superannuation pension, Family Pension, Disablement Pension, Withdrawal Benefit"}
+       claim {"procedure_id": 37, "chunk_id": 568, "text": "Membership is compulsory for eligible employees (generally those with EPF membership) and continues until 58 years, death, or pension settlement.", "quote": "Membership is compulsory for eligible employees (generally those with EPF membership) and continues until 58 years, death, or pension settlement."}
+       claim {"procedure_id": 37, "chunk_id": 568, "text": "Employers must enroll all eligible employees, deduct contributions, and deposit them with EPFO.", "quote": "Employers must enroll all eligible employees, deduct contributions, and deposit them with EPFO."}
+       claim {"procedure_id": 37, "chunk_id": 571, "text": "Pensioners are required to submit a Life/Non-Remarriage Certificate after 12 months from the month in which the pension was sanctioned.", "quote": "All pensioners drawing pension under Employees’ Pension Scheme, 1995 are required to give a Life/Non-Remarriage Certificate, duly attested by the Bank Manager/Gazetted Officer after 12 months from the month in which the pension was sanctioned or date of submission of last Life certificate."}
+       claim {"procedure_id": 37, "chunk_id": 571, "text": "Failure to submit Life Certificate after one year will result in stoppage of pension after 12 months from the date of submission of last Life Certificate or sanction of pension in case of new Pensioners.", "quote": "Failure to submit Life Certificate after one year will result in stoppage of pension after 12 months from the date of submission of last Life Certificate or sanction of pension in case of new Pensioners."}
+       claim {"procedure_id": 37, "chunk_id": 571, "text": "Now Pensioners can use their Aadhaar number to submit the DLC.", "quote": "Now Pensioners can use their Aadhaar number to submit the DLC."}
+ok   [F follow-up] How do I register to vote?                                   2 claims (12s)
+       claim {"procedure_id": 19, "chunk_id": 146, "text": "Citizen can enroll himself/herself as General Voter and fill Form 6 online at National Voters' Service Portal.", "quote": "Citizen, can enroll himself/herself as General Voter and fill Form 6 online at National Voters' Service Portal."}
+       claim {"procedure_id": 19, "chunk_id": 147, "text": "You can enroll as a Voter if you: are an Indian citizen. have attained the age of 18 years on the qualifying date i.e. 1 Jan, 1 April, 1 July and 1 Oct of the year of revision of electoral roll.", "quote": "You can enroll as a Voter if you: are an Indian citizen. have attained the age of 18 years on the qualifying date i.e. 1 Jan, 1 April, 1 July and 1 Oct of the year of revision of electoral roll."}
+ok   [F follow-up] And what about linking PAN with Aadhaar?                     7 claims (partial) (35s)
+       claim {"procedure_id": 31, "chunk_id": 537, "text": "For new applicants of PAN card, the Aadhaar PAN linking is done automatically during the application stage.", "quote": "For new applicants of PAN card, the Aadhaar PAN linking is done automatically during the application stage."}
+       claim {"procedure_id": 31, "chunk_id": 537, "text": "For existing PAN holders, who were allotted PAN on or before 01-07-2017 it is mandatory to link PAN with Aadhaar.", "quote": "For existing PAN holders, who were allotted PAN on or before 01-07-2017 it is mandatory to link PAN with Aadhaar."}
+       claim {"procedure_id": 31, "chunk_id": 537, "text": "If you do not link your PAN with the Aadhaar till 30 th June 2023, your PAN will become inoperative.", "quote": "If you do not link your PAN with the Aadhaar till 30 th June 2023, your PAN will become inoperative."}
+       claim {"procedure_id": 31, "chunk_id": 541, "text": "If you have already paid the fee, then wait for 4-5 working days. After that, you can submit the request.", "quote": "Note: If you have already paid the fee, then wait for 4-5 working days. After that, you can submit the request ."}
+       claim {"procedure_id": 31, "chunk_id": 541, "text": "Please ensure you link your correct Aadhaar with your PAN.", "quote": "Please ensure you link your correct Aadhaar with your PAN."}
+       claim {"procedure_id": 31, "chunk_id": 541, "text": "If Aadhaar and PAN are already linked or PAN linked to some other Aadhaar or vice versa, you will get following errors.", "quote": "If Aadhaar and PAN are already linked or PAN linked to some other Aadhaar or vice versa, you will get following errors :"}
+       claim {"procedure_id": 31, "chunk_id": 541, "text": "You may need to contact your Jurisdictional Assessing Officer and submit a request for delinking your Aadhaar with incorrect PAN.", "quote": "You may need to contact your Jurisdictional Assessing Officer and submit a request for delinking your Aadhaar with incorrect PAN."}
+ok   [F follow-up] And how much does it cost?                                   2 claims (24s)
+       claim {"procedure_id": 26, "chunk_id": 68, "text": "Fees as prescribed along with user charges.", "quote": "Fees as prescribed along with user charges."}
+       claim {"procedure_id": 27, "chunk_id": 155, "text": "The fee for the issue of an International Driving Permit is Rs. 1000.00/-.", "quote": "Issue of International Driving Permit Rs. 1000.00/-."}
+ok   [F follow-up] What is the fee?                                             1 claims (partial) (23s)
+       claim {"procedure_id": 27, "chunk_id": 155, "text": "The fee for the renewal of a driving licence is Rs. 200.00/-.", "quote": "Renewal of driving licence Rs. 200.00/-."}
+ok   [F follow-up] What about the certificate?                                  5 claims (15s)
+       claim {"procedure_id": 28, "chunk_id": 348, "text": "Every registration certificate is required to be renewed not more than 60 days before the date of its expiry of the registration for its continuous use.", "quote": "Every registration certificate is required to be renewed not more than 60 days before the date of its expiry of the registration for its continuous use."}
+       claim {"procedure_id": 28, "chunk_id": 348, "text": "Apply for renewal of certificate of registration in Form 25 to the Registering Authority in whose jurisdiction the vehicle is, not more than 60 days before the date of its expiry", "quote": "Apply for renewal of certificate of registration in Form 25 to the Registering Authority in whose jurisdiction the vehicle is, not more than 60 days before the date of its expiry"}
+       claim {"procedure_id": 28, "chunk_id": 348, "text": "Pay the due taxes on vehicle, if any", "quote": "Pay the due taxes on vehicle, if any"}
+       claim {"procedure_id": 28, "chunk_id": 348, "text": "Documents required include Application in Form 25, Pollution under control certificate, Fitness certificate*, Certificate of registration*, Proof for the payment of up-to-date road tax paid*, Insurance certificate*, Copy of PAN card or Form 60 & Form 61 (as applicable) *, Pencil Print of Chassis & Engine Number *, Signature Identification of owner*", "quote": "Documents required\nApplication in Form 25\nPollution under control certificate\nFitness certificate*\nCertificate of registration*\nProof for the payment of up-to-date road tax paid*\nInsurance certificate*\nCopy of PAN card or Form 60 & Form 61 (as applicable) *\nPencil Print of Chassis & Engine Number *\nSignature Identification of owner*"}
+       claim {"procedure_id": 28, "chunk_id": 349, "text": "Documents marked with asterisk (*) may be required in some states.", "quote": "Documents marked with asterisk (*) may be required in some states."}
+ok   [F follow-up] What about the pension?                                      12 claims (29s)
+       claim {"procedure_id": 36, "chunk_id": 564, "text": "Full withdrawal allowed at retirement (58 years), permanent disability, or unemployment (after 2 months).", "quote": "Full withdrawal allowed at retirement (58 years), permanent disability, or unemployment (after 2 months)."}
+       claim {"procedure_id": 36, "chunk_id": 564, "text": "Partial withdrawals/advances permitted for housing, medical treatment, children’s education, or marriage.", "quote": "Partial withdrawals/advances permitted for housing, medical treatment, children’s education, or marriage."}
+       claim {"procedure_id": 36, "chunk_id": 564, "text": "Funds earn tax-free interest and are meant to build long-term retirement savings.", "quote": "Funds earn tax-free interest and are meant to build long-term retirement savings."}
+       claim {"procedure_id": 36, "chunk_id": 562, "text": "The Employees' Provident Funds Scheme, 1952, is a social security initiative in India that is administered by the Employees' Provident Fund Organisation (EPFO) under the Ministry of Labour and Employment, Government of India.", "quote": "The Employees' Provident Funds Scheme, 1952, is a social security initiative in India that is administered by the Employees' Provident Fund Organisation (EPFO) under the Ministry of Labour and Employment, Government of India."}
+       claim {"procedure_id": 36, "chunk_id": 562, "text": "Employees below ₹15,000 per month (mandatory).", "quote": "Employees below ₹15,000 per month (mandatory)."}
+       claim {"procedure_id": 36, "chunk_id": 563, "text": "Both employee and employer contribute 12% of basic wages + dearness allowance.", "quote": "Both employee and employer contribute 12% of basic wages + dearness allowance."}
+       claim {"procedure_id": 36, "chunk_id": 563, "text": "Employee’s entire contribution goes to EPF. Employer’s share is split between EPF, Employees’ Pension Scheme (EPS), and Employees’ Deposit Linked Insurance (EDLI).", "quote": "Employee’s entire contribution goes to EPF. Employer’s share is split between EPF, Employees’ Pension Scheme (EPS), and Employees’ Deposit Linked Insurance (EDLI)."}
+       claim {"procedure_id": 36, "chunk_id": 563, "text": "Members are allotted a Universal Account Number (UAN) for portability across jobs.", "quote": "Each member is allotted a Universal Account Number (UAN) for portability across jobs."}
+       claim {"procedure_id": 36, "chunk_id": 563, "text": "Online services: balance checks, passbook download, account transfer between employers.", "quote": "Online services: balance checks, passbook download, account transfer between employers."}
+       claim {"procedure_id": 36, "chunk_id": 563, "text": "Nomination facility ensures smooth fund settlement in case of death.", "quote": "Nomination facility ensures smooth fund settlement in case of death."}
+       claim {"procedure_id": 36, "chunk_id": 563, "text": "Aadhaar-linked accounts enable faster verification and settlements.", "quote": "Aadhaar-linked accounts enable faster verification and settlements."}
+       claim {"procedure_id": 36, "chunk_id": 566, "text": "No. The Provident Fund enjoys protection against attachment by any Court also as per the provisions of section 10 of the EPF & MP Act,1952.", "quote": "No. The Provident Fund enjoys protection against attachment by any Court also as per the provisions of section 10 of the EPF & MP Act,1952."}
+ok   [F follow-up] What if the owner died?                                      1 claims (partial) (17s)
+       claim {"procedure_id": 30, "chunk_id": 75, "text": "When the registered owner of a vehicle dies, transfer of ownership is affected in favour of the legal heirs of the deceased registered owner.", "quote": "Transfer of ownership on death of owner of the vehicle When the registered owner of a vehicle dies, transfer of ownership is affected in favour of the legal heirs of the deceased registered owner"}
+ok   [F follow-up] What about a transport vehicle?                              1 claims (4s)
+       claim {"procedure_id": 22, "chunk_id": 347, "text": "An applicant who has completed twenty years of age will be eligible for applying for a licence to drive a transport vehicle.", "quote": "An applicant who has completed twenty years of age will be eligible for applying for a licence to drive a transport vehicle."}
+ok   [F follow-up] What about voters living abroad?                             2 claims (partial) (14s)
+       claim {"procedure_id": 21, "chunk_id": 533, "text": "Overseas voters must submit a declaration that they did not get enrolled as a general elector.", "quote": "No person can be enrolled on more than one electoral roll i.e. when you enrol as a overseas voter you have to submit a declaration - that you did not get enrolled as a general elector"}
+       claim {"procedure_id": 21, "chunk_id": 532, "text": "The decision of the ERO will be communicated to the overseas elector by post and SMS.", "quote": "Decision of the ERO will be communicated to you by post on the address and SMS on the mobile number given in Form 6A."}
+ok   [G out of scope] How do I apply for a ration card in Tamil Nadu?              [None] (0s)
+ok   [G out of scope] How do I get a birth certificate?                            [None] (0s)
+ok   [G out of scope] How do I apply for an Ayushman Bharat card?                  [None] (0s)
+ok   [G out of scope] Someone stole my bag with my passport inside. Where do I fil [None] (1s)
+ok   [G out of scope] How do I register for GST?                                   [None] (0s)
+ok   [G out of scope] How do I report a lost phone to the police?                  [None] (0s)
+ok   [H precision] My Indian passport has expired. How do I get it reissued?    ['https://www.passportindia.gov.in/psp/Apply'] (1s)
+ok   [H precision] I need a passport for the first time and I live in Bengaluru ['https://www.passportindia.gov.in/psp/Apply'] (1s)
+ok   [H precision] How can I edit my CAN details on the TN e-Sevai portal?      10 claims (20s)
+       claim {"procedure_id": 17, "chunk_id": 507, "text": "Go to https://www.tnesevai.tn.gov.in/ on your web browser.", "quote": "Go to https://www.tnesevai.tn.gov.in/ on your web browser."}
+       claim {"procedure_id": 17, "chunk_id": 508, "text": "In the Sign In section, click on \"Citizen Login\".", "quote": "In the Sign In section, click on \"Citizen Login\"."}
+       claim {"procedure_id": 17, "chunk_id": 508, "text": "Enter the login credentials.", "quote": "Enter the login credentials."}
+       claim {"procedure_id": 17, "chunk_id": 508, "text": "Correctly enter the Captcha Code (Not case sensitive) and click on \"Login\".", "quote": "Correctly enter the Captcha Code (Not case sensitive) and click on \"Login\"."}
+       claim {"procedure_id": 17, "chunk_id": 508, "text": "In the \"Services\" tab, select \"DEPARTMENT WISE\" and then click on \"Revenue Department\".", "quote": "In the \"Services\" tab, select \"DEPARTMENT WISE\" and then click on \"Revenue Department\"."}
+       claim {"procedure_id": 17, "chunk_id": 508, "text": "Click on \"REV-101 Community Certificate\". This will open a new browser tab.", "quote": "Click on \"REV-101 Community Certificate\". This will open a new browser tab."}
+       claim {"procedure_id": 17, "chunk_id": 508, "text": "In this Search section, look for your CAN using any of the six fields provided.", "quote": "In this Search section, look for your CAN using any of the six fields provided."}
+       claim {"procedure_id": 17, "chunk_id": 508, "text": "Once found, select it by clicking the Radio button. This will auto-fill the \"Mobile Number\" field at the bottom.", "quote": "Once found, select it by clicking the Radio button. This will auto-fill the \"Mobile Number\" field at the bottom."}
+       claim {"procedure_id": 17, "chunk_id": 508, "text": "Click on \"Generate OTP\" and then enter the OTP that has been sent to your registered phone number. Click on \"Confirm OTP\" once done.", "quote": "Click on \"Generate OTP\" and then enter the OTP that has been sent to your registered phone number. Click on \"Confirm OTP\" once done."}
+       claim {"procedure_id": 17, "chunk_id": 508, "text": "Now you will be able to see the \"Edit CAN Detail\" button. Click it and you will be able to update your CAN details.", "quote": "Now you will be able to see the \"Edit CAN Detail\" button. Click it and you will be able to update your CAN details."}
+ok   [H precision] Can I renew my DL early?                                     1 claims (partial) (8s)
+       claim {"procedure_id": 24, "chunk_id": 66, "text": "An application for renewal shall be entertained not more than one month before the date of expiry of the licence.", "quote": "An application for renewal shall be entertained not more than one month before the date of expiry of the licence."}
+ok   [H precision] What is the minimum EDLI benefit?                            ['https://www.epfo.gov.in/insurance-scheme-edli'] (0s)
+ok   [H precision] When can I take out my whole PF money?                       ['https://www.epfo.gov.in/epf-scheme'] (0s)
+ok   [H precision] How do I get an IDP?                                         ['https://parivahan.gov.in/en/content/international-driving-permit'] (0s)
+
+43/59 as expected end to end
+  A jurisdiction: 8/10
+  B document type: 2/7
+  C identification miss: 0/4
+  D source data: 2/4
+  E verification: 8/11
+  F follow-up: 10/10
+  G out of scope: 6/6
+  H precision: 7/7
+outcomes: {'correct': 26, 'appropriate abstention or no match': 10, 'retrieval failure': 9, 'correct (partial, flagged)': 7, 'missed answer': 3, 'incomplete': 2, 'clarification': 1, 'incorrect or misleading': 1}
+failures by stage: {'identify': 8, 'asks to choose': 1, 'misleading card': 1, 'missed answer': 3, 'incomplete': 2, 'follow-up routing': 1}
+identification: {'correct': 49, 'confident wrong page': 5, 'missed (no match)': 4, 'asked': 1}
+latency per question: median 4s, max 35s

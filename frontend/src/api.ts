@@ -3,11 +3,6 @@
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
-export type ScrapeResult = {
-  source_url: string;
-  source_text: string;
-};
-
 export type ProcedureDraft = {
   name: string;
   department: string | null;
@@ -17,8 +12,6 @@ export type ProcedureDraft = {
   steps: string[];
   source_url: string;
 };
-
-export type ReExtractRequest = ScrapeResult & { provenance_token: string };
 
 export type ExtractionResponse = {
   source_text: string;
@@ -59,6 +52,10 @@ async function errorMessage(response: Response, fallback: string) {
   return typeof body?.detail === "string" ? body.detail : fallback;
 }
 
+// A guidance request can chain several model calls of up to 60 s each; past this the citizen is told to retry.
+const REQUEST_TIMEOUT_MS = 180_000;
+export const UNREACHABLE = "The server cannot be reached. Check your connection and try again.";
+
 async function request<T>(
   path: string,
   fallback: string,
@@ -70,6 +67,10 @@ async function request<T>(
     credentials: "include",
     headers: body === undefined ? undefined : { "Content-Type": body instanceof Blob ? body.type : "application/json" },
     body: body === undefined || body instanceof Blob ? body : JSON.stringify(body),
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  }).catch((error: unknown) => {
+    throw new Error(error instanceof DOMException && error.name === "TimeoutError"
+      ? "The server took too long to answer. Try again." : UNREACHABLE);
   });
 
   if (response.status === 401 && !NO_SESSION_PATHS.includes(path)) {
@@ -86,13 +87,6 @@ export const extractProcedure = (sourceUrl: string) =>
     "/api/admin/extract",
     "Unable to extract procedure.",
     { source_url: sourceUrl },
-  );
-
-export const reExtractProcedure = (source: ReExtractRequest) =>
-  request<ProcedureDraft>(
-    "/api/admin/re-extract",
-    "Unable to re-extract procedure.",
-    source,
   );
 
 export const approveProcedure = (approval: ApprovalRequest) =>
@@ -150,6 +144,8 @@ export type IdentifyResponse = {
   // Tamil questions only: the English query that was searched, or a request for the service name.
   normalized_query?: string;
   clarification?: string;
+  // Matched only: the question names that procedure itself ("What about EPS?").
+  named?: boolean;
 };
 
 type Claim = { text: string; chunk_id: number; quote: string; procedure_id?: number; source_url?: string };
@@ -161,6 +157,7 @@ export type GuidanceResponse = {
   claims: Claim[];
   omitted_claims: number;
   normalized_query?: string;
+  partial?: boolean;
 };
 
 export type RelationResponse = {

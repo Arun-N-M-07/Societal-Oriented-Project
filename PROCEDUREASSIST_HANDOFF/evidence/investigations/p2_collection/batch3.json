@@ -1,0 +1,29 @@
+{
+ "https://kmut.tn.gov.in/about-kmut.html": {
+  "error": "SourceUnavailableError: The rendered page could not be loaded."
+ },
+ "https://eservices.tn.gov.in/eservicesnew/aboutthisportal.html": {
+  "final_url": "https://eservices.tn.gov.in/eservicesnew/aboutthisportal.html",
+  "chars": 859,
+  "paragraphs": 11,
+  "chunks": 1,
+  "text": "E-Services of Land Records | TamilNadu Government\n\nHome\n\nAbout this Portal\n\nThis is one of the eServices offered by the Government of Tamil Nadu for the Citizens to view the information related to their Lands, Houses Located in Tamil Nadu\n\nCiitizens should know or have in hand to elicit information from the Website\n\n· Survey Number and Sub Division Number or Patta Number or Owner Name.\n\n· Application ID to know the status of Online Patta Transfer.\n\nThe Citizens can view the following information\n\nView Patta/Chitta Copy & A-Register Extract - Rural View Patta / Chitta View A-Register Extract FMB Sketch View Patta Order Copy Application Status\n\nView Patta/Chitta Copy & A-Register Extract - Urban TSLR Extract Application Status\n\nVerify Web Issued Patta/Chitta Copy & A-Register Extract Verify Patta / Chitta Verify Government (Poramboke) / Private Land"
+ },
+ "https://chennai.nic.in/service/eservices-anytime-anywhere-land/": {
+  "final_url": "https://chennai.nic.in/service/eservices-anytime-anywhere-land",
+  "chars": 359,
+  "paragraphs": 10,
+  "chunks": 1,
+  "text": "Facebook\n\nX\n\neServices (Anytime/Anywhere) – Land\n\nView Patta & FMB / Chitta / TSLR Extract\n\nView A-Register Extract\n\nVerify Patta\n\nVerify Poramboke Land\n\nVisit : https://eservices.tn.gov.in/eservicesnew\n\nSurvey and Land Records\n\nCollectorate, Chennai Location : AD (Survey), Collector Office | City : Chennai | PIN Code : 600001 Email : adsurchn[at]nic[dot]in"
+ },
+ "https://cuddalore.nic.in/service/e-services-anytime-anywhere-land/": {
+  "final_url": "https://cuddalore.nic.in/service/e-services-anytime-anywhere-land",
+  "chars": 901,
+  "paragraphs": 20,
+  "chunks": 1,
+  "text": "Facebook\n\nX\n\nLand e-Services (Anytime / Anywhere) – View, Verify & Download\n\nView Patta, Chitta, FMB, TSLR, and A-Register extracts, verify land records, and access online land-related services through the Tamil Nadu e-Services Portal.\n\nS.No Service Name\n\n1 View Patta & FMB / Chitta / TSLR Extract\n\n2 View A-Register Extract\n\n3 Verify Patta\n\n4 Verify Poramboke Land\n\n5 Check Application Status\n\n6 Know Your Application Status\n\n7 Apply for Patta Transfer\n\n8 View Patta Passbook\n\n9 View Field Measurement Book (FMB) Sketch\n\n10 View Chitta Extract\n\n11 View Town Survey Land Register (TSLR) Extract\n\n12 Verify Government (Poramboke) Land Details\n\nVisit : https://eservices.tn.gov.in/eservicesnew/index.html\n\nSurvey and Land Records\n\nSurvey & Land Records, District Collectorate,Cuddalore Location : Collectorate | City : Cuddalore | PIN Code : 607001 Phone : 04142-232856 | Email : adsurcud[at]nic[dot]in"
+ },
+ "https://ariyalur.nic.in/document/apply-for-patta-transfer-its-status-through-online/": {
+  "error": "ScraperError: No meaningful page content found."
+ }
+}

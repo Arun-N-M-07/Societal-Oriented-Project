@@ -1,0 +1,153 @@
+
+## What is the fee to renew my vehicle RC?   [expected: RC renewal, no class: rows 4(a)-(j), not item 11/16]
+  top5     chunks [587, 594, 595, 596, 597] -> verified 1, kept 1, complete=False
+      - The fee to renew a certificate of fitness for a motor vehicle is Rupees Two Hundred Only.
+  continue chunks [587, 588, 589, 590, 591, 594, 595, 596, 597] -> verified 1, kept 1, complete=False
+      - The fee to renew your vehicle RC is Rupees Two Hundred Only.
+  page     chunks [587, 588, 589, 590, 591, 592, 593, 594, 595, 596, 597, 598] -> verified 6, kept 6, complete=True
+      - The fee for the renewal of certificate of registration for a motor vehicle older than 20 years from the date of first registration is Rupees Two thous
+      - The fee for the renewal of certificate of registration for a motor vehicle older than 20 years from the date of first registration is Rupees Five thou
+      - The fee for the renewal of certificate of registration for a motor vehicle older than 20 years from the date of first registration is Rupees Ten thous
+      - The fee for the renewal of certificate of registration for a motor vehicle older than 20 years from the date of first registration is Rupees Twenty th
+      - The fee for the renewal of certificate of registration for a motor vehicle older than 20 years from the date of first registration is Rupees Eighty th
+      - The fee for the renewal of certificate of registration for a motor vehicle older than 20 years from the date of first registration is Rupees Twelve th
+
+## What is the fee to renew the RC of a motorcycle?   [expected: 4(b) Rs 300]
+  top5     chunks [587, 591, 594, 595, 596] -> verified 2, kept 1, complete=False
+      - The fee for renewal of certificate of registration for a motorcycle older than 20 years from date of first registration is Two thousand rupees.
+  continue chunks [587, 588, 589, 590, 591, 594, 595, 596] -> verified 1, kept 1, complete=True
+      - The fee for renewing the certificate of registration for a motorcycle older than 20 years from the date of first registration is Two thousand rupees.
+  page     chunks [587, 588, 589, 590, 591, 592, 593, 594, 595, 596, 597, 598] -> verified 1, kept 1, complete=True
+      - The fee for the renewal of certificate of registration for a motorcycle older than 20 years from the date of first registration is Two thousand rupees
+
+## What is the fee to renew the registration certificate of my motorcycle?   [expected: 4(b) Rs 300]
+  top5     chunks [587, 590, 591, 595, 596] -> verified 0, kept 0, complete=False
+  continue chunks [587, 588, 589, 590, 591, 595, 596] -> verified 1, kept 1, complete=True
+      - The fee for renewal of certificate of registration for a motorcycle is Rupees Three Hundred Only.
+  page     chunks [587, 588, 589, 590, 591, 592, 593, 594, 595, 596, 597, 598] -> verified 2, kept 1, complete=False
+      - The fee for the renewal of the certificate of registration for a motorcycle is Rupees Three Hundred Only.
+
+## RC renewal fee for a car   [expected: 4(c)i Rs 600 (non-transport LMV)]
+  top5     chunks [587, 591, 595, 596, 597] -> verified 7, kept 1, complete=False
+      - The RC renewal fee for a car is Rupees Two Hundred Only.
+  continue chunks [587, 588, 589, 590, 591, 595, 596, 597] -> verified 18, kept 11, complete=True
+      - The RC renewal fee for a car is Rupees Two Hundred Only.
+      - The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Invalid Carriage is Rupees Fifty Only.
+      - The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Motor cycle is Rupees Three Hundred Only.
+      - The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Three wheeler/Quadricycle/Light Motor Vehi
+      - The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Three wheeler/Quadricycle/Light Motor Vehi
+      - The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Medium goods vehicle is Rupees One Thousan
+      - The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Medium passenger motor vehicle is Rupees O
+      - The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Heavy goods vehicle is Rupees One Thousand
+      - The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Imported motor vehicle is Rupees Five Thou
+      - The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Imported motor cycle is Rupees Two Thousan
+      - The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Any other vehicle not mentioned above is R
+  page     chunks [587, 588, 589, 590, 591, 592, 593, 594, 595, 596, 597, 598] -> verified 6, kept 6, complete=True
+      - The fee for the renewal of certificate of registration for a motor vehicle older than 20 years from the date of first registration is Rupees Two thous
+      - The fee for the renewal of certificate of registration for a motor vehicle older than 20 years from the date of first registration is Rupees Five thou
+      - The fee for the renewal of certificate of registration for a motor vehicle older than 20 years from the date of first registration is Rupees Ten thous
+      - The fee for the renewal of certificate of registration for a motor vehicle older than 20 years from the date of first registration is Rupees Twenty th
+      - The fee for the renewal of certificate of registration for a motor vehicle older than 20 years from the date of first registration is Rupees Eighty th
+      - The fee for the renewal of certificate of registration for a motor vehicle older than 20 years from the date of first registration is Rupees Twelve th
+
+  top5     chunks [587, 589, 595, 596, 597] -> verified 0, kept 0, complete=False
+  continue chunks [587, 588, 589, 590, 591, 595, 596, 597] -> verified 0, kept 0, complete=False
+  page     chunks [587, 588, 589, 590, 591, 592, 593, 594, 595, 596, 597, 598] -> verified 1, kept 1, complete=True
+      - The RC renewal fee for a heavy goods vehicle is Rupees One Thousand and Five Hundred Only.
+
+## What is the fitness test fee for a motorcycle?   [expected: 10(a) manual 200 / automated 400]
+  top5     chunks [587, 591, 593, 594, 595] -> verified 1, kept 1, complete=False
+      - The fitness test fee for a motorcycle is Rupees Two Hundred Only.
+  continue chunks [587, 588, 589, 590, 591, 593, 594, 595] -> verified 2, kept 1, complete=False
+      - The grant or renewal of certificate of fitness for a motor vehicle is Rupees Two Hundred Only.
+  page     chunks [587, 588, 589, 590, 591, 592, 593, 594, 595, 596, 597, 598] -> verified 0, kept 0, complete=False
+
+  top5     chunks [590, 591, 595, 596, 597] -> verified 0, kept 0, complete=False
+  continue chunks [590, 591, 595, 596, 597] -> verified 0, kept 0, complete=False
+  page     chunks [587, 588, 589, 590, 591, 592, 593, 594, 595, 596, 597, 598] -> verified 2, kept 1, complete=False
+      - The RC renewal fee for an imported motor vehicle older than 20 years is Twenty thousand rupees.
+
+## How much does a duplicate RC cost?   [expected: 5: half of item 4]
+  top5     chunks [587, 591, 595, 596, 598] -> verified 2, kept 1, complete=False
+      - The cost of a duplicate trade certificate for Invalid Carriage is Rupees Three Hundred Only.
+  continue chunks [587, 588, 589, 590, 591, 595, 596, 598] -> verified 1, kept 1, complete=True
+      - The cost of a duplicate certificate of registration is Half of the fee mentioned against Serial No.4.
+  page     chunks [587, 588, 589, 590, 591, 592, 593, 594, 595, 596, 597, 598] -> verified 1, kept 1, complete=True
+      - The cost of a duplicate RC (certificate of registration) is Half of the fee mentioned against Serial No.4.
+
+## What is the fee to renew my vehicle RC? [top5]
+  KEEP   kinds=[]
+     claim: The fee to renew a certificate of fitness for a motor vehicle is Rupees Two Hundred Only.
+     quote: 11. Grant or renewal of certificate of fitness for motor vehicle Rupees Two Hundred Only. 62(2) ---
+
+## What is the fee to renew my vehicle RC? [continue]
+  REJECT kinds=['registration']
+     claim: The fee to renew your vehicle RC is Rupees Two Hundred Only.
+     quote: 11. Grant or renewal of certificate of fitness for motor vehicle Rupees Two Hundred Only. 62(2) ---
+
+## What is the fee to renew the RC of a motorcycle? [top5]
+  KEEP   kinds=[]
+     claim: The fee for renewal of certificate of registration for a motorcycle older than 20 years from date of first registration is Two thousand rupe
+     quote: 16. Renewal of certificate of registration for motor vehicle older than 20 years from date of first registration (b) Motor Cycle Two thousan
+
+## What is the fee to renew the RC of a motorcycle? [continue]
+  KEEP   kinds=[]
+     claim: The fee for renewing the certificate of registration for a motorcycle older than 20 years from the date of first registration is Two thousan
+     quote: 16. Renewal of certificate of registration for motor vehicle older than 20 years from date of first registration (b) Motor Cycle Two thousan
+
+## What is the fee to renew the registration certificate of my motorcycle? [top5]
+
+## What is the fee to renew the registration certificate of my motorcycle? [continue]
+  KEEP   kinds=[]
+     claim: The fee for renewal of certificate of registration for a motorcycle is Rupees Three Hundred Only.
+     quote: 4. Issue or renewal of certificate of registration and assignment of new registration mark: (b) Motor cycle Rupees Three Hundred Only 47(1) 
+
+## RC renewal fee for a car [top5]
+  REJECT kinds=['registration']
+     claim: The RC renewal fee for a car is Rupees Two Hundred Only.
+     quote: Grant or renewal of certificate of fitness for motor vehicle Rupees Two Hundred Only. 62(2) ---
+
+## RC renewal fee for a car [continue]
+  REJECT kinds=['registration']
+     claim: The RC renewal fee for a car is Rupees Two Hundred Only.
+     quote: Grant or renewal of certificate of fitness for motor vehicle Rupees Two Hundred Only. 62(2) ---
+  KEEP   kinds=[]
+     claim: The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Invalid Carriage is Rupees Fifty
+     quote: Issue or renewal of certificate of registration and assignment of new registration mark: (a) Invalid Carriage Rupees Fifty Only 47(1) 52(1) 
+  KEEP   kinds=[]
+     claim: The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Motor cycle is Rupees Three Hund
+     quote: Issue or renewal of certificate of registration and assignment of new registration mark: (b) Motor cycle Rupees Three Hundred Only 47(1) 52(
+  KEEP   kinds=[]
+     claim: The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Three wheeler/Quadricycle/Light 
+     quote: Issue or renewal of certificate of registration and assignment of new registration mark: (c) Three wheeler/Quadricycle/Light Motor Vehicles:
+  KEEP   kinds=[]
+     claim: The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Three wheeler/Quadricycle/Light 
+     quote: Issue or renewal of certificate of registration and assignment of new registration mark: (c) Three wheeler/Quadricycle/Light Motor Vehicles:
+  KEEP   kinds=[]
+     claim: The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Medium goods vehicle is Rupees O
+     quote: Issue or renewal of certificate of registration and assignment of new registration mark: (d) Medium goods vehicle Rupees One Thousand Only 4
+  KEEP   kinds=[]
+     claim: The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Medium passenger motor vehicle i
+     quote: Issue or renewal of certificate of registration and assignment of new registration mark: (e) Medium passenger motor vehicle Rupees One Thous
+  KEEP   kinds=[]
+     claim: The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Heavy goods vehicle is Rupees On
+     quote: Issue or renewal of certificate of registration and assignment of new registration mark: (f) Heavy goods vehicle Rupees One Thousand and Fiv
+  KEEP   kinds=[]
+     claim: The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Imported motor vehicle is Rupees
+     quote: Issue or renewal of certificate of registration and assignment of new registration mark: (h) Imported motor vehicle Rupees Five Thousand Onl
+  KEEP   kinds=[]
+     claim: The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Imported motor cycle is Rupees T
+     quote: Issue or renewal of certificate of registration and assignment of new registration mark: (i) Imported motor cycle Rupees Two Thousand and Fi
+  KEEP   kinds=[]
+     claim: The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Any other vehicle not mentioned 
+     quote: Issue or renewal of certificate of registration and assignment of new registration mark: (j) Any other vehicle not mentioned above Rupees Th
+
+## How much does a duplicate RC cost? [top5]
+  KEEP   kinds=['trade']
+     claim: The cost of a duplicate trade certificate for Invalid Carriage is Rupees Three Hundred Only.
+     quote: Duplicate trade certificate: (b) Invalid Carriage Rupees Three Hundred Only 38(1) ---
+
+## How much does a duplicate RC cost? [continue]
+  KEEP   kinds=['duplicate']
+     claim: The cost of a duplicate certificate of registration is Half of the fee mentioned against Serial No.4.
+     quote: Issue of duplicate certificate of registration Half of the fee mentioned against Serial No.4 53(2) ---

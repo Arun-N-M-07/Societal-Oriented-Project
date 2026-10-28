@@ -5,7 +5,7 @@
    "category": "01 basic",
    "message": "How do I apply for a passport?",
    "expected": [
-    "passportindia"
+    "psp/Apply"
    ],
    "evidence": "Register"
   },
@@ -197,7 +197,7 @@
    "category": "06 renewal",
    "message": "How do I renew my passport?",
    "expected": [
-    "passportindia"
+    "psp/Apply"
    ],
    "evidence": "Re-issue|Register|login"
   },
@@ -375,7 +375,7 @@
    "category": "12 Tamil script",
    "message": "எனது கடவுச்சீட்டை புதுப்பிப்பது எப்படி?",
    "expected": [
-    "passportindia"
+    "psp/Apply"
    ],
    "language": "ta",
    "evidence": "Re-issue|Register|login",
@@ -425,7 +425,7 @@
    "category": "13 Romanized",
    "message": "Enakku passport renew pannanum",
    "expected": [
-    "passportindia"
+    "psp/Apply"
    ],
    "evidence": "Re-issue|Register|login",
    "keep": [
@@ -551,10 +551,10 @@
    "category": "16 follow-up",
    "message": "Is there a Tatkaal option?",
    "expected": [
-    "passportindia"
+    "psp/Apply"
    ],
    "evidence": "Tatkaal",
-   "context": "passportindia"
+   "context": "psp/Apply"
   },
   {
    "category": "16 follow-up",
@@ -661,9 +661,13 @@
    "category": "18 outside",
    "message": "How do I get a birth certificate?",
    "expected": [
-    null
+    "krishnagiri"
    ],
-   "answer": null
+   "answer": null,
+   "requires": [
+    "krishnagiri"
+   ],
+   "note": "Relabelled 27 Oct 2026 for N8, Registration of Births and Deaths (krishnagiri.nic.in), which states how the birth certificate is issued; skipped where N8 is not stored. Earlier expectation: no match (no stored page)."
   },
   {
    "category": "18 outside",
@@ -685,7 +689,7 @@
    "category": "19 not stated",
    "message": "What is the fee for a passport?",
    "expected": [
-    "passportindia"
+    "psp/Apply"
    ],
    "answer": false
   },

@@ -1,0 +1,706 @@
+[
+ {
+  "id": 15,
+  "url": "https://www.passportindia.gov.in/psp/Apply",
+  "title": "Passport Seva",
+  "http_status": 200,
+  "redirects": [],
+  "final_url": "https://www.passportindia.gov.in/psp/Apply",
+  "fetched_with": "rendered",
+  "identical": true,
+  "stored_chars": 4862,
+  "live_chars": 4862,
+  "chunks": 7,
+  "chunk_ids": [
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14
+  ],
+  "chunks_match_text": true,
+  "embedding_min_cos_vs_fresh": 1.0,
+  "block_repeats": [],
+  "menu_like_blocks": [],
+  "stored_only_blocks": [],
+  "live_only_blocks": []
+ },
+ {
+  "id": 16,
+  "url": "https://www.incometax.gov.in/iec/foportal/help/all-topics/e-filing-services/file-itr-2-online/itr-2-UM?mobile-app=1&utm_source=chatgpt.com",
+  "title": "ITR-2 User Manual | Income Tax Department",
+  "http_status": 200,
+  "redirects": [],
+  "final_url": "https://www.incometax.gov.in/iec/foportal/help/all-topics/e-filing-services/file-itr-2-online/itr-2-UM?mobile-app=1&utm_source=chatgpt.com",
+  "fetched_with": "static",
+  "identical": true,
+  "stored_chars": 14719,
+  "live_chars": 14719,
+  "chunks": 18,
+  "chunk_ids": [
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23,
+   24,
+   25,
+   26,
+   27,
+   28,
+   29,
+   30,
+   31,
+   32
+  ],
+  "chunks_match_text": true,
+  "embedding_min_cos_vs_fresh": 1.0,
+  "block_repeats": [
+   "Note:"
+  ],
+  "menu_like_blocks": [],
+  "stored_only_blocks": [],
+  "live_only_blocks": []
+ },
+ {
+  "id": 17,
+  "url": "https://tnesevai.tn.gov.in/Citizen/FAQ.html",
+  "title": "Tamil Nadu eSevai Portal",
+  "http_status": 200,
+  "redirects": [],
+  "final_url": "https://tnesevai.tn.gov.in/Citizen/FAQ.html",
+  "fetched_with": "static",
+  "identical": true,
+  "stored_chars": 2883,
+  "live_chars": 2883,
+  "chunks": 4,
+  "chunk_ids": [
+   33,
+   34,
+   35,
+   36
+  ],
+  "chunks_match_text": true,
+  "embedding_min_cos_vs_fresh": 1.0,
+  "block_repeats": [
+   "Photo",
+   "Address Proof",
+   "Self-Declaration of Applicant",
+   "Family or Smart Card",
+   "Self Declaration of Applicant",
+   "Proof of Income (Payslip, Income Certificate, etc)"
+  ],
+  "menu_like_blocks": [],
+  "stored_only_blocks": [],
+  "live_only_blocks": []
+ },
+ {
+  "id": 18,
+  "url": "https://uidai.gov.in/en/updating-data-on-aadhaar",
+  "title": "Updating Data on Aadhaar - Unique Identification Authority of India | Government of India - Unique Identification Authority of India | Government of India",
+  "http_status": 200,
+  "redirects": [],
+  "final_url": "https://uidai.gov.in/en/updating-data-on-aadhaar",
+  "fetched_with": "static",
+  "identical": true,
+  "stored_chars": 7364,
+  "live_chars": 7364,
+  "chunks": 10,
+  "chunk_ids": [
+   37,
+   38,
+   39,
+   40,
+   41,
+   42,
+   43,
+   44,
+   45,
+   46
+  ],
+  "chunks_match_text": true,
+  "embedding_min_cos_vs_fresh": 1.0,
+  "block_repeats": [
+   "Registered Mobile Number",
+   "Demographic data update, the need could arise from:",
+   "Biometric update, the need could arise from:",
+   "Aadhaar details that can be updated are:",
+   "Modes of Update",
+   "By Visiting Aadhaar Enrolment Centre",
+   "Content Information",
+   "Published on : 04 May 2026",
+   "Last Updated : 17 Sep 2026",
+   "Owner : E&U"
+  ],
+  "menu_like_blocks": [],
+  "stored_only_blocks": [],
+  "live_only_blocks": []
+ },
+ {
+  "id": 19,
+  "url": "https://ecisveep.nic.in/voters/general-voters",
+  "title": "General Voter - Systematic Voters’ Education and Electoral Participation",
+  "http_status": 200,
+  "redirects": [
+   "https://ecisveep.nic.in/voters/general-voters (301)"
+  ],
+  "final_url": "https://ecisveep.nic.in/voters/general-voters/",
+  "fetched_with": "static",
+  "identical": false,
+  "stored_chars": 3005,
+  "live_chars": 2766,
+  "chunks": 4,
+  "chunk_ids": [
+   47,
+   48,
+   49,
+   50
+  ],
+  "chunks_match_text": true,
+  "embedding_min_cos_vs_fresh": 1.0,
+  "block_repeats": [],
+  "menu_like_blocks": [
+   "Gallery 0 How to Register By Director (SVEEP) , April 16, 2019 0 It's so Easy, Worker By Director (S"
+  ],
+  "stored_only_blocks": [
+   "Gallery 0 How to Register By Director (SVEEP) , April 16, 2019 0 It's so Easy, Worker By Director (SVEEP) , March 7, 2019 0 Im Ready Girl.jpg By Director (SVEEP) , September 13, 2018 0 Poster BSF.jpg "
+  ],
+  "live_only_blocks": []
+ },
+ {
+  "id": 20,
+  "url": "https://ecisveep.nic.in/voters/how-to-vote",
+  "title": "How to Vote - Systematic Voters’ Education and Electoral Participation",
+  "http_status": 200,
+  "redirects": [
+   "https://ecisveep.nic.in/voters/how-to-vote (301)"
+  ],
+  "final_url": "https://ecisveep.nic.in/voters/how-to-vote/",
+  "fetched_with": "static",
+  "identical": false,
+  "stored_chars": 4729,
+  "live_chars": 4491,
+  "chunks": 6,
+  "chunk_ids": [
+   51,
+   52,
+   53,
+   54,
+   55,
+   56
+  ],
+  "chunks_match_text": true,
+  "embedding_min_cos_vs_fresh": 1.0,
+  "block_repeats": [
+   "Mobile phones, cameras or any other gadget is not allowed inside a polling booth"
+  ],
+  "menu_like_blocks": [
+   "Images 0 How to Register By Director (SVEEP) , April 16, 2019 0 It's so Easy, Worker By Director (SV"
+  ],
+  "stored_only_blocks": [
+   "Images 0 How to Register By Director (SVEEP) , April 16, 2019 0 It's so Easy, Worker By Director (SVEEP) , March 7, 2019 0 Im Ready Girl.jpg By Director (SVEEP) , September 13, 2018 0 Poster BSF.jpg B"
+  ],
+  "live_only_blocks": []
+ },
+ {
+  "id": 21,
+  "url": "https://ecisveep.nic.in/voters/overseas-voters",
+  "title": "Overseas Voters - Systematic Voters’ Education and Electoral Participation",
+  "http_status": 200,
+  "redirects": [
+   "https://ecisveep.nic.in/voters/overseas-voters (301)"
+  ],
+  "final_url": "https://ecisveep.nic.in/voters/overseas-voters/",
+  "fetched_with": "static",
+  "identical": true,
+  "stored_chars": 3697,
+  "live_chars": 3697,
+  "chunks": 5,
+  "chunk_ids": [
+   57,
+   58,
+   59,
+   60,
+   61
+  ],
+  "chunks_match_text": true,
+  "embedding_min_cos_vs_fresh": 1.0,
+  "block_repeats": [],
+  "menu_like_blocks": [],
+  "stored_only_blocks": [],
+  "live_only_blocks": []
+ },
+ {
+  "id": 22,
+  "url": "https://parivahan.gov.in/en/content/learners-license",
+  "title": "Learner's License | Parivahansewa",
+  "http_status": 200,
+  "redirects": [],
+  "final_url": "https://parivahan.gov.in/en/content/learners-license",
+  "fetched_with": "static",
+  "identical": true,
+  "stored_chars": 1020,
+  "live_chars": 1020,
+  "chunks": 2,
+  "chunk_ids": [
+   62,
+   63
+  ],
+  "chunks_match_text": true,
+  "embedding_min_cos_vs_fresh": 1.0,
+  "block_repeats": [],
+  "menu_like_blocks": [],
+  "stored_only_blocks": [],
+  "live_only_blocks": []
+ },
+ {
+  "id": 23,
+  "url": "https://parivahan.gov.in/en/content/permanent-license",
+  "title": "Permanent License | Parivahansewa",
+  "http_status": 200,
+  "redirects": [],
+  "final_url": "https://parivahan.gov.in/en/content/permanent-license",
+  "fetched_with": "static",
+  "identical": true,
+  "stored_chars": 1208,
+  "live_chars": 1208,
+  "chunks": 2,
+  "chunk_ids": [
+   64,
+   65
+  ],
+  "chunks_match_text": true,
+  "embedding_min_cos_vs_fresh": 1.0,
+  "block_repeats": [],
+  "menu_like_blocks": [],
+  "stored_only_blocks": [],
+  "live_only_blocks": []
+ },
+ {
+  "id": 24,
+  "url": "https://parivahan.gov.in/en/content/renewal",
+  "title": "Renewal | Parivahansewa",
+  "http_status": 200,
+  "redirects": [],
+  "final_url": "https://parivahan.gov.in/en/content/renewal",
+  "fetched_with": "static",
+  "identical": true,
+  "stored_chars": 942,
+  "live_chars": 942,
+  "chunks": 1,
+  "chunk_ids": [
+   66
+  ],
+  "chunks_match_text": true,
+  "embedding_min_cos_vs_fresh": 1.0,
+  "block_repeats": [],
+  "menu_like_blocks": [],
+  "stored_only_blocks": [],
+  "live_only_blocks": []
+ },
+ {
+  "id": 25,
+  "url": "https://parivahan.gov.in/en/content/duplicate-licence",
+  "title": "Duplicate Licence | Parivahansewa",
+  "http_status": 200,
+  "redirects": [],
+  "final_url": "https://parivahan.gov.in/en/content/duplicate-licence",
+  "fetched_with": "static",
+  "identical": true,
+  "stored_chars": 459,
+  "live_chars": 459,
+  "chunks": 1,
+  "chunk_ids": [
+   67
+  ],
+  "chunks_match_text": true,
+  "embedding_min_cos_vs_fresh": 1.0,
+  "block_repeats": [],
+  "menu_like_blocks": [],
+  "stored_only_blocks": [],
+  "live_only_blocks": []
+ },
+ {
+  "id": 26,
+  "url": "https://parivahan.gov.in/en/content/international-driving-permit",
+  "title": "International Driving Permit | Parivahansewa",
+  "http_status": 200,
+  "redirects": [],
+  "final_url": "https://parivahan.gov.in/en/content/international-driving-permit",
+  "fetched_with": "static",
+  "identical": true,
+  "stored_chars": 541,
+  "live_chars": 541,
+  "chunks": 1,
+  "chunk_ids": [
+   68
+  ],
+  "chunks_match_text": true,
+  "embedding_min_cos_vs_fresh": 1.0,
+  "block_repeats": [],
+  "menu_like_blocks": [],
+  "stored_only_blocks": [],
+  "live_only_blocks": []
+ },
+ {
+  "id": 27,
+  "url": "https://parivahan.gov.in/en/content/licensing-related-fees-charges",
+  "title": "Licensing Related fees and Charges | Parivahansewa",
+  "http_status": 200,
+  "redirects": [],
+  "final_url": "https://parivahan.gov.in/en/content/licensing-related-fees-charges",
+  "fetched_with": "static",
+  "identical": true,
+  "stored_chars": 1436,
+  "live_chars": 1436,
+  "chunks": 2,
+  "chunk_ids": [
+   69,
+   70
+  ],
+  "chunks_match_text": true,
+  "embedding_min_cos_vs_fresh": 1.0,
+  "block_repeats": [
+   "Rs. 200.00/-",
+   "Rs. 1000.00/-",
+   "Rs. 500.00/-"
+  ],
+  "menu_like_blocks": [],
+  "stored_only_blocks": [],
+  "live_only_blocks": []
+ },
+ {
+  "id": 28,
+  "url": "https://parivahan.gov.in/en/content/renewal-of-rc",
+  "title": "Renewal of Registration Certificate | Parivahansewa",
+  "http_status": 200,
+  "redirects": [],
+  "final_url": "https://parivahan.gov.in/en/content/renewal-of-rc",
+  "fetched_with": "static",
+  "identical": true,
+  "stored_chars": 1088,
+  "live_chars": 1088,
+  "chunks": 2,
+  "chunk_ids": [
+   71,
+   72
+  ],
+  "chunks_match_text": true,
+  "embedding_min_cos_vs_fresh": 1.0,
+  "block_repeats": [],
+  "menu_like_blocks": [],
+  "stored_only_blocks": [],
+  "live_only_blocks": []
+ },
+ {
+  "id": 29,
+  "url": "https://parivahan.gov.in/en/content/address-change",
+  "title": "Change Of Address | Parivahansewa",
+  "http_status": 200,
+  "redirects": [],
+  "final_url": "https://parivahan.gov.in/en/content/address-change",
+  "fetched_with": "static",
+  "identical": true,
+  "stored_chars": 1109,
+  "live_chars": 1109,
+  "chunks": 2,
+  "chunk_ids": [
+   73,
+   74
+  ],
+  "chunks_match_text": true,
+  "embedding_min_cos_vs_fresh": 1.0,
+  "block_repeats": [],
+  "menu_like_blocks": [],
+  "stored_only_blocks": [],
+  "live_only_blocks": []
+ },
+ {
+  "id": 30,
+  "url": "https://parivahan.gov.in/en/content/ownership-transfer",
+  "title": "Transfer Of Ownership | Parivahansewa",
+  "http_status": 200,
+  "redirects": [],
+  "final_url": "https://parivahan.gov.in/en/content/ownership-transfer",
+  "fetched_with": "static",
+  "identical": true,
+  "stored_chars": 5195,
+  "live_chars": 5195,
+  "chunks": 7,
+  "chunk_ids": [
+   75,
+   76,
+   77,
+   78,
+   79,
+   80,
+   81
+  ],
+  "chunks_match_text": true,
+  "embedding_min_cos_vs_fresh": 1.0,
+  "block_repeats": [],
+  "menu_like_blocks": [],
+  "stored_only_blocks": [],
+  "live_only_blocks": []
+ },
+ {
+  "id": 31,
+  "url": "https://www.incometax.gov.in/iec/foportal/help/how-to-link-aadhaar",
+  "title": "Link Aadhaar User Manual | Income Tax Department",
+  "http_status": 200,
+  "redirects": [],
+  "final_url": "https://www.incometax.gov.in/iec/foportal/help/how-to-link-aadhaar",
+  "fetched_with": "static",
+  "identical": false,
+  "stored_chars": 7638,
+  "live_chars": 6455,
+  "chunks": 9,
+  "chunk_ids": [
+   82,
+   83,
+   84,
+   85,
+   86,
+   87,
+   88,
+   89,
+   90
+  ],
+  "chunks_match_text": true,
+  "embedding_min_cos_vs_fresh": 1.0,
+  "block_repeats": [],
+  "menu_like_blocks": [
+   "Individual/HUF Salaried Employees Guidance to file Tax Return Return / Forms applicable to me Tax sl",
+   "Non-Company AOP/BOI/Trust/AJP Return / Forms applicable to me Tax slabs Deductions on which I can ge"
+  ],
+  "stored_only_blocks": [
+   "Individual/HUF Salaried Employees Guidance to file Tax Return Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Assisted filing Downloads Business/Profession Guidance",
+   "Non-Company AOP/BOI/Trust/AJP Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Downloads Firm/LLP Guidance to file Tax Return Return / Forms applicable to me Tax sla"
+  ],
+  "live_only_blocks": []
+ },
+ {
+  "id": 32,
+  "url": "https://www.incometax.gov.in/iec/foportal/help/how-to-register-e-filing",
+  "title": "Register for e-Filing (Taxpayer) User Manual | Income Tax Department",
+  "http_status": 200,
+  "redirects": [],
+  "final_url": "https://www.incometax.gov.in/iec/foportal/help/how-to-register-e-filing",
+  "fetched_with": "static",
+  "identical": false,
+  "stored_chars": 4087,
+  "live_chars": 2904,
+  "chunks": 5,
+  "chunk_ids": [
+   91,
+   92,
+   93,
+   94,
+   95
+  ],
+  "chunks_match_text": true,
+  "embedding_min_cos_vs_fresh": 1.0,
+  "block_repeats": [
+   "Note:"
+  ],
+  "menu_like_blocks": [
+   "Individual/HUF Salaried Employees Guidance to file Tax Return Return / Forms applicable to me Tax sl",
+   "Non-Company AOP/BOI/Trust/AJP Return / Forms applicable to me Tax slabs Deductions on which I can ge"
+  ],
+  "stored_only_blocks": [
+   "Individual/HUF Salaried Employees Guidance to file Tax Return Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Assisted filing Downloads Business/Profession Guidance",
+   "Non-Company AOP/BOI/Trust/AJP Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Downloads Firm/LLP Guidance to file Tax Return Return / Forms applicable to me Tax sla"
+  ],
+  "live_only_blocks": []
+ },
+ {
+  "id": 33,
+  "url": "https://www.incometax.gov.in/iec/foportal/help/how-to-file-itr1-form-sahaj",
+  "title": "File ITR-1 (Sahaj) Online User Manual | Income Tax Department",
+  "http_status": 200,
+  "redirects": [],
+  "final_url": "https://www.incometax.gov.in/iec/foportal/help/how-to-file-itr1-form-sahaj",
+  "fetched_with": "static",
+  "identical": false,
+  "stored_chars": 13903,
+  "live_chars": 12720,
+  "chunks": 17,
+  "chunk_ids": [
+   96,
+   97,
+   98,
+   99,
+   100,
+   101,
+   102,
+   103,
+   104,
+   105,
+   106,
+   107,
+   108,
+   109,
+   110,
+   111,
+   112
+  ],
+  "chunks_match_text": true,
+  "embedding_min_cos_vs_fresh": 1.0,
+  "block_repeats": [
+   "Please Note:",
+   "Note:"
+  ],
+  "menu_like_blocks": [
+   "Individual/HUF Salaried Employees Guidance to file Tax Return Return / Forms applicable to me Tax sl",
+   "Non-Company AOP/BOI/Trust/AJP Return / Forms applicable to me Tax slabs Deductions on which I can ge"
+  ],
+  "stored_only_blocks": [
+   "Individual/HUF Salaried Employees Guidance to file Tax Return Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Assisted filing Downloads Business/Profession Guidance",
+   "Non-Company AOP/BOI/Trust/AJP Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Downloads Firm/LLP Guidance to file Tax Return Return / Forms applicable to me Tax sla"
+  ],
+  "live_only_blocks": []
+ },
+ {
+  "id": 34,
+  "url": "https://www.indiapost.gov.in/insurance-services/apy",
+  "title": "Atal Pension Yojana (APY) | India Post",
+  "http_status": 200,
+  "redirects": [],
+  "final_url": "https://www.indiapost.gov.in/insurance-services/apy",
+  "fetched_with": "static",
+  "identical": true,
+  "stored_chars": 1434,
+  "live_chars": 1434,
+  "chunks": 2,
+  "chunk_ids": [
+   113,
+   114
+  ],
+  "chunks_match_text": true,
+  "embedding_min_cos_vs_fresh": 1.0,
+  "block_repeats": [],
+  "menu_like_blocks": [],
+  "stored_only_blocks": [],
+  "live_only_blocks": []
+ },
+ {
+  "id": 35,
+  "url": "https://www.indiapost.gov.in/otheronlineservices/aadhaar-updation",
+  "title": "Aadhaar Updation | India Post",
+  "http_status": 200,
+  "redirects": [],
+  "final_url": "https://www.indiapost.gov.in/otheronlineservices/aadhaar-updation",
+  "fetched_with": "rendered",
+  "identical": true,
+  "stored_chars": 2472,
+  "live_chars": 2472,
+  "chunks": 3,
+  "chunk_ids": [
+   115,
+   116,
+   117
+  ],
+  "chunks_match_text": true,
+  "embedding_min_cos_vs_fresh": 1.0,
+  "block_repeats": [
+   "Aadhaar Enrolment",
+   "The Enrolment process involves electronic capture of demographic and biometric i",
+   "Aadhaar Updation",
+   "(i) Demographic Updation such as Name, Email ID, Mobile Number, Address, Date of",
+   "FREE",
+   "₹75"
+  ],
+  "menu_like_blocks": [],
+  "stored_only_blocks": [],
+  "live_only_blocks": []
+ },
+ {
+  "id": 36,
+  "url": "https://www.epfo.gov.in/epf-scheme",
+  "title": "Employees' Provident Fund Organisation",
+  "http_status": 200,
+  "redirects": [
+   "https://www.epfo.gov.in/epf-scheme (301)"
+  ],
+  "final_url": "https://www.epfo.gov.in/epf-scheme/",
+  "fetched_with": "static",
+  "identical": true,
+  "stored_chars": 3539,
+  "live_chars": 3539,
+  "chunks": 5,
+  "chunk_ids": [
+   118,
+   119,
+   120,
+   121,
+   122
+  ],
+  "chunks_match_text": true,
+  "embedding_min_cos_vs_fresh": 1.0,
+  "block_repeats": [
+   "Yes"
+  ],
+  "menu_like_blocks": [],
+  "stored_only_blocks": [],
+  "live_only_blocks": []
+ },
+ {
+  "id": 37,
+  "url": "https://www.epfo.gov.in/pension-scheme-eps",
+  "title": "Employees' Provident Fund Organisation",
+  "http_status": 200,
+  "redirects": [
+   "https://www.epfo.gov.in/pension-scheme-eps (301)"
+  ],
+  "final_url": "https://www.epfo.gov.in/pension-scheme-eps/",
+  "fetched_with": "static",
+  "identical": true,
+  "stored_chars": 3436,
+  "live_chars": 3436,
+  "chunks": 4,
+  "chunk_ids": [
+   123,
+   124,
+   125,
+   126
+  ],
+  "chunks_match_text": true,
+  "embedding_min_cos_vs_fresh": 1.0,
+  "block_repeats": [],
+  "menu_like_blocks": [],
+  "stored_only_blocks": [],
+  "live_only_blocks": []
+ },
+ {
+  "id": 38,
+  "url": "https://www.epfo.gov.in/insurance-scheme-edli",
+  "title": "Employees' Provident Fund Organisation",
+  "http_status": 200,
+  "redirects": [
+   "https://www.epfo.gov.in/insurance-scheme-edli (301)"
+  ],
+  "final_url": "https://www.epfo.gov.in/insurance-scheme-edli/",
+  "fetched_with": "static",
+  "identical": true,
+  "stored_chars": 2252,
+  "live_chars": 2252,
+  "chunks": 3,
+  "chunk_ids": [
+   127,
+   128,
+   129
+  ],
+  "chunks_match_text": true,
+  "embedding_min_cos_vs_fresh": 1.0,
+  "block_repeats": [],
+  "menu_like_blocks": [],
+  "stored_only_blocks": [],
+  "live_only_blocks": []
+ }
+]

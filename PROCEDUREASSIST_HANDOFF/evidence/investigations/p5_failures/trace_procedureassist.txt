@@ -1,0 +1,184 @@
+### procedureassist
+
+## 'How do I get a marriage certificate?'
+  names_something -> True
+    _decide('How do I get a marriage certificate?')
+      ranked 17:REV-101 Community Certificat 0.633, 15:Apply for Fresh / Re-issue O 0.492, 18:Updating Data on Aadhaar 0.444
+      classify -> ('matched', [17])
+      mentions(17:REV-101 Community Certificat) -> True
+      covers('Tamil Nadu') -> True
+    => matched ['17:REV-101 Community Certificat']
+  RESULT status=matched candidates=['17:REV-101 Community Certificat'] named=False clarification=None
+
+## 'How do I apply for a marriage certificate?'
+  names_something -> True
+    _decide('How do I apply for a marriage certificate?')
+      ranked 17:REV-101 Community Certificat 0.596, 15:Apply for Fresh / Re-issue O 0.501, 19:Register to Vote 0.467
+      classify -> ('matched', [17])
+      mentions(17:REV-101 Community Certificat) -> True
+      covers('Tamil Nadu') -> True
+    => matched ['17:REV-101 Community Certificat']
+  RESULT status=matched candidates=['17:REV-101 Community Certificat'] named=False clarification=None
+
+## 'How do I register my marriage in Tamil Nadu?'
+  names_something -> True
+    _decide('How do I register my marriage in Tamil Nadu?')
+      ranked 17:REV-101 Community Certificat 0.523, 19:Register to Vote 0.463, 32:Register on the e-Filing Por 0.453
+      classify -> ('no_match', [])
+    => no_match []
+  RESULT status=no_match candidates=[] named=False clarification=None
+
+## 'How do I change the name on my PAN card?'
+  names_something -> True
+    _decide('How do I change the name on my PAN card?')
+      ranked 32:Register on the e-Filing Por 0.615, 17:REV-101 Community Certificat 0.576, 31:Link PAN with Aadhaar 0.545
+      classify -> ('matched', [32])
+      mentions(31:Link PAN with Aadhaar) -> True
+      covers('India') -> True
+    => matched ['31:Link PAN with Aadhaar']
+  RESULT status=matched candidates=['31:Link PAN with Aadhaar'] named=True clarification=None
+
+## 'How do I correct the spelling of my name on my PAN card?'
+  names_something -> True
+    _decide('How do I correct the spelling of my name on my PAN card?')
+      ranked 32:Register on the e-Filing Por 0.603, 17:REV-101 Community Certificat 0.545, 31:Link PAN with Aadhaar 0.526
+      classify -> ('matched', [32])
+      mentions(31:Link PAN with Aadhaar) -> True
+      covers('India') -> True
+    => matched ['31:Link PAN with Aadhaar']
+  RESULT status=matched candidates=['31:Link PAN with Aadhaar'] named=True clarification=None
+
+## 'How do I apply for a new PAN card?'
+  names_something -> True
+    _decide('How do I apply for a new PAN card?')
+      ranked 32:Register on the e-Filing Por 0.659, 31:Link PAN with Aadhaar 0.595, 15:Apply for Fresh / Re-issue O 0.577
+      classify -> ('matched', [32])
+      mentions(31:Link PAN with Aadhaar) -> True
+      covers('India') -> True
+    => matched ['31:Link PAN with Aadhaar']
+  RESULT status=matched candidates=['31:Link PAN with Aadhaar'] named=True clarification=None
+
+## 'how do i renew my uk driving licence'
+  names_something -> True
+    _decide('how do i renew my uk driving licence')
+      ranked 24:Renewal of Driving Licence 0.639, 27:Driving Licence Fees and Cha 0.588, 23:Permanent Driving Licence 0.558
+      classify -> ('matched', [24])
+      mentions(24:Renewal of Driving Licence) -> True
+      covers('India') -> True
+    => matched ['24:Renewal of Driving Licence']
+  RESULT status=matched candidates=['24:Renewal of Driving Licence'] named=True clarification=None
+
+## 'How do I apply for a certificate in Tamil Nadu?'
+  names_something -> True
+    _decide('How do I apply for a certificate in Tamil Nadu?')
+      ranked 17:REV-101 Community Certificat 0.613, 26:International Driving Permit 0.453, 15:Apply for Fresh / Re-issue O 0.450
+      classify -> ('matched', [17])
+      mentions(17:REV-101 Community Certificat) -> True
+      covers('Tamil Nadu') -> True
+    => matched ['17:REV-101 Community Certificat']
+  RESULT status=matched candidates=['17:REV-101 Community Certificat'] named=False clarification=None
+
+## 'I work in Dubai. Can I vote in India?'  (expected page: overseas-voters)
+  names_something -> True
+  extract_needs (multi-need gate passed) -> ([{'phrase': 'vote in India', 'question': 'Can I vote in India if I work in Dubai?'}], None)
+    _decide('vote in India')
+      ranked 19:Register to Vote 0.676, 20:How to Vote 0.592, 21:Overseas (NRI) Voter Registr 0.519
+      classify -> ('matched', [19])
+      mentions(19:Register to Vote) -> True
+      covers('India') -> True
+    => matched ['19:Register to Vote']
+    _decide('Can I vote in India if I work in Dubai?')
+      ranked 21:Overseas (NRI) Voter Registr 0.552, 19:Register to Vote 0.528, 20:How to Vote 0.474
+      classify -> ('matched', [21])
+      mentions(21:Overseas (NRI) Voter Registr) -> False
+    => no_match []
+    _decide('I work in Dubai. Can I vote in India?')
+      ranked 21:Overseas (NRI) Voter Registr 0.555, 19:Register to Vote 0.533, 20:How to Vote 0.476
+      classify -> ('ambiguous', [21, 19])
+      mentions(21:Overseas (NRI) Voter Registr) -> False
+      mentions(19:Register to Vote) -> False
+    => no_match []
+  RESULT status=matched candidates=['19:Register to Vote'] named=False clarification=None
+  expected page 21:Overseas (NRI) Voter Registr: rank 1 of 24, whole-message score 0.555
+
+## 'I live abroad. How do I register to vote?'  (expected page: overseas-voters)
+  names_something -> True
+  extract_needs (multi-need gate passed) -> ([{'phrase': 'register to vote', 'question': 'How do I register to vote while living abroad?'}], None)
+    _decide('register to vote')
+      ranked 19:Register to Vote 0.715, 20:How to Vote 0.575, 21:Overseas (NRI) Voter Registr 0.519
+      classify -> ('matched', [19])
+      mentions(19:Register to Vote) -> True
+      covers('India') -> True
+    => matched ['19:Register to Vote']
+    _decide('How do I register to vote while living abroad?')
+      ranked 21:Overseas (NRI) Voter Registr 0.644, 19:Register to Vote 0.615, 20:How to Vote 0.518
+      classify -> ('ambiguous', [21, 19])
+      mentions(21:Overseas (NRI) Voter Registr) -> True
+      covers('India') -> True
+      mentions(19:Register to Vote) -> True
+      covers('India') -> True
+    => ambiguous ['21:Overseas (NRI) Voter Registr', '19:Register to Vote']
+    _decide('I live abroad. How do I register to vote?')
+      ranked 21:Overseas (NRI) Voter Registr 0.647, 19:Register to Vote 0.627, 20:How to Vote 0.560
+      classify -> ('ambiguous', [21, 19])
+      mentions(21:Overseas (NRI) Voter Registr) -> True
+      covers('India') -> True
+      mentions(19:Register to Vote) -> True
+      covers('India') -> True
+    => ambiguous ['21:Overseas (NRI) Voter Registr', '19:Register to Vote']
+  RESULT status=ambiguous candidates=['19:Register to Vote', '21:Overseas (NRI) Voter Registr'] named=False clarification=None
+  expected page 21:Overseas (NRI) Voter Registr: rank 1 of 24, whole-message score 0.647
+
+## 'sold my bike, need to transfer the RC'  (expected page: ownership-transfer)
+  names_something -> True
+  extract_needs (multi-need gate passed) -> ([{'phrase': 'transfer the RC', 'question': 'How do I transfer the RC after selling my bike?'}], None)
+    _decide('transfer the RC')
+      ranked 30:Transfer of Vehicle Ownershi 0.382, 18:Updating Data on Aadhaar 0.361, 28:Renewal of Vehicle Registrat 0.345
+      classify -> ('no_match', [])
+    => no_match []
+    _decide('How do I transfer the RC after selling my bike?')
+      ranked 30:Transfer of Vehicle Ownershi 0.437, 17:REV-101 Community Certificat 0.346, 28:Renewal of Vehicle Registrat 0.330
+      classify -> ('no_match', [])
+    => no_match []
+    _decide('sold my bike, need to transfer the RC')
+      ranked 30:Transfer of Vehicle Ownershi 0.445, 17:REV-101 Community Certificat 0.385, 29:Change of Address in Vehicle 0.377
+      classify -> ('no_match', [])
+    => no_match []
+  RESULT status=no_match candidates=[] named=False clarification=None
+  expected page 30:Transfer of Vehicle Ownershi: rank 1 of 24, whole-message score 0.445
+
+## 'How much does a duplicate RC cost?'  (expected page: fees-and-user-charges)
+  names_something -> True
+    _decide('How much does a duplicate RC cost?')
+      ranked 25:Duplicate Driving Licence 0.445, 27:Driving Licence Fees and Cha 0.412, 35:Aadhaar Enrolment and Update 0.328
+      classify -> ('no_match', [])
+    => no_match []
+  RESULT status=no_match candidates=[] named=False clarification=None
+
+## 'How much do I pay to get my DL renewed?'  (expected page: content/renewal)
+  names_something -> True
+    _decide('How much do I pay to get my DL renewed?')
+      ranked 24:Renewal of Driving Licence 0.518, 27:Driving Licence Fees and Cha 0.495, 28:Renewal of Vehicle Registrat 0.468
+      classify -> ('no_match', [])
+    => no_match []
+  RESULT status=no_match candidates=[] named=False clarification=None
+  expected page 24:Renewal of Driving Licence: rank 1 of 24, whole-message score 0.518
+  expected page 28:Renewal of Vehicle Registrat: rank 3 of 24, whole-message score 0.468
+
+## 'I sold my bike. What does the buyer have to do and by when?'  (expected page: ownership-transfer)
+  names_something -> True
+  extract_needs (multi-need gate passed) -> ([{'phrase': 'What does the buyer have to do and by when?', 'question': 'What steps does the buyer need to take after purchasing the bike and by what deadline?'}], None)
+    _decide('What does the buyer have to do and by when?')
+      ranked 30:Transfer of Vehicle Ownershi 0.506, 29:Change of Address in Vehicle 0.371, 15:Apply for Fresh / Re-issue O 0.346
+      classify -> ('no_match', [])
+    => no_match []
+    _decide('What steps does the buyer need to take after purchasing the bike and by what deadline?')
+      ranked 30:Transfer of Vehicle Ownershi 0.508, 29:Change of Address in Vehicle 0.384, 23:Permanent Driving Licence 0.383
+      classify -> ('no_match', [])
+    => no_match []
+    _decide('I sold my bike. What does the buyer have to do and by when?')
+      ranked 30:Transfer of Vehicle Ownershi 0.529, 28:Renewal of Vehicle Registrat 0.394, 29:Change of Address in Vehicle 0.378
+      classify -> ('no_match', [])
+    => no_match []
+  RESULT status=no_match candidates=[] named=False clarification=None
+  expected page 30:Transfer of Vehicle Ownershi: rank 1 of 24, whole-message score 0.529

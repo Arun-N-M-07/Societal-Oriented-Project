@@ -5,7 +5,7 @@
    "category": "A single",
    "message": "How do I renew my passport?",
    "expected": [
-    "passportindia"
+    "psp/Apply"
    ],
    "relation": false
   },
@@ -93,7 +93,7 @@
    "category": "A single",
    "message": "How do I update my Aadhaar address online?",
    "expected": [
-    "uidai"
+    "updating-data-on-aadhaar"
    ],
    "relation": false
   },
@@ -117,7 +117,7 @@
    "category": "B phrasing",
    "message": "passprt renewal",
    "expected": [
-    "passportindia"
+    "psp/Apply"
    ],
    "relation": false
   },
@@ -165,8 +165,8 @@
    "category": "C multiple",
    "message": "I need to renew my passport and update my Aadhaar details. What should I do for each?",
    "expected": [
-    "passportindia",
-    "uidai"
+    "psp/Apply",
+    "updating-data-on-aadhaar"
    ],
    "relation": false
   },
@@ -175,7 +175,7 @@
    "message": "I need to register as a voter, and I also want to understand how to renew my passport.",
    "expected": [
     "general-voters",
-    "passportindia"
+    "psp/Apply"
    ],
    "relation": false
   },
@@ -213,7 +213,7 @@
    "category": "D background",
    "message": "I recently updated my Aadhaar. Now I want to renew my passport.",
    "expected": [
-    "passportindia"
+    "psp/Apply"
    ],
    "relation": false
   },
@@ -263,7 +263,7 @@
    "category": "F relationship",
    "message": "I want to update my Aadhaar address and file my ITR-2. Do I need Aadhaar to get my ITR-2 refund?",
    "expected": [
-    "uidai",
+    "updating-data-on-aadhaar",
     "itr-2"
    ],
    "relation": true,
@@ -273,8 +273,8 @@
    "category": "F relationship",
    "message": "Update my Aadhaar address and renew my passport. Which should I do first, and can I reuse documents?",
    "expected": [
-    "uidai",
-    "passportindia"
+    "updating-data-on-aadhaar",
+    "psp/Apply"
    ],
    "relation": true,
    "relation_evidence": false
@@ -291,9 +291,10 @@
    "category": "G unsupported",
    "message": "How do I get a birth certificate?",
    "expected": [
-    null
+    "krishnagiri"
    ],
-   "relation": false
+   "relation": false,
+   "note": "Relabelled 28 Oct 2026, the same label as answers.json and safety.json (decided 27 Oct before any run): N8, Registration of Births and Deaths, states how the birth certificate is issued. This set runs on staging only, where N8 is stored."
   },
   {
    "category": "G unsupported",

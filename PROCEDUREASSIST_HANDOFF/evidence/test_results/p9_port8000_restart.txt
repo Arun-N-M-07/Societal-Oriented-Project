@@ -1,0 +1,15 @@
+Port 8000 restart, Wed Oct 28 10:31:15 IST 2026
+Before: PID 75965, started Fri Oct 23 22:51:32 2026, 'python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000', cwd /Users/arunnm/Projects/SOP, parent launchd; 0 established connections; last logged request 25 Oct 15:23 (health check).
+Old process, POST /api/identify {"question": "What about EPS?"}:
+{"status":"matched","candidates":[{"id":37,"name":"Employees' Pension Scheme (EPS)","department":"EPFO","jurisdiction":"India","summary":"The Employees' Pension Scheme, 1995 provides pensionary benefits to eligible employees, including monthly pension on superannuation, early retirement, permanent disability, and family pension in case of member’s demise. Employers and the Central Government contribute to the Pension Fund."}]}
+PID 75965 stopped (SIGTERM) 10:31:27
+New process: PID 89049, Wed Oct 28 10:31:27 2026     /opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/P, cwd /Users/arunnm/Projects/SOP
+GET /health: {"status":"ok"}
+GET /health/ready: {"status":"ok","database":"ok","ollama":"ok"} (HTTP 200)
+New process, POST /api/identify {"question": "What about EPS?"} (the named field exists only in the current code):
+  status matched ["Employees' Pension Scheme (EPS)"] named = True
+New process, POST /api/identify {"question": "How do I get a birth certificate in Tamil Nadu?"} (uses the approved database with the new procedures):
+x-request-id: 9eeb3e583579
+  status matched ['Registration of Births and Deaths']
+Procedures served: 27
+Parent of the new process: 1 (log: this session's scratchpad backend_8000.log)

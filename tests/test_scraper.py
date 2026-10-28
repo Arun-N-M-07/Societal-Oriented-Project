@@ -15,6 +15,7 @@ from backend.scraper import (
     fetch_rendered_html,
     is_source_text_usable,
     normalize_url,
+    require_official,
     scrape_url,
     validate_url,
 )
@@ -126,9 +127,101 @@ class CleanHtmlTest(unittest.TestCase):
             "Apply for a Passport\n\n"
             "Applicants must bring proof.\n\n"
             "Proof of address\n\n"
-            "Fee\n\n"
-            "₹1,500",
+            "Fee ₹1,500",
         )
+
+    def test_keeps_each_table_row_together_with_its_fee(self):
+        html = """
+        <main><table>
+          <tr><th>Purpose</th><th>Amount in Rs.</th></tr>
+          <tr><td>Renewal of driving licence</td><td><p>Rs. 200.00/-</p></td></tr>
+          <tr><td>Issue of duplicate licence to a school</td><td>Rs. 5000.00/-</td></tr>
+        </table></main>
+        """
+
+        self.assertEqual(
+            clean_html(html),
+            "Purpose Amount in Rs.\n\n"
+            "Renewal of driving licence Rs. 200.00/-\n\n"
+            "Issue of duplicate licence to a school Rs. 5000.00/-",
+        )
+
+    def test_fee_sub_rows_keep_their_numbered_parent_row(self):
+        html = """
+        <main><table>
+          <tr><th>Sl.No.</th><th>Purpose</th><th>Amount</th></tr>
+          <tr><td>2.</td><td colspan="2">Duplicate trade certificate:</td></tr>
+          <tr><td></td><td>(a) Motorcycle</td><td>Rupees Three Hundred Only</td></tr>
+          <tr><td>4.</td><td colspan="2">Issue or renewal of certificate of registration:</td></tr>
+          <tr><td></td><td>(b) Motor cycle</td><td>Rupees Three Hundred Only</td></tr>
+          <tr><td></td><td colspan="2">(c) Three wheeler/Light Motor Vehicles:</td></tr>
+          <tr><td></td><td>i) Non transport;</td><td>Rupees Six Hundred Only</td></tr>
+          <tr><td></td><td>(d) Medium goods vehicle</td><td>Rupees One Thousand Only</td></tr>
+          <tr><td>5.</td><td>Issue of duplicate certificate of registration</td><td>Half of the fee</td></tr>
+        </table></main>
+        """
+
+        self.assertEqual(clean_html(html).split("\n\n"), [
+            "Sl.No. Purpose Amount",
+            "2. Duplicate trade certificate:",
+            "2. Duplicate trade certificate: (a) Motorcycle Rupees Three Hundred Only",
+            "4. Issue or renewal of certificate of registration:",
+            "4. Issue or renewal of certificate of registration: (b) Motor cycle Rupees Three Hundred Only",
+            "4. Issue or renewal of certificate of registration: (c) Three wheeler/Light Motor Vehicles:",
+            "4. Issue or renewal of certificate of registration: (c) Three wheeler/Light Motor Vehicles: "
+            "i) Non transport; Rupees Six Hundred Only",
+            # A sibling "(d)" row is not put under the "(c)" heading.
+            "4. Issue or renewal of certificate of registration: (d) Medium goods vehicle Rupees One Thousand Only",
+            "5. Issue of duplicate certificate of registration Half of the fee",
+        ])
+
+    def test_rows_of_ordinary_tables_get_no_parent(self):
+        html = """
+        <main><table>
+          <tr><th>S.no</th><th>Service</th><th>Fee</th></tr>
+          <tr><td>1</td><td>Aadhaar Enrolment</td><td>FREE</td></tr>
+          <tr><td>4</td><td>Biometric update</td><td>₹125</td></tr>
+        </table>
+        <table><tr><td></td><td>Photo</td></tr><tr><td></td><td>Address Proof</td></tr></table></main>
+        """
+
+        self.assertEqual(clean_html(html).split("\n\n"),
+                         ["S.no Service Fee", "1 Aadhaar Enrolment FREE", "4 Biometric update ₹125", "Photo", "Address Proof"])
+
+    def test_keeps_text_held_directly_in_divs_spans_and_accordion_questions(self):
+        html = """
+        <main>
+          <h2>Who It Covers?</h2>
+          <div class="card"><div>Age group: 18–54 years.</div><div>Must be an Indian resident.</div></div>
+          <details><summary>Can apprentices become EPF members?</summary><p>No.</p></details>
+          <div class="card-header"><a href="#q7">7. What documents are required for a Community Certificate?</a></div>
+          <div class="card-body"><p>Photo</p></div>
+          <section><span>*Inclusive of GST</span><p>Fees are collected at the centre.</p></section>
+        </main>
+        """
+
+        self.assertEqual(
+            clean_html(html),
+            "Who It Covers?\n\n"
+            "Age group: 18–54 years.\n\n"
+            "Must be an Indian resident.\n\n"
+            "Can apprentices become EPF members?\n\n"
+            "No.\n\n"
+            "7. What documents are required for a Community Certificate?\n\n"
+            "Photo\n\n"
+            "*Inclusive of GST\n\n"
+            "Fees are collected at the centre.",
+        )
+
+    def test_removes_menus_of_repeated_link_labels_but_keeps_repetitive_prose(self):
+        menu = ("Individual Guidance to file Tax Return Return / Forms applicable to me Tax slabs "
+                "Senior Citizen Guidance to file Tax Return Return / Forms applicable to me Tax slabs "
+                "Non Resident Guidance to file Tax Return Return / Forms applicable to me Tax slabs")
+        prose = ("Fill Form 6 (Link to online form). NRI voters fill Form 6A (Link to online form). "
+                 "For corrections fill Form 8 (Link to online form).")
+        html = f"<main><h1>Link PAN with Aadhaar</h1><p>{menu}</p><p>{prose}</p></main>"
+
+        self.assertEqual(clean_html(html), f"Link PAN with Aadhaar\n\n{prose}")
 
     def test_keeps_main_content_and_removes_page_chrome(self):
         html = """
@@ -207,6 +300,11 @@ class SourceTextUsabilityTest(unittest.TestCase):
         self.assertFalse(
             is_source_text_usable("Please enable JavaScript to continue.")
         )
+        # An error page served as success is not content either.
+        error_page = ("404 Page | Election Commission of India 404 Ooops!!! The page you are looking for is not found "
+                      "Back to home Election Commission of India Accessibility Tools Screen Reader Access Skip to "
+                      "main content Contact Us Sitemap Help Feedback Terms of Use Privacy Policy Copyright Policy")
+        self.assertFalse(is_source_text_usable(error_page))
 
     def test_placeholder_words_inside_other_words_are_not_placeholders(self):
         procedure_text = (
@@ -321,6 +419,49 @@ class RenderedHtmlTest(unittest.TestCase):
             fetch_rendered_html("https://example.gov/start")
 
 
+class OfficialSourceTest(unittest.TestCase):
+    def test_only_official_domains_and_their_subdomains(self):
+        for url in ["https://parivahan.gov.in/en/content/renewal", "https://tnesevai.tn.gov.in/Citizen/FAQ.html",
+                    "https://ecisveep.nic.in/voters", "https://www.pfrda.org.in/schemes/apy", "https://GOV.IN./"]:
+            with self.subTest(url):
+                self.assertEqual(require_official(url), url)
+        for url in ["https://example.com/gov.in", "https://gov.in.example.com/", "https://notgov.in/",
+                    "https://www.gov.uk/renew-driving-licence", "https://pfrda.org.in.evil.example/"]:
+            with self.subTest(url):
+                with self.assertRaisesRegex(ScraperError, "official government websites"):
+                    require_official(url)
+
+    @patch("backend.scraper.fetch_static_html")
+    def test_the_page_after_redirects_must_be_official_too(self, fetch_static_html):
+        with self.assertRaisesRegex(ScraperError, "official"):
+            scrape_url("https://example.com/page")
+        fetch_static_html.assert_not_called()
+        fetch_static_html.return_value = ("https://example.com/landing", ScrapeUrlTest.usable_html)
+        with self.assertRaisesRegex(ScraperError, "official"):
+            scrape_url("https://example.gov.in/moved")
+
+
+class ConnectedAddressTest(unittest.TestCase):
+    def test_a_host_that_resolves_to_a_private_address_on_connection_is_rejected(self):
+        class Stream:
+            def get_extra_info(self, name):
+                return ("10.0.0.5", 443) if name == "server_addr" else None
+
+        rebound = html_response("https://example.gov/page")
+        rebound.extensions["network_stream"] = Stream()
+        with patch("backend.scraper.httpx.Client") as client_class:
+            client_class.return_value.__enter__.return_value.send.return_value = rebound
+            with self.assertRaisesRegex(ScraperError, "Private or local"):
+                fetch_static_html("https://example.gov/page")
+
+    @patch("backend.scraper.sync_playwright")
+    def test_the_rendered_page_is_checked_the_same_way(self, sync_playwright):
+        page = sync_playwright.return_value.__enter__.return_value.chromium.launch.return_value.new_page.return_value
+        page.goto.return_value.server_addr.return_value = {"ipAddress": "127.0.0.1", "port": 443}
+        with self.assertRaisesRegex(ScraperError, "Private or local"):
+            fetch_rendered_html("https://example.gov/start")
+
+
 class ScrapeUrlTest(unittest.TestCase):
     usable_html = """
     <h1>Passport Renewal Application</h1>
@@ -340,13 +481,13 @@ class ScrapeUrlTest(unittest.TestCase):
         self, fetch_static_html, fetch_rendered_html
     ):
         fetch_static_html.return_value = (
-            "https://example.gov/final",
+            "https://example.gov.in/final",
             self.usable_html,
         )
 
-        result = scrape_url("https://example.gov/start")
+        result = scrape_url("https://example.gov.in/start")
 
-        self.assertEqual(result.source_url, "https://example.gov/final")
+        self.assertEqual(result.source_url, "https://example.gov.in/final")
         self.assertIn("Passport Renewal Application", result.source_text)
         fetch_rendered_html.assert_not_called()
 
@@ -356,19 +497,19 @@ class ScrapeUrlTest(unittest.TestCase):
         self, fetch_static_html, fetch_rendered_html
     ):
         fetch_static_html.return_value = (
-            "https://example.gov/start",
+            "https://example.gov.in/start",
             "<p>Loading...</p>",
         )
         fetch_rendered_html.return_value = (
-            "https://example.gov/rendered",
+            "https://example.gov.in/rendered",
             self.usable_html,
         )
 
-        result = scrape_url("https://example.gov/start")
+        result = scrape_url("https://example.gov.in/start")
 
-        self.assertEqual(result.source_url, "https://example.gov/rendered")
+        self.assertEqual(result.source_url, "https://example.gov.in/rendered")
         fetch_rendered_html.assert_called_once_with(
-            "https://example.gov/start"
+            "https://example.gov.in/start"
         )
 
     @patch("backend.scraper.fetch_rendered_html")
@@ -377,41 +518,52 @@ class ScrapeUrlTest(unittest.TestCase):
         self, fetch_static_html, fetch_rendered_html
     ):
         fetch_static_html.return_value = (
-            "https://example.gov/start",
+            "https://example.gov.in/start",
             "<p>Loading...</p>",
         )
         fetch_rendered_html.return_value = (
-            "https://example.gov/start",
+            "https://example.gov.in/start",
             "<p>Please enable JavaScript.</p>",
         )
 
         with self.assertRaisesRegex(
             ScraperError, "No meaningful page content found"
         ):
-            scrape_url("https://example.gov/start")
+            scrape_url("https://example.gov.in/start")
 
     @patch("backend.scraper.fetch_rendered_html")
     @patch("backend.scraper.fetch_static_html")
     def test_returns_normalized_source_url(self, fetch_static_html, fetch_rendered_html):
         fetch_static_html.return_value = (
-            "HTTPS://Example.GOV/Final/#top",
+            "HTTPS://Example.GOV.IN/Final/#top",
             self.usable_html,
         )
 
-        result = scrape_url("https://example.gov/start")
+        result = scrape_url("https://example.gov.in/start")
 
-        self.assertEqual(result.source_url, "https://example.gov/Final")
+        self.assertEqual(result.source_url, "https://example.gov.in/Final")
 
     @patch("backend.scraper.fetch_rendered_html")
     @patch("backend.scraper.fetch_static_html")
     def test_rejects_pages_with_too_much_text(self, fetch_static_html, fetch_rendered_html):
         fetch_static_html.return_value = (
-            "https://example.gov/final",
-            "<p>" + "word " * 30_000 + "</p>",
+            "https://example.gov.in/final",
+            "<p>" + "Apply at the office. " * 6_000 + "</p>",  # prose, so not a menu
         )
 
         with self.assertRaisesRegex(ScraperError, "too much text"):
-            scrape_url("https://example.gov/start")
+            scrape_url("https://example.gov.in/start")
+
+    @patch("backend.scraper.fetch_rendered_html")
+    @patch("backend.scraper.fetch_static_html")
+    def test_uses_browser_when_the_page_cannot_be_fetched_directly(self, fetch_static_html, fetch_rendered_html):
+        # e.g. a server that sends an incomplete certificate chain, which a browser completes and verifies
+        fetch_static_html.side_effect = SourceUnavailableError("Unable to retrieve the source page.")
+        fetch_rendered_html.return_value = ("https://example.gov.in/start", self.usable_html)
+        self.assertIn("Passport Renewal Application", scrape_url("https://example.gov.in/start").source_text)
+        fetch_rendered_html.side_effect = SourceUnavailableError("The rendered page could not be loaded.")
+        with self.assertRaisesRegex(SourceUnavailableError, "rendered page"):
+            scrape_url("https://example.gov.in/start")
 
     @patch("backend.scraper.fetch_rendered_html")
     @patch("backend.scraper.fetch_static_html")
@@ -423,7 +575,7 @@ class ScrapeUrlTest(unittest.TestCase):
         )
 
         with self.assertRaisesRegex(ScraperError, "application/pdf"):
-            scrape_url("https://example.gov/document.pdf")
+            scrape_url("https://example.gov.in/document.pdf")
         fetch_rendered_html.assert_not_called()
 
 

@@ -1,0 +1,45 @@
+[asked] How do I register my marriage in Tamil Nadu?
+   identify: matched ['Registration of Births and Deaths'] named=False -> no card; 0 claims
+   top 3 by score: Registration of Births and Deaths 0.607; REV-101 Community Certificate 0.523; Register to Vote 0.463
+[asked] What documents do I need for a widow certificate in Tamil Nadu?
+   identify: matched ['Registration of Births and Deaths'] named=False -> no card; 0 claims
+   top 3 by score: Registration of Births and Deaths 0.539; REV-101 Community Certificate 0.508; Employees' Pension Scheme (EPS) 0.453
+[asked] How do I get a nativity certificate in tamil nadu?
+   identify: matched ['Registration of Births and Deaths'] named=False -> no card; 0 claims
+   top 3 by score: Registration of Births and Deaths 0.612; REV-101 Community Certificate 0.564; Updating Data on Aadhaar 0.454
+[asked] How do I register a property in Tamil Nadu?
+   identify: matched ['Registration of Births and Deaths'] named=False -> no card; 0 claims
+   top 3 by score: Registration of Births and Deaths 0.553; REV-101 Community Certificate 0.520; Register to Vote 0.458
+[asked] Do I need a birth certificate for a nativity certificate in Tamil Nadu?
+   identify: matched ['Registration of Births and Deaths'] named=False -> no card; 0 claims
+   top 3 by score: Registration of Births and Deaths 0.642; REV-101 Community Certificate 0.523; Instant e-PAN 0.467
+[asked] What is the fee for a marriage certificate in Tamil Nadu?
+   identify: matched ['Registration of Births and Deaths'] named=False -> no card; 0 claims
+   top 3 by score: Registration of Births and Deaths 0.611; REV-101 Community Certificate 0.507; Driving Licence Fees and Charges 0.409
+[asked] What documents do I need for a nativity certificate in Tamil Nadu?
+   identify: matched ['Registration of Births and Deaths'] named=False -> no card; 0 claims
+   top 3 by score: Registration of Births and Deaths 0.605; REV-101 Community Certificate 0.536; Instant e-PAN 0.461
+[asked] How do I register on the income tax e-filing portal with my PAN?
+   identify: matched ['Instant e-PAN'] named=True -> card: Instant e-PAN; 5 claims
+   top 3 by score: Register on the e-Filing Portal 0.774; Instant e-PAN 0.687; File ITR-1 (Sahaj) Online 0.646
+     - Once you see your e-PAN status, you can click ‘Create e-Filing Account’ to register on the e-Filing portal.
+     - Go to Dashboard > Services > View / Download e-PAN.
+     - On the Enter Aadhaar Number page, enter your 12-digit Aadhaar number and click ‘Continue’.
+[asked] how do i get an idp
+   identify: no_match [] named=False -> no card; no approved procedure (NO_MATCH); 0 claims
+   top 3 by score: Updating Data on Aadhaar 0.549; Apply for Fresh / Re-issue Ordinary Pass 0.517; Apply for Police Clearance Certificate ( 0.485
+[asked] What is the fee for a passport?
+   identify: ambiguous ['Apply for Fresh / Re-issue Ordinary Passport', 'Apply for Police Clearance Certificate (PCC)'] named=False -> choice: Apply for Fresh / Re-issue Ordinary Passport / Apply for Police Clearance Certificate (PCC); 0 claims
+   top 3 by score: Apply for Fresh / Re-issue Ordinary Pass 0.582; Apply for Police Clearance Certificate ( 0.582; Driving Licence Fees and Charges 0.486
+[asked] I lost my PAN card. How do I get a duplicate?
+   identify: ambiguous ['Register on the e-Filing Portal', 'Instant e-PAN'] named=False -> choice: Register on the e-Filing Portal / Instant e-PAN; 0 claims
+   top 3 by score: Register on the e-Filing Portal 0.635; Instant e-PAN 0.599; Link PAN with Aadhaar 0.570
+[asked] Which documents are required for a certificate in Tamil Nadu?
+   identify: ambiguous ['REV-101 Community Certificate', 'Registration of Births and Deaths'] named=False -> choice: REV-101 Community Certificate / Registration of Births and Deaths; 0 claims
+   top 3 by score: REV-101 Community Certificate 0.562; Registration of Births and Deaths 0.549; Transfer of Vehicle Ownership 0.482
+[asked] Which form is needed to register a death that happened at home?
+   identify: no_match [] named=False -> no card; no approved procedure (NO_MATCH); 0 claims
+   top 3 by score: Registration of Births and Deaths 0.518; Transfer of Vehicle Ownership 0.500; Change of Address in Vehicle Registratio 0.467
+[asked] Can a minor apply for an instant e-PAN?
+   identify: matched ['Instant e-PAN'] named=True -> card: Instant e-PAN; 0 claims
+   top 3 by score: Instant e-PAN 0.696; Apply for Fresh / Re-issue Ordinary Pass 0.574; Register on the e-Filing Portal 0.517

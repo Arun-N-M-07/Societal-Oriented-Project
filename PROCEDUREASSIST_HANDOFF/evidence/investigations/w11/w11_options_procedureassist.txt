@@ -1,0 +1,32 @@
+== C: DL/RC written in full
+  as asked    [('Renewal of Driving Licence', 0.518), ('Driving Licence Fees and Charg', 0.495)] -> no_match [] | How much do I pay to get my DL renewed?
+  spelled out [('Driving Licence Fees and Charg', 0.675), ('Renewal of Driving Licence', 0.634)] -> matched ['Driving Licence Fees and Charg'] | How much do I pay to get my driving licence (DL) renewed?
+  as asked    [('Duplicate Driving Licence', 0.445), ('Driving Licence Fees and Charg', 0.412)] -> no_match [] | How much does a duplicate RC cost?
+  spelled out [('Driving Licence Fees and Charg', 0.512), ('Duplicate Driving Licence', 0.498)] -> matched ['Renewal of Vehicle Registratio'] | How much does a duplicate registration certificate (RC) cost?
+  as asked    [('Transfer of Vehicle Ownership', 0.445), ('REV-101 Community Certificate', 0.385)] -> no_match [] | sold my bike, need to transfer the RC
+  spelled out [('Transfer of Vehicle Ownership', 0.511), ('Renewal of Vehicle Registratio', 0.493)] -> matched ['Renewal of Vehicle Registratio'] | sold my bike, need to transfer the registration certificate (RC)
+  as asked    [('Renewal of Driving Licence', 0.514), ('Renewal of Vehicle Registratio', 0.438)] -> matched ['Renewal of Driving Licence'] | Can I renew my DL early?
+  spelled out [('Renewal of Driving Licence', 0.651), ('Driving Licence Fees and Charg', 0.586)] -> matched ['Renewal of Driving Licence'] | Can I renew my driving licence (DL) early?
+  as asked    [('Driving Licence Fees and Charg', 0.542), ('Renewal of Vehicle Registratio', 0.53)] -> matched ['Renewal of Vehicle Registratio'] | What is the fee to renew the RC of a motorcycle?
+  spelled out [('Renewal of Vehicle Registratio', 0.61), ('Driving Licence Fees and Charg', 0.555)] -> matched ['Renewal of Vehicle Registratio'] | What is the fee to renew the registration certificate (RC) of a motorcycle?
+  as asked    [('Renewal of Vehicle Registratio', 0.539), ('Renewal of Driving Licence', 0.468)] -> matched ['Renewal of Vehicle Registratio'] | How do I renew my RC?
+  spelled out [('Renewal of Vehicle Registratio', 0.643), ('REV-101 Community Certificate', 0.489)] -> matched ['Renewal of Vehicle Registratio'] | How do I renew my registration certificate (RC)?
+  as asked    [('Duplicate Driving Licence', 0.475), ('Updating Data on Aadhaar', 0.411)] -> matched ['Duplicate Driving Licence'] | I lost my DL, what should I do?
+  spelled out [('Duplicate Driving Licence', 0.596), ('Driving Licence Fees and Charg', 0.585)] -> ambiguous ['Duplicate Driving Licence', 'Driving Licence Fees and Charg'] | I lost my driving licence (DL), what should I do?
+  as asked    [('Renewal of Vehicle Registratio', 0.599), ('Renewal of Driving Licence', 0.524)] -> matched ['Renewal of Vehicle Registratio'] | What documents are needed to renew my vehicle RC?
+  spelled out [('Renewal of Vehicle Registratio', 0.661), ('Change of Address in Vehicle R', 0.525)] -> matched ['Renewal of Vehicle Registratio'] | What documents are needed to renew my vehicle registration certificate (RC)
+
+== E: distinct questions in the band 0.45 <= best < 0.53 (today: no match unless an abbreviation decides)
+  page      best Employees' Deposit Linked Insu:0.504 offered page RIGHT | today matched | answers[53]        EDLI la family ku evlo panam kidaikkum?
+  page      best Updating Data on Aadhaar:0.511 offered page wrong | today matched | answers[55]        RC renew panna enna documents venum?
+  page      best Duplicate Driving Licence:0.475 offered page RIGHT | today matched | answers[58]        I lost my DL, what should I do?
+  none      best REV-101 Community Certificate:0.482 offered page (none exists) | today no_match | answers[74]        How do I get a birth certificate?
+  none      best Register on the e-Filing Porta:0.506 offered page (none exists) | today no_match | answers[75]        How do I register for GST?
+  none      best Apply for Fresh / Re-issue Ord:0.494 offered page (none exists) | today no_match | answers[76]        How do I book a train ticket?
+  page      best How to Vote:0.522 offered page RIGHT | today matched | heldout[18]        How long is the VVPAT slip visible?
+  none      best Apply for Fresh / Re-issue Ord:0.502 offered page (none exists) | today no_match | heldout[24]        How do I apply for an Ayushman Bharat card?
+  none      best Apply for Fresh / Re-issue Ord:0.465 offered page (none exists) | today no_match | population[40]     Someone stole my bag with my passport inside. Where do I file a p
+  none      best REV-101 Community Certificate:0.525 offered page (none exists) | today no_match | identification[26] How do I apply for a ration card in Tamil Nadu?
+  page      best Renewal of Driving Licence:0.518 offered page RIGHT | today no_match | audit_probe        How much do I pay to get my DL renewed?
+  page      best Transfer of Vehicle Ownership:0.529 offered page RIGHT | today no_match | audit_probe        I sold my bike. What does the buyer have to do and by when?
+  page      best Renewal of Driving Licence:0.514 offered page RIGHT | today matched | audit_probe        Can I renew my DL early?

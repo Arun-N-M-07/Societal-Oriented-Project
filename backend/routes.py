@@ -14,6 +14,8 @@ from backend.auth import (
     check_admin_credentials,
     create_session_token,
     issue_provenance_token,
+    login_blocked,
+    record_login,
     require_admin,
     verify_provenance_token,
 )
@@ -22,7 +24,8 @@ from backend.database import get_db, get_read_only_db
 from backend.extractor import ExtractionError, extract_procedure
 from backend.models import Procedure
 from backend.normalize import needs_normalizing, normalize_query
-from backend.procedure_search import identify, identify_needs, names_something
+from backend.procedure_search import (identify, identify_needs, names_procedure, names_something, read_abbreviations,
+                                      unnamed_document)
 from backend.rag import (
     COMPARISON,
     EmbeddingError,
@@ -49,9 +52,7 @@ from backend.schemas import (
     Need,
     PendingNeed,
     ProcedureDetail,
-    ProcedureDraft,
     ProcedureSummary,
-    ReExtractRequest,
     RelationRequest,
     RelationResponse,
     SavedProcedureResponse,
@@ -100,8 +101,13 @@ def readiness(response: Response, db: Session = Depends(get_db)) -> dict[str, st
 
 
 @router.post("/api/admin/login", response_model=AdminSession)
-def login(request: LoginRequest, response: Response) -> AdminSession:
-    if not check_admin_credentials(request.username, request.password):
+def login(request: LoginRequest, response: Response, http: Request) -> AdminSession:
+    client = http.client.host if http.client else "unknown"
+    if login_blocked(client):
+        raise HTTPException(status_code=429, detail="Too many failed sign-ins. Try again in 15 minutes.")
+    ok = check_admin_credentials(request.username, request.password)
+    record_login(client, ok)
+    if not ok:
         raise HTTPException(status_code=401, detail="Invalid username or password.")
     response.set_cookie(
         SESSION_COOKIE,
@@ -152,17 +158,6 @@ def _verify_provenance(token: str, source_url: str, source_text: str) -> None:
         verify_provenance_token(token, source_url, source_text)
     except ProvenanceError as error:
         raise HTTPException(status_code=422, detail=str(error)) from error
-
-
-@admin_router.post("/api/admin/re-extract", response_model=ProcedureDraft)
-def re_extract_procedure(request: ReExtractRequest) -> ProcedureDraft:
-    _verify_provenance(
-        request.provenance_token, request.source_url, request.source_text
-    )
-    try:
-        return extract_procedure(request.source_text, request.source_url)
-    except ExtractionError as error:
-        raise HTTPException(status_code=502, detail=str(error)) from error
 
 
 @admin_router.post("/api/admin/procedures", response_model=SavedProcedureResponse)
@@ -282,6 +277,7 @@ def get_procedure(
 
 
 CLARIFY = "Which service or document is your question about? For example: passport renewal or Aadhaar address update."
+WHICH_DOCUMENT = "Which {noun} is your question about? Please say its name or what it is for."
 WAV_TYPES = {"audio/wav", "audio/x-wav", "audio/wave"}
 
 
@@ -331,6 +327,7 @@ def identify_procedure(
         extra = {"normalized_query": question}
     if not names_something(question):
         return IdentifyResponse(status="no_match", candidates=[], clarification=CLARIFY)
+    question = read_abbreviations(question, [name for (name,) in db.query(Procedure.name)])  # "idp" is "IDP"
     try:
         multiple = identify_needs(db, question)
         if not isinstance(multiple, tuple):
@@ -340,9 +337,14 @@ def identify_procedure(
             status_code=502, detail="The search service is unavailable. Try again."
         ) from error
     if not isinstance(multiple, tuple):
+        # A document asked about without saying which ("a certificate in Tamil Nadu") is not matched to one
+        # page: the citizen is asked which, unless the search found several that fit to choose from.
+        if status != "ambiguous" and (noun := unnamed_document(question)):
+            return IdentifyResponse(status="no_match", candidates=[], clarification=WHICH_DOCUMENT.format(noun=noun), **extra)
         return IdentifyResponse(
             status=status,
             candidates=[ProcedureSummary(**_summary(p)) for p in procedures],
+            **({"named": True} if status == "matched" and names_procedure(question, procedures[0]) else {}),
             **extra,
         )
     needs, pending, relation = multiple
@@ -372,10 +374,13 @@ def guidance(
         question = normalized["normalized_query"]
         extra = {"normalized_query": question}
     try:
-        claims, omitted = answer_question(db, procedure.id, question)
-        # Only if its own page does not answer: the reply then carries the related page's id and link.
-        if not claims and (related := answer_from_naming_pages(db, procedure, question)):
-            procedure, claims, omitted = related
+        claims, omitted, complete = answer_question(db, procedure.id, question)
+        # A page saying only "Fees as prescribed" may be completed by a page naming this
+        # procedure (a fee table). Those claims carry that page's id and link.
+        if not complete and (related := answer_from_naming_pages(db, procedure, question)):
+            page, more, more_omitted, complete = related
+            claims += [{**claim, "procedure_id": page.id, "source_url": page.source_url} for claim in more]
+            omitted += more_omitted
     except (EmbeddingError, GuidanceError) as error:
         raise HTTPException(
             status_code=502, detail="The answer service is unavailable. Try again."
@@ -387,6 +392,7 @@ def guidance(
         claims=claims,
         omitted_claims=omitted,
         **extra,
+        **({"partial": True} if claims and not complete else {}),
     )
 
 

@@ -4,12 +4,16 @@ import re
 import unittest
 from unittest.mock import patch
 
+from fastapi import HTTPException
+
+from backend import auth
 from backend.auth import (
     SESSION_COOKIE,
     ProvenanceError,
     create_session_token,
     hash_password,
     issue_provenance_token,
+    require_admin,
     verify_password,
     verify_provenance_token,
 )
@@ -61,6 +65,7 @@ class PasswordHashTest(unittest.TestCase):
 class AdminSessionTest(unittest.TestCase):
     def setUp(self):
         self.client = make_client(admin=False)
+        auth._login_failures.clear()
 
     def login(self, password=TEST_PASSWORD, username="admin"):
         return self.client.post(
@@ -96,6 +101,30 @@ class AdminSessionTest(unittest.TestCase):
                 response = self.client.get("/api/admin/session")
                 self.assertEqual(response.status_code, 401)
 
+    def test_non_ascii_sessions_and_tokens_are_rejected_not_errors(self):
+        with self.assertRaises(HTTPException) as caught:
+            require_admin("session:9999999999:admin:\u00e9")
+        self.assertEqual(caught.exception.status_code, 401)
+        with self.assertRaises(ProvenanceError):
+            verify_provenance_token("provenance:9999999999:\u00e9:\u00e9", URL, TEXT)
+
+    def test_repeated_failed_sign_ins_from_one_address_wait(self):
+        for _ in range(auth.LOGIN_MAX_FAILURES):
+            self.assertEqual(self.login(password="wrong").status_code, 401)
+        blocked = self.login()  # even the right password waits
+        self.assertEqual(blocked.status_code, 429)
+        self.assertNotIn("set-cookie", blocked.headers)
+        later = auth.time.time() + auth.LOGIN_WINDOW_SECONDS + 1
+        with patch("backend.auth.time.time", return_value=later):
+            self.assertEqual(self.login().status_code, 200)
+
+    def test_a_successful_sign_in_clears_earlier_failures(self):
+        for _ in range(auth.LOGIN_MAX_FAILURES - 1):
+            self.login(password="wrong")
+        self.assertEqual(self.login().status_code, 200)
+        self.assertEqual(self.login(password="wrong").status_code, 401)
+        self.assertEqual(self.login().status_code, 200)
+
     def test_logout_clears_the_cookie(self):
         self.login()
         response = self.client.post("/api/admin/logout")
@@ -112,7 +141,7 @@ class AdminSessionTest(unittest.TestCase):
             if path.startswith("/api/admin") and path not in public
             for method in methods
         ]
-        self.assertGreaterEqual(len(admin_routes), 6)
+        self.assertGreaterEqual(len(admin_routes), 5)
         for path, method in admin_routes:
             with self.subTest(path=path, method=method):
                 response = self.client.request(method, re.sub(r"{\w+}", "1", path), json={})

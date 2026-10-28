@@ -1,0 +1,270 @@
+### database procedureassist: 204 labelled questions (170 in scope, 29 out of scope, 5 ambiguous)
+
+## every question (today's decision)
+  correct                answers[0]         top Apply for Fresh / Re-issue Ordin:0.753 2nd Overseas (NRI) Voter Registratio:0.526 | matched [15] | expected [15] rank 1 0.753 | How do I apply for a passport?
+  correct                answers[1]         top Link PAN with Aadhaar:0.839 2nd File ITR-1 (Sahaj) Online:0.741 | matched [31] | expected [31] rank 1 0.839 | How do I link my PAN with Aadhaar?
+  correct                answers[2]         top Register to Vote:0.742 2nd How to Vote:0.642 | matched [19] | expected [19] rank 1 0.742 | How do I register as a voter?
+  correct                answers[3]         top Atal Pension Yojana:0.777 2nd Employees' Pension Scheme (EPS):0.505 | matched [34] | expected [34] rank 1 0.777 | How do I join Atal Pension Yojana?
+  correct                answers[4]         top Driving Licence Fees and Charges:0.735 2nd Renewal of Driving Licence:0.685 | matched [27] | expected [27] rank 1 0.735 | What is the fee for renewing a driving licence?
+  correct                answers[5]         top Driving Licence Fees and Charges:0.716 2nd Learner's Licence:0.515 | matched [27] | expected [27] rank 1 0.716 | How much does a learner's licence cost?
+  correct                answers[6]         top Driving Licence Fees and Charges:0.686 2nd Permanent Driving Licence:0.558 | matched [27] | expected [27] rank 1 0.686 | What is the fee for the driving test?
+  WRONG PAGE             answers[7]         top International Driving Permit:0.686 2nd Driving Licence Fees and Charges:0.653 | matched [26] | expected [27] rank 2 0.653 | What is the fee for an International Driving Permit?
+  correct                answers[8]         top Aadhaar Enrolment and Update at :0.812 2nd Updating Data on Aadhaar:0.674 | matched [35] | expected [35] rank 1 0.812 | How much does a biometric update of Aadhaar cost at a post office?
+  correct                answers[9]         top Driving Licence Fees and Charges:0.739 2nd Change of Address in Vehicle Reg:0.655 | matched [27] | expected [27] rank 1 0.739 | What is the fee to change the address on my driving licence?
+  correct                answers[10]        top Atal Pension Yojana:0.732 2nd Employees' Provident Fund Scheme:0.538 | matched [34] | expected [34] rank 1 0.732 | Who can join Atal Pension Yojana?
+  correct                answers[11]        top Learner's Licence:0.801 2nd Permanent Driving Licence:0.573 | matched [22] | expected [22] rank 1 0.801 | At what age can I get a driving licence?
+  correct                answers[12]        top Overseas (NRI) Voter Registratio:0.747 2nd Register to Vote:0.627 | matched [21] | expected [21] rank 1 0.747 | Who can register as an overseas voter?
+  correct                answers[13]        top Employees' Pension Scheme (EPS):0.736 2nd Employees' Provident Fund Scheme:0.587 | matched [37] | expected [37] rank 1 0.736 | Who is entitled to a pension under EPS?
+  correct                answers[14]        top Learner's Licence:0.779 2nd Permanent Driving Licence:0.517 | matched [22] | expected [22] rank 1 0.779 | At what age can I drive a transport vehicle?
+  correct                answers[15]        top Renewal of Vehicle Registration :0.599 2nd Renewal of Driving Licence:0.524 | matched [28] | expected [28] rank 1 0.599 | What documents are needed to renew my vehicle RC?
+  correct                answers[16]        top International Driving Permit:0.801 2nd Permanent Driving Licence:0.528 | matched [26] | expected [26] rank 1 0.801 | What documents do I need for an International Driving Permit?
+  correct                answers[17]        top Duplicate Driving Licence:0.798 2nd Driving Licence Fees and Charges:0.636 | matched [25] | expected [25] rank 1 0.798 | What documents are needed for a duplicate driving licence?
+  correct                answers[18]        top Overseas (NRI) Voter Registratio:0.757 2nd Register to Vote:0.617 | matched [21] | expected [21] rank 1 0.757 | What documents must an NRI voter submit with Form 6A?
+  correct                answers[19]        top Change of Address in Vehicle Reg:0.752 2nd REV-101 Community Certificate:0.539 | matched [29] | expected [29] rank 1 0.752 | What documents are required to change the address in my vehicle regist
+  correct                answers[20]        top How to Vote:0.689 2nd Register to Vote:0.552 | matched [20] | expected [20] rank 1 0.689 | What happens at the polling booth when I go to vote?
+  correct                answers[21]        top Permanent Driving Licence:0.719 2nd Learner's Licence:0.617 | matched [23] | expected [23] rank 1 0.719 | How do I get a permanent driving licence?
+  correct                answers[22]        top Transfer of Vehicle Ownership:0.701 2nd Change of Address in Vehicle Reg:0.454 | matched [30] | expected [30] rank 1 0.701 | How do I transfer ownership of a vehicle I sold?
+  correct                answers[23]        top Renewal of Driving Licence:0.695 2nd Driving Licence Fees and Charges:0.651 | matched [24] | expected [24, 28] rank 1 0.695 | How do I renew my driving licence?
+  correct                answers[24]        top Apply for Fresh / Re-issue Ordin:0.711 2nd Renewal of Vehicle Registration :0.519 | matched [15] | expected [15] rank 1 0.711 | How do I renew my passport?
+  correct                answers[25]        top Duplicate Driving Licence:0.773 2nd Driving Licence Fees and Charges:0.660 | matched [25] | expected [25] rank 1 0.773 | I lost my driving licence. How do I get a duplicate?
+  correct                answers[26]        top Renewal of Driving Licence:0.748 2nd Learner's Licence:0.660 | matched [24] | expected [24, 28] rank 1 0.748 | How early can I apply to renew my driving licence?
+  correct                answers[27]        top Change of Address in Vehicle Reg:0.713 2nd Transfer of Vehicle Ownership:0.594 | matched [29] | expected [29] rank 1 0.713 | Within how many days must I report a change of address in my vehicle r
+  correct                answers[28]        top Renewal of Vehicle Registration :0.754 2nd Renewal of Driving Licence:0.639 | matched [28] | expected [28] rank 1 0.754 | How early can I renew my vehicle registration certificate?
+  correct                answers[29]        top Permanent Driving Licence:0.672 2nd Learner's Licence:0.598 | matched [23] | expected [23] rank 1 0.672 | How long must I hold a learner's licence before taking the driving tes
+  correct                answers[30]        top Employees' Deposit Linked Insura:0.640 2nd Updating Data on Aadhaar:0.366 | matched [38] | expected [38] rank 1 0.640 | How quickly are EDLI claims processed?
+  correct                answers[31]        top Employees' Provident Fund Scheme:0.750 2nd Employees' Pension Scheme (EPS):0.704 | matched [36] | expected [36] rank 1 0.750 | How much do employees contribute to EPF?
+  correct                answers[32]        top Employees' Deposit Linked Insura:0.697 2nd Employees' Provident Fund Scheme:0.417 | matched [38] | expected [38] rank 1 0.697 | What is the minimum EDLI benefit?
+  correct                answers[33]        top Employees' Pension Scheme (EPS):0.648 2nd Employees' Provident Fund Scheme:0.631 | matched [37] | expected [37] rank 1 0.648 | What percentage of wages does the employer contribute to EPS?
+  correct                answers[34]        top Renewal of Driving Licence:0.756 2nd Driving Licence Fees and Charges:0.670 | matched [24] | expected [24, 28] rank 1 0.756 | What is the late fee if I renew my driving licence more than 30 days a
+  correct                answers[35]        top Renewal of Driving Licence:0.753 2nd Driving Licence Fees and Charges:0.632 | matched [24] | expected [24, 28] rank 1 0.753 | What happens if I renew my driving licence more than five years after 
+  correct                answers[36]        top Employees' Pension Scheme (EPS):0.602 2nd Employees' Provident Fund Scheme:0.567 | matched [36] | expected [36] rank 2 0.567 | Can I withdraw my full EPF before retirement?
+  correct                answers[37]        top Duplicate Driving Licence:0.784 2nd Driving Licence Fees and Charges:0.671 | matched [25] | expected [25] rank 1 0.784 | When is a duplicate driving licence issued?
+  correct                answers[38]        top Aadhaar Enrolment and Update at :0.665 2nd Updating Data on Aadhaar:0.609 | matched [35] | expected [35] rank 1 0.665 | Is a demographic update free if it is done with a biometric update at 
+  asks (expected among)  answers[39]        top Permanent Driving Licence:0.631 2nd Learner's Licence:0.628 | ambiguous [23, 22] | expected [23] rank 1 0.631 | I have a learner's licence and want my first full driving licence
+  asks (expected among)  answers[40]        top Overseas (NRI) Voter Registratio:0.647 2nd Register to Vote:0.627 | ambiguous [21, 19] | expected [21] rank 1 0.647 | I live abroad. How do I register to vote?
+  correct                answers[41]        top Renewal of Vehicle Registration :0.574 2nd Renewal of Driving Licence:0.501 | matched [28] | expected [28] rank 1 0.574 | How do I renew my vehicle RC?
+  correct                answers[42]        top Aadhaar Enrolment and Update at :0.756 2nd Updating Data on Aadhaar:0.723 | matched [35] | expected [35] rank 1 0.756 | Can I update my Aadhaar at a post office?
+  correct                answers[50]        top Apply for Fresh / Re-issue Ordin:0.670 2nd Updating Data on Aadhaar:0.503 | matched [15] | expected [15] rank 1 0.670 | Enakku passport renew pannanum
+  WRONG PAGE             answers[51]        top Driving Licence Fees and Charges:0.628 2nd Renewal of Driving Licence:0.606 | matched [24] | expected [27] rank 1 0.628 | Driving licence renew panna evlo fees?
+  correct                answers[52]        top Duplicate Driving Licence:0.686 2nd Driving Licence Fees and Charges:0.620 | matched [25] | expected [25] rank 1 0.686 | Duplicate licence vaanga enna documents venum?
+  correct                answers[53]        top Employees' Deposit Linked Insura:0.504 2nd Updating Data on Aadhaar:0.465 | matched [38] | expected [38] rank 1 0.504 | EDLI la family ku evlo panam kidaikkum?
+  correct                answers[54]        top Updating Data on Aadhaar:0.676 2nd Change of Address in Vehicle Reg:0.630 | matched [18] | expected [18] rank 1 0.676 | Aadhaar la address change panna enna proof venum?
+  correct                answers[55]        top Updating Data on Aadhaar:0.511 2nd Apply for Fresh / Re-issue Ordin:0.501 | matched [28] | expected [28] rank 3 0.500 | RC renew panna enna documents venum?
+  correct                answers[56]        top Driving Licence Fees and Charges:0.733 2nd Permanent Driving Licence:0.589 | matched [27] | expected [27] rank 1 0.733 | Learner licence test fee evlo?
+  correct                answers[57]        top Link PAN with Aadhaar:0.822 2nd File ITR-1 (Sahaj) Online:0.715 | matched [31] | expected [31] rank 1 0.822 | PAN Aadhaar link pannalana enna aagum?
+  correct                answers[58]        top Duplicate Driving Licence:0.475 2nd Updating Data on Aadhaar:0.411 | matched [25] | expected [25] rank 1 0.475 | I lost my DL, what should I do?
+  correct                answers[59]        top Renewal of Driving Licence:0.668 2nd Permanent Driving Licence:0.620 | matched [24] | expected [24, 28] rank 1 0.668 | My driving licence expires next month. What do I do?
+  correct                answers[60]        top Register to Vote:0.636 2nd Learner's Licence:0.519 | matched [19] | expected [19] rank 1 0.636 | I just turned 18 and want to vote.
+  asks (expected among)  answers[61]        top Employees' Pension Scheme (EPS):0.597 2nd Employees' Provident Fund Scheme:0.571 | ambiguous [37, 36] | expected [37] rank 1 0.597 | How much does the central government contribute to the pension scheme?
+  FORCED MATCH           answers[72]        top Renewal of Vehicle Registration :0.619 2nd Renewal of Driving Licence:0.588 | matched [28] | expected ambiguous | How do I renew?
+  correct                answers[73]        top Apply for Fresh / Re-issue Ordin:0.439 2nd Register to Vote:0.399 | no_match [] | expected none | How do I apply for a ration card?
+  correct                answers[74]        top REV-101 Community Certificate:0.482 2nd Updating Data on Aadhaar:0.452 | no_match [] | expected none | How do I get a birth certificate?
+  correct                answers[75]        top Register on the e-Filing Portal:0.506 2nd Filing of ITR-2:0.467 | no_match [] | expected none | How do I register for GST?
+  correct                answers[76]        top Apply for Fresh / Re-issue Ordin:0.494 2nd How to Vote:0.359 | no_match [] | expected none | How do I book a train ticket?
+  correct                answers[77]        top Apply for Fresh / Re-issue Ordin:0.582 2nd Driving Licence Fees and Charges:0.486 | matched [15] | expected [15] rank 1 0.582 | What is the fee for a passport?
+  correct                answers[78]        top International Driving Permit:0.718 2nd Permanent Driving Licence:0.530 | matched [26] | expected [26] rank 1 0.718 | How long does it take to get an International Driving Permit?
+  correct                answers[79]        top Atal Pension Yojana:0.811 2nd Employees' Pension Scheme (EPS):0.482 | matched [34] | expected [34] rank 1 0.811 | How many days does it take to open an Atal Pension Yojana account?
+  correct                heldout[0]         top Driving Licence Fees and Charges:0.707 2nd Learner's Licence:0.573 | matched [27] | expected [27] rank 1 0.707 | What is the fee to add another class of vehicle to my driving licence?
+  correct                heldout[1]         top Driving Licence Fees and Charges:0.658 2nd Renewal of Driving Licence:0.490 | matched [27] | expected [27] rank 1 0.658 | How much does it cost to appeal against an order of the licensing auth
+  correct                heldout[2]         top Driving Licence Fees and Charges:0.755 2nd Duplicate Driving Licence:0.654 | matched [27] | expected [27] rank 1 0.755 | What is the fee for a duplicate licence for my driving school?
+  WRONG PAGE             heldout[3]         top Renewal of Driving Licence:0.688 2nd Driving Licence Fees and Charges:0.681 | matched [24] | expected [27] rank 2 0.681 | What is the fee for renewing my driving licence after the grace period
+  correct                heldout[4]         top Aadhaar Enrolment and Update at :0.571 2nd Updating Data on Aadhaar:0.471 | matched [35] | expected [35] rank 1 0.571 | How much does a demographic update cost at a post office if it is done
+  correct                heldout[5]         top Aadhaar Enrolment and Update at :0.748 2nd Updating Data on Aadhaar:0.548 | matched [35] | expected [35] rank 1 0.748 | Is Aadhaar enrolment free at the post office?
+  correct                heldout[6]         top Learner's Licence:0.701 2nd Permanent Driving Licence:0.528 | matched [22] | expected [22] rank 1 0.701 | Can someone under 18 get a learner's licence?
+  correct                heldout[7]         top Learner's Licence:0.693 2nd Driving Licence Fees and Charges:0.601 | matched [22] | expected [22] rank 1 0.693 | Who are the licensing authorities for driving licences?
+  correct                heldout[8]         top Permanent Driving Licence:0.699 2nd International Driving Permit:0.638 | matched [23] | expected [23] rank 1 0.699 | Which form is used to apply for a permanent driving licence?
+  correct                heldout[9]         top Overseas (NRI) Voter Registratio:0.724 2nd Register to Vote:0.698 | matched [21] | expected [21] rank 1 0.724 | Which form do NRI voters fill to register?
+  asks (expected among)  heldout[10]        top Overseas (NRI) Voter Registratio:0.615 2nd Register to Vote:0.598 | ambiguous [21, 19] | expected [19] rank 2 0.598 | Which form is used to correct entries in the electoral roll?
+  correct                heldout[11]        top Transfer of Vehicle Ownership:0.704 2nd Change of Address in Vehicle Reg:0.526 | matched [30] | expected [30] rank 1 0.704 | Within how many days must a buyer apply for ownership transfer of a ve
+  correct                heldout[12]        top Transfer of Vehicle Ownership:0.683 2nd Learner's Licence:0.406 | matched [30] | expected [30] rank 1 0.683 | How long can a legal heir use a vehicle after the owner dies?
+  correct                heldout[13]        top Employees' Deposit Linked Insura:0.660 2nd Employees' Pension Scheme (EPS):0.473 | matched [38] | expected [38] rank 1 0.660 | How quickly must employers remit EDLI contributions?
+  correct                heldout[14]        top Employees' Deposit Linked Insura:0.690 2nd Employees' Provident Fund Scheme:0.505 | matched [38] | expected [38] rank 1 0.690 | What percentage of wages does the employer contribute to EDLI?
+  correct                heldout[15]        top Employees' Pension Scheme (EPS):0.677 2nd Employees' Provident Fund Scheme:0.631 | matched [36] | expected [36] rank 2 0.631 | At what age can I withdraw my full EPF?
+  correct                heldout[16]        top How to Vote:0.710 2nd Register to Vote:0.618 | matched [20] | expected [20] rank 1 0.710 | What is the voter helpline number?
+  correct                heldout[17]        top How to Vote:0.625 2nd Register to Vote:0.486 | matched [20] | expected [20] rank 1 0.625 | Can I take my mobile phone into the polling booth?
+  correct                heldout[18]        top How to Vote:0.522 2nd Atal Pension Yojana:0.443 | matched [20] | expected [20] rank 1 0.522 | How long is the VVPAT slip visible?
+  correct                heldout[19]        top Employees' Provident Fund Scheme:0.670 2nd Employees' Pension Scheme (EPS):0.642 | matched [36] | expected [36] rank 1 0.670 | EPF la employer evlo percentage contribute pannuvanga?
+  correct                heldout[21]        top International Driving Permit:0.791 2nd Permanent Driving Licence:0.557 | matched [26] | expected [26] rank 1 0.791 | International driving permit ku enna documents venum?
+  correct                heldout[22]        top Apply for Fresh / Re-issue Ordin:0.562 2nd International Driving Permit:0.430 | matched [15] | expected [15] rank 1 0.562 | How much is the passport fee for 36 pages?
+  correct                heldout[23]        top Renewal of Vehicle Registration :0.551 2nd Driving Licence Fees and Charges:0.534 | matched [28] | expected [28] rank 1 0.551 | What is the fee to renew my vehicle RC?
+  correct                heldout[24]        top Apply for Fresh / Re-issue Ordin:0.502 2nd Atal Pension Yojana:0.486 | no_match [] | expected none | How do I apply for an Ayushman Bharat card?
+  FORCED MATCH           heldout[25]        top Driving Licence Fees and Charges:0.531 2nd Aadhaar Enrolment and Update at :0.491 | matched [27] | expected ambiguous | What is the fee?
+  correct                heldout[26]        top Learner's Licence:0.605 2nd Permanent Driving Licence:0.595 | ambiguous [22, 23, 24] | expected ambiguous | How do I apply for a licence?
+  correct                population[0]      top Apply for Fresh / Re-issue Ordin:0.711 2nd Renewal of Vehicle Registration :0.519 | matched [15] | expected [15] rank 1 0.711 | How do I renew my passport?
+  asks (expected among)  population[1]      top Register on the e-Filing Portal:0.609 2nd File ITR-1 (Sahaj) Online:0.586 | ambiguous [32, 33, 16] | expected [32] rank 1 0.609 | How can I register on the income tax portal?
+  correct                population[2]      top File ITR-1 (Sahaj) Online:0.742 2nd Filing of ITR-2:0.708 | matched [33] | expected [33] rank 1 0.742 | How do I file ITR-1 online?
+  correct                population[3]      top Filing of ITR-2:0.601 2nd File ITR-1 (Sahaj) Online:0.541 | matched [16] | expected [16] rank 1 0.601 | I need to file ITR-2 for capital gains.
+  correct                population[4]      top Renewal of Vehicle Registration :0.754 2nd Renewal of Driving Licence:0.582 | matched [28] | expected [28] rank 1 0.754 | How do I renew my vehicle registration certificate?
+  correct                population[5]      top Transfer of Vehicle Ownership:0.684 2nd Change of Address in Vehicle Reg:0.430 | matched [30] | expected [30] rank 1 0.684 | How do I transfer the ownership of a car I sold?
+  correct                population[6]      top Change of Address in Vehicle Reg:0.746 2nd Overseas (NRI) Voter Registratio:0.553 | matched [29] | expected [29] rank 1 0.746 | I moved house. How do I change the address on my vehicle registration?
+  correct                population[7]      top International Driving Permit:0.795 2nd Permanent Driving Licence:0.554 | matched [26] | expected [26] rank 1 0.795 | How do I get an International Driving Permit?
+  correct                population[8]      top Link PAN with Aadhaar:0.839 2nd File ITR-1 (Sahaj) Online:0.741 | matched [31] | expected [31] rank 1 0.839 | How do I link my PAN with Aadhaar?
+  correct                population[9]      top Atal Pension Yojana:0.736 2nd Employees' Pension Scheme (EPS):0.530 | matched [34] | expected [34] rank 1 0.736 | Who can join the Atal Pension Yojana?
+  correct                population[10]     top Register to Vote:0.725 2nd How to Vote:0.612 | matched [19] | expected [19] rank 1 0.725 | How do I register as a new voter?
+  correct                population[11]     top Updating Data on Aadhaar:0.756 2nd Aadhaar Enrolment and Update at :0.591 | matched [18] | expected [18] rank 1 0.756 | How do I update my Aadhaar address online?
+  correct                population[12]     top Renewal of Driving Licence:0.531 2nd Renewal of Vehicle Registration :0.507 | matched [24] | expected [24, 28] rank 1 0.531 | dl renewal process
+  correct                population[13]     top Duplicate Driving Licence:0.607 2nd Permanent Driving Licence:0.573 | matched [25] | expected [25] rank 1 0.607 | lost my driving licence what to do
+  correct                population[14]     top Apply for Fresh / Re-issue Ordin:0.630 2nd Renewal of Driving Licence:0.571 | matched [15] | expected [15] rank 1 0.630 | passprt renewal
+  correct                population[15]     top Overseas (NRI) Voter Registratio:0.745 2nd Register to Vote:0.632 | matched [21] | expected [21] rank 1 0.745 | Can NRIs vote in Indian elections?
+  correct                population[16]     top Aadhaar Enrolment and Update at :0.733 2nd Updating Data on Aadhaar:0.702 | matched [35] | expected [35] rank 1 0.733 | aadhar update at post office
+  correct                population[17]     top Driving Licence Fees and Charges:0.748 2nd Permanent Driving Licence:0.534 | matched [27] | expected [27] rank 1 0.748 | how much is the learner licence test fee
+  MISSED (no_match)      population[18]     top Transfer of Vehicle Ownership:0.445 2nd REV-101 Community Certificate:0.385 | no_match [] | expected [30] rank 1 0.445 | sold my bike, need to transfer the RC
+  correct                population[19]     top Register to Vote:0.694 2nd How to Vote:0.602 | matched [19] | expected [19] rank 1 0.694 | I turned 18, how do I get on the voter list?
+  asks (expected among)  population[25]     top Apply for Fresh / Re-issue Ordin:0.658 2nd Updating Data on Aadhaar:0.630 | ambiguous [15, 18] | expected [15] rank 1 0.658 | I recently updated my Aadhaar. Now I want to renew my passport.
+  correct                population[26]     top Duplicate Driving Licence:0.714 2nd Driving Licence Fees and Charges:0.615 | matched [25] | expected [25] rank 1 0.714 | I registered as a voter last year. Now I need a duplicate driving lice
+  correct                population[27]     top Renewal of Driving Licence:0.722 2nd Driving Licence Fees and Charges:0.630 | matched [24] | expected [24, 28] rank 1 0.722 | My driving licence expires next month. How do I renew it, what is the 
+  correct                population[28]     top Permanent Driving Licence:0.657 2nd Learner's Licence:0.654 | ambiguous [23, 22] | expected ambiguous | How do I get a driving licence?
+  correct                population[29]     top Employees' Provident Fund Scheme:0.631 2nd Employees' Pension Scheme (EPS):0.621 | ambiguous [36, 37] | expected ambiguous | What are my EPFO benefits?
+  correct                population[33]     top Apply for Fresh / Re-issue Ordin:0.439 2nd Register to Vote:0.399 | no_match [] | expected none | How do I apply for a ration card?
+  correct                population[34]     top REV-101 Community Certificate:0.482 2nd Updating Data on Aadhaar:0.452 | no_match [] | expected none | How do I get a birth certificate?
+  correct                population[35]     top Register to Vote:0.379 2nd Apply for Fresh / Re-issue Ordin:0.379 | no_match [] | expected none | How do I apply for a scholarship?
+  FALSE MATCH            population[36]     top Apply for Fresh / Re-issue Ordin:0.687 2nd Overseas (NRI) Voter Registratio:0.505 | matched [15] | expected none | How do I apply for a US passport?
+  FALSE MATCH            population[37]     top Renewal of Driving Licence:0.660 2nd Driving Licence Fees and Charges:0.630 | matched [24] | expected none | How do I renew my driving licence in the UK?
+  FALSE MATCH            population[38]     top Register on the e-Filing Portal:0.615 2nd REV-101 Community Certificate:0.576 | matched [31] | expected none | How do I change the name on my PAN card?
+  FALSE MATCH            population[39]     top REV-101 Community Certificate:0.633 2nd Apply for Fresh / Re-issue Ordin:0.492 | matched [17] | expected none | How do I get a marriage certificate?
+  correct                population[40]     top Apply for Fresh / Re-issue Ordin:0.465 2nd Register to Vote:0.361 | no_match [] | expected none | Someone stole my bag with my passport inside. Where do I file a police
+  correct                population[41]     top Aadhaar Enrolment and Update at :0.236 2nd Updating Data on Aadhaar:0.229 | no_match [] | expected none | What is the best biryani recipe?
+  correct                demo_services[0]   top Register to Vote:0.725 2nd How to Vote:0.612 | matched [19] | expected [19] rank 1 0.725 | How do I register as a new voter?
+  correct                demo_services[1]   top Register to Vote:0.684 2nd How to Vote:0.621 | matched [19] | expected [19] rank 1 0.684 | I turned 18, how can I get my name on the voter list?
+  correct                demo_services[2]   top How to Vote:0.737 2nd Register to Vote:0.630 | matched [20] | expected [20] rank 1 0.737 | How do I check if my name is in the electoral roll before voting?
+  correct                demo_services[3]   top Overseas (NRI) Voter Registratio:0.729 2nd Register to Vote:0.612 | matched [21] | expected [21] rank 1 0.729 | I live abroad for work. Can I register as an overseas voter?
+  asks (expected among)  demo_services[4]   top Permanent Driving Licence:0.626 2nd Learner's Licence:0.613 | ambiguous [23, 22] | expected [22] rank 2 0.613 | How do I get a learner's licence?
+  correct                demo_services[5]   top Permanent Driving Licence:0.715 2nd Learner's Licence:0.618 | matched [23] | expected [23] rank 1 0.715 | How do I get a permanent driving licence after my learner's licence?
+  correct                demo_services[6]   top Renewal of Driving Licence:0.725 2nd Driving Licence Fees and Charges:0.636 | matched [24] | expected [24, 28] rank 1 0.725 | My driving licence expires next month. How do I renew it?
+  correct                demo_services[7]   top Duplicate Driving Licence:0.773 2nd Driving Licence Fees and Charges:0.660 | matched [25] | expected [25] rank 1 0.773 | I lost my driving licence. How do I get a duplicate?
+  correct                demo_services[8]   top Renewal of Vehicle Registration :0.754 2nd Renewal of Driving Licence:0.582 | matched [28] | expected [28] rank 1 0.754 | How do I renew my vehicle registration certificate?
+  correct                demo_services[9]   top Driving Licence Fees and Charges:0.741 2nd Permanent Driving Licence:0.553 | matched [27] | expected [27] rank 1 0.741 | What is the fee for a learner's licence test?
+  correct                demo_services[10]  top Link PAN with Aadhaar:0.839 2nd File ITR-1 (Sahaj) Online:0.741 | matched [31] | expected [31] rank 1 0.839 | How do I link my PAN with Aadhaar?
+  correct                demo_services[11]  top Register on the e-Filing Portal:0.661 2nd File ITR-1 (Sahaj) Online:0.606 | matched [32] | expected [32] rank 1 0.661 | How do I register on the income tax e-filing portal?
+  correct                demo_services[12]  top File ITR-1 (Sahaj) Online:0.742 2nd Filing of ITR-2:0.708 | matched [33] | expected [33] rank 1 0.742 | How do I file ITR-1 online?
+  correct                demo_services[13]  top Filing of ITR-2:0.601 2nd File ITR-1 (Sahaj) Online:0.541 | matched [16] | expected [16] rank 1 0.601 | I need to file ITR-2 for capital gains.
+  correct                demo_services[14]  top Atal Pension Yojana:0.736 2nd Employees' Pension Scheme (EPS):0.530 | matched [34] | expected [34] rank 1 0.736 | Who can join the Atal Pension Yojana?
+  correct                demo_services[15]  top Aadhaar Enrolment and Update at :0.756 2nd Updating Data on Aadhaar:0.723 | matched [35] | expected [35] rank 1 0.756 | Can I update my Aadhaar at a post office?
+  correct                demo_services[16]  top Updating Data on Aadhaar:0.756 2nd Aadhaar Enrolment and Update at :0.591 | matched [18] | expected [18] rank 1 0.756 | How do I update my Aadhaar address online?
+  correct                demo_services[17]  top Employees' Provident Fund Scheme:0.741 2nd Employees' Pension Scheme (EPS):0.711 | matched [36] | expected [36] rank 1 0.741 | What are the benefits of the EPF scheme?
+  correct                demo_services[18]  top Employees' Pension Scheme (EPS):0.716 2nd Employees' Provident Fund Scheme:0.590 | matched [37] | expected [37] rank 1 0.716 | How is the EPS pension calculated when I retire?
+  correct                demo_services[19]  top Employees' Deposit Linked Insura:0.711 2nd Employees' Pension Scheme (EPS):0.414 | matched [38] | expected [38] rank 1 0.711 | What insurance does EDLI give my family if I die during service?
+  correct                demo_services[20]  top Apply for Fresh / Re-issue Ordin:0.703 2nd International Driving Permit:0.468 | matched [15] | expected [15] rank 1 0.703 | My passport has expired. How do I get a new one?
+  correct                demo_services[21]  top REV-101 Community Certificate:0.677 2nd Filing of ITR-2:0.528 | matched [17] | expected [17] rank 1 0.677 | How can I edit my CAN details on the TN e-Sevai portal?
+  WRONG PAGE             demo_services[22]  top REV-101 Community Certificate:0.622 2nd File ITR-1 (Sahaj) Online:0.582 | matched [17] | expected [16, 31, 32, 33] rank 2 0.582 | What documents do I need to file my income tax return?
+  FALSE MATCH            demo_services[23]  top Register on the e-Filing Portal:0.615 2nd REV-101 Community Certificate:0.576 | matched [31] | expected none | How do I change the name on my PAN card?
+  correct                demo_services[24]  top Apply for Fresh / Re-issue Ordin:0.439 2nd Register to Vote:0.399 | no_match [] | expected none | How do I apply for a ration card?
+  correct                demo_services[25]  top REV-101 Community Certificate:0.482 2nd Updating Data on Aadhaar:0.452 | no_match [] | expected none | How do I get a birth certificate?
+  FALSE MATCH            demo_services[26]  top REV-101 Community Certificate:0.596 2nd Apply for Fresh / Re-issue Ordin:0.501 | matched [17] | expected none | How do I apply for a marriage certificate?
+  correct                demo_services[27]  top Register to Vote:0.379 2nd Apply for Fresh / Re-issue Ordin:0.379 | no_match [] | expected none | How do I apply for a scholarship?
+  ambiguous (safe)       demo_services[28]  top Learner's Licence:0.642 2nd Permanent Driving Licence:0.627 | ambiguous [22, 23] | expected none | How do I apply for a driving licence in the UK?
+  correct                demo_services[29]  top Aadhaar Enrolment and Update at :0.236 2nd Updating Data on Aadhaar:0.229 | no_match [] | expected none | What is the best biryani recipe?
+  correct                demo_services[33]  top Renewal of Driving Licence:0.722 2nd Driving Licence Fees and Charges:0.630 | matched [24] | expected [24, 28] rank 1 0.722 | My driving licence expires next month. How do I renew it, what is the 
+  correct                demo_services[34]  top Duplicate Driving Licence:0.714 2nd Driving Licence Fees and Charges:0.615 | matched [25] | expected [25] rank 1 0.714 | I registered as a voter last year. Now I need a duplicate driving lice
+  correct                identification[0]  top Apply for Fresh / Re-issue Ordin:0.736 2nd International Driving Permit:0.583 | matched [15] | expected [15] rank 1 0.736 | How do I apply for a fresh passport in India?
+  correct                identification[1]  top Updating Data on Aadhaar:0.752 2nd Aadhaar Enrolment and Update at :0.640 | matched [18] | expected [18] rank 1 0.752 | How can I update my address in Aadhaar?
+  correct                identification[4]  top Link PAN with Aadhaar:0.837 2nd File ITR-1 (Sahaj) Online:0.737 | matched [31] | expected [31] rank 1 0.837 | How do I link my Aadhaar with my PAN?
+  asks (expected among)  identification[12] top Updating Data on Aadhaar:0.639 2nd Link PAN with Aadhaar:0.615 | ambiguous [18, 31] | expected [18] rank 1 0.639 | I moved house and my Aadhaar card still shows my old address.
+  correct                identification[13] top Updating Data on Aadhaar:0.722 2nd Aadhaar Enrolment and Update at :0.616 | matched [18] | expected [18] rank 1 0.722 | My mobile number changed. How do I change it on my Aadhaar?
+  correct                identification[14] top Link PAN with Aadhaar:0.758 2nd File ITR-1 (Sahaj) Online:0.724 | matched [31] | expected [31] rank 1 0.758 | The tax website says my PAN is inoperative because it is not linked.
+  MISSED (no_match)      identification[19] top Apply for Fresh / Re-issue Ordin:0.649 2nd International Driving Permit:0.568 | no_match [] | expected [15] rank 1 0.649 | My Indian passport has expired. How do I get it reissued?
+  MISSED (no_match)      identification[20] top Apply for Fresh / Re-issue Ordin:0.621 2nd International Driving Permit:0.555 | no_match [] | expected [15] rank 1 0.621 | I need a passport for the first time and I live in Bengaluru.
+  correct                identification[24] top Learner's Licence:0.431 2nd Permanent Driving Licence:0.420 | no_match [] | expected none | How do I get a fishing licence?
+  correct                identification[25] top Aadhaar Enrolment and Update at :0.218 2nd Filing of ITR-2:0.217 | no_match [] | expected none | What is the best recipe for biryani?
+  correct                identification[26] top REV-101 Community Certificate:0.525 2nd Apply for Fresh / Re-issue Ordin:0.432 | no_match [] | expected none | How do I apply for a ration card in Tamil Nadu?
+  correct                identification[27] top International Driving Permit:0.426 2nd Register to Vote:0.363 | no_match [] | expected none | How can I get a building permit for my house?
+  correct                identification[28] top File ITR-1 (Sahaj) Online:0.439 2nd Register on the e-Filing Portal:0.432 | no_match [] | expected none | How do I register a new company?
+  correct                identification[29] top How to Vote:0.189 2nd Overseas (NRI) Voter Registratio:0.185 | no_match [] | expected none | Who won the cricket world cup?
+  FALSE MATCH            identification[30] top REV-101 Community Certificate:0.596 2nd Apply for Fresh / Re-issue Ordin:0.501 | matched [17] | expected none | How do I apply for a marriage certificate?
+  correct                identification[31] top Register to Vote:0.373 2nd Transfer of Vehicle Ownership:0.351 | no_match [] | expected none | How do I report a lost phone to the police?
+  correct                audit_probe        top Learner's Licence:0.749 2nd Permanent Driving Licence:0.520 | matched [22] | expected [22] rank 1 0.749 | What is the minimum age for a transport vehicle licence?
+  correct                audit_probe        top Learner's Licence:0.577 2nd Apply for Fresh / Re-issue Ordin:0.520 | matched [22] | expected [22] rank 1 0.577 | Can I apply at 20?
+  correct                audit_probe        top Learner's Licence:0.647 2nd Permanent Driving Licence:0.603 | matched [22] | expected [22] rank 1 0.647 | Am I eligible for a commercial driving licence?
+  correct                audit_probe        top Learner's Licence:0.747 2nd Permanent Driving Licence:0.572 | matched [22] | expected [22] rank 1 0.747 | Can a 19-year-old obtain this licence?
+  correct                audit_probe        top Learner's Licence:0.612 2nd Renewal of Vehicle Registration :0.452 | matched [22] | expected [22] rank 1 0.612 | What's the age requirement for a transport DL?
+  correct                audit_probe        top Learner's Licence:0.707 2nd Permanent Driving Licence:0.480 | matched [22] | expected [22] rank 1 0.707 | How old must I be to drive a truck or bus?
+  correct                audit_probe        top Learner's Licence:0.688 2nd Permanent Driving Licence:0.574 | matched [22] | expected [22] rank 1 0.688 | I am 19. Can I get a licence to drive a lorry?
+  MISSED (no_match)      audit_probe        top Renewal of Driving Licence:0.518 2nd Driving Licence Fees and Charges:0.495 | no_match [] | expected [27, 24] rank 1 0.518 | How much do I pay to get my DL renewed?
+  correct                audit_probe        top Duplicate Driving Licence:0.582 2nd Driving Licence Fees and Charges:0.524 | matched [25] | expected [25] rank 1 0.582 | My licence got stolen, what now?
+  MISSED (no_match)      audit_probe        top Transfer of Vehicle Ownership:0.529 2nd Renewal of Vehicle Registration :0.394 | no_match [] | expected [30] rank 1 0.529 | I sold my bike. What does the buyer have to do and by when?
+  correct                audit_probe        top Transfer of Vehicle Ownership:0.557 2nd Learner's Licence:0.384 | matched [30] | expected [30] rank 1 0.557 | My dad passed away; can I keep using his car?
+  WRONG PAGE             audit_probe        top How to Vote:0.678 2nd Register to Vote:0.607 | matched [20] | expected [19] rank 2 0.607 | How do I get my name on the voters list?
+  MISSED (no_match)      audit_probe        top Overseas (NRI) Voter Registratio:0.555 2nd Register to Vote:0.533 | no_match [] | expected [21] rank 1 0.555 | I work in Dubai. Can I vote in India?
+  asks (expected among)  audit_probe        top Aadhaar Enrolment and Update at :0.687 2nd Updating Data on Aadhaar:0.659 | ambiguous [35, 18] | expected [35] rank 1 0.687 | What's the charge to fix my address in Aadhaar at the post office?
+  correct                audit_probe        top Aadhaar Enrolment and Update at :0.701 2nd Updating Data on Aadhaar:0.576 | matched [35] | expected [35] rank 1 0.701 | Is it free to get a new Aadhaar made at the post office?
+  correct                audit_probe        top Employees' Pension Scheme (EPS):0.541 2nd Employees' Provident Fund Scheme:0.488 | matched [36] | expected [36] rank 2 0.488 | When can I take out my whole PF money?
+  correct                audit_probe        top Employees' Provident Fund Scheme:0.579 2nd Employees' Deposit Linked Insura:0.542 | matched [36] | expected [36] rank 1 0.579 | How much does my boss put into my PF?
+  correct                audit_probe        top Employees' Deposit Linked Insura:0.735 2nd Employees' Pension Scheme (EPS):0.455 | matched [38] | expected [38] rank 1 0.735 | What does the family get from EDLI if a worker dies?
+  correct                audit_probe        top International Driving Permit:0.697 2nd Apply for Fresh / Re-issue Ordin:0.470 | matched [26] | expected [26] rank 1 0.697 | Which papers do I carry to get an international permit?
+  correct                audit_probe        top Atal Pension Yojana:0.592 2nd Employees' Pension Scheme (EPS):0.531 | matched [34] | expected [34] rank 1 0.592 | How much pension can I get under APY?
+  correct                audit_probe        top Renewal of Driving Licence:0.514 2nd Renewal of Vehicle Registration :0.438 | matched [24] | expected [24] rank 1 0.514 | Can I renew my DL early?
+  correct                audit_probe        top File ITR-1 (Sahaj) Online:0.669 2nd Overseas (NRI) Voter Registratio:0.555 | matched [33] | expected [33] rank 1 0.669 | Can an NRI file ITR-1?
+  correct                audit_probe        top File ITR-1 (Sahaj) Online:0.818 2nd Filing of ITR-2:0.565 | matched [33] | expected [33] rank 1 0.818 | What is the income limit for filing ITR-1?
+  correct                audit_probe        top File ITR-1 (Sahaj) Online:0.673 2nd Filing of ITR-2:0.581 | matched [33] | expected [33] rank 1 0.673 | Can I use ITR-1 if I have capital gains?
+  correct                audit_probe        top Filing of ITR-2:0.744 2nd File ITR-1 (Sahaj) Online:0.641 | matched [16] | expected [16] rank 1 0.744 | What do I need before filing ITR-2 online?
+  correct                audit_probe        top Updating Data on Aadhaar:0.724 2nd Aadhaar Enrolment and Update at :0.690 | matched [18] | expected [18] rank 1 0.724 | Which Aadhaar details can I update?
+  correct                audit_probe        top Updating Data on Aadhaar:0.757 2nd Aadhaar Enrolment and Update at :0.599 | matched [18] | expected [18] rank 1 0.757 | Can I update my Aadhaar address online?
+  correct                audit_probe        top Link PAN with Aadhaar:0.844 2nd File ITR-1 (Sahaj) Online:0.753 | matched [31] | expected [31] rank 1 0.844 | What do I need before linking PAN with Aadhaar?
+  correct                audit_probe        top Register on the e-Filing Portal:0.661 2nd File ITR-1 (Sahaj) Online:0.606 | matched [32] | expected [32] rank 1 0.661 | How do I register on the income tax e-filing portal?
+  correct                audit_probe        top Permanent Driving Licence:0.674 2nd Learner's Licence:0.635 | matched [23] | expected [23] rank 1 0.674 | What are the eligibility requirements, required documents and applicat
+  correct                audit_probe        top File ITR-1 (Sahaj) Online:0.663 2nd Filing of ITR-2:0.638 | matched [33] | expected [33] rank 1 0.663 | Who can file ITR-1, which documents do I need and what are the steps t
+  correct                audit_probe        top Apply for Fresh / Re-issue Ordin:0.674 2nd International Driving Permit:0.508 | matched [15] | expected [15] rank 1 0.674 | For a passport, what documents do I need, what is the fee and how do I
+  correct                audit_probe        top Employees' Pension Scheme (EPS):0.674 2nd Employees' Provident Fund Scheme:0.655 | matched [36] | expected [36] rank 2 0.655 | For EPF, who is eligible, how much is contributed and when can I withd
+
+## today's outcome counts: {'correct': 174, 'WRONG PAGE': 5, 'asks (expected among)': 9, 'FORCED MATCH': 2, 'MISSED (no_match)': 6, 'FALSE MATCH': 7, 'ambiguous (safe)': 1}
+## in-scope: expected page rank 1: 159 | rank 2-3: 11 | rank >3 (outside the candidate set): 0 of 170
+## in-scope expected-page scores below 0.53:
+    0.445 rank 1 MISSED (no_match)    population[18]     sold my bike, need to transfer the RC
+    0.475 rank 1 correct              answers[58]        I lost my DL, what should I do?
+    0.488 rank 2 correct              audit_probe        When can I take out my whole PF money?
+    0.500 rank 3 correct              answers[55]        RC renew panna enna documents venum?
+    0.504 rank 1 correct              answers[53]        EDLI la family ku evlo panam kidaikkum?
+    0.514 rank 1 correct              audit_probe        Can I renew my DL early?
+    0.518 rank 1 MISSED (no_match)    audit_probe        How much do I pay to get my DL renewed?
+    0.522 rank 1 correct              heldout[18]        How long is the VVPAT slip visible?
+    0.529 rank 1 MISSED (no_match)    audit_probe        I sold my bike. What does the buyer have to do and by when?
+## out-of-scope top scores (highest first):
+    0.687 Apply for Fresh / Re-issue Ordin FALSE MATCH        population[36]     How do I apply for a US passport?
+    0.660 Renewal of Driving Licence       FALSE MATCH        population[37]     How do I renew my driving licence in the UK?
+    0.642 Learner's Licence                ambiguous (safe)   demo_services[28]  How do I apply for a driving licence in the UK?
+    0.633 REV-101 Community Certificate    FALSE MATCH        population[39]     How do I get a marriage certificate?
+    0.615 Register on the e-Filing Portal  FALSE MATCH        population[38]     How do I change the name on my PAN card?
+    0.615 Register on the e-Filing Portal  FALSE MATCH        demo_services[23]  How do I change the name on my PAN card?
+    0.596 REV-101 Community Certificate    FALSE MATCH        demo_services[26]  How do I apply for a marriage certificate?
+    0.596 REV-101 Community Certificate    FALSE MATCH        identification[30] How do I apply for a marriage certificate?
+    0.525 REV-101 Community Certificate    correct            identification[26] How do I apply for a ration card in Tamil Nadu?
+    0.506 Register on the e-Filing Portal  correct            answers[75]        How do I register for GST?
+    0.502 Apply for Fresh / Re-issue Ordin correct            heldout[24]        How do I apply for an Ayushman Bharat card?
+    0.494 Apply for Fresh / Re-issue Ordin correct            answers[76]        How do I book a train ticket?
+
+## threshold sweep (classify min_score; everything else as implemented)
+   t     in-scope correct  wrong page  missed  asks   | out-of-scope false match  asks | ambiguous forced
+  0.45        150           5       4     11  |             10            4 |      2
+  0.46        150           5       4     11  |             13            1 |      2
+  0.47        150           5       4     11  |             12            1 |      2
+  0.48        150           5       4     11  |             12            1 |      2
+  0.49        150           5       4     11  |              9            1 |      2
+  0.50        151           5       4     10  |              8            1 |      2
+  0.51        152           5       4      9  |              8            1 |      2
+  0.52        151           5       5      9  |              8            1 |      2
+  0.53*       150           5       6      9  |              7            1 |      2
+  0.54        149           5       7      9  |              7            1 |      1
+  0.55        149           5       7      9  |              7            1 |      1
+  0.56        148           5       8      9  |              7            1 |      1
+  0.57        147           5       9      9  |              7            1 |      1
+  0.58        146           5      11      8  |              7            1 |      1
+  0.59        145           5      13      7  |              7            1 |      1
+  0.60        144           6      14      6  |              5            1 |      2
+
+## top-two margin (in-scope, top score >= 0.45): is the top page right?
+    gap 0.00-0.01:   2 questions, top page right 1, wrong 1
+    gap 0.01-0.02:   6 questions, top page right 2, wrong 4
+    gap 0.02-0.03:  14 questions, top page right 14, wrong 0
+    gap 0.03-0.05:  21 questions, top page right 17, wrong 4
+    gap 0.05-0.08:  21 questions, top page right 19, wrong 2
+    gap 0.08-0.12:  41 questions, top page right 41, wrong 0
+    gap 0.12-1.00:  64 questions, top page right 64, wrong 0
+## out-of-scope margin vs top score:
+    top 0.687 gap 0.182  How do I apply for a US passport?
+    top 0.660 gap 0.030  How do I renew my driving licence in the UK?
+    top 0.642 gap 0.015  How do I apply for a driving licence in the UK?
+    top 0.633 gap 0.140  How do I get a marriage certificate?
+    top 0.615 gap 0.040  How do I change the name on my PAN card?
+    top 0.615 gap 0.040  How do I change the name on my PAN card?
+    top 0.596 gap 0.095  How do I apply for a marriage certificate?
+    top 0.596 gap 0.095  How do I apply for a marriage certificate?

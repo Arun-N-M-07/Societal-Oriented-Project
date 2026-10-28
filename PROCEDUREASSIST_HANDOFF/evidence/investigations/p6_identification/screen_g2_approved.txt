@@ -1,0 +1,72 @@
+### procedureassist: 306 distinct labelled questions: {'page': 233, 'ambiguous': 5, 'none': 62, 'clarify': 6}; 10 romanised Tamil skipped
+
+## questions whose verdict changes (ALLask+F8p -> each variant)
+  answers[40]                  page      | ALLask+F8p:asks (among) | G1:correct | G123:correct | G1235:correct | I live abroad. How do I register to vote?
+  heldout[10]                  page      | ALLask+F8p:asks (among) | G1:correct | G123:correct | G1235:correct | Which form is used to correct entries in the electoral roll?
+  population[19]               page      | ALLask+F8p:WRONG PAGE | G1:asks (among) | G123:asks (among) | G1235:asks (among) | I turned 18, how do I get on the voter list?
+  identification_failures[12]  none      | ALLask+F8p:asks | G3a:correct | G123:correct | G1235:correct | how do i change my date of birth on my pan card
+  identification_failures[20]  page      | ALLask+F8p:WRONG PAGE | G1:correct | G123:correct | G1235:correct | How do I change my address in the electoral roll?
+  identification_failures[33]  page      | ALLask+F8p:WRONG PAGE | G1:correct | G123:correct | G1235:correct | I am an Indian citizen working in Saudi Arabia. How can I register to vote?
+  identification_failures[34]  page      | ALLask+F8p:asks (among) | G1:correct | G123:correct | G1235:correct | I study in Canada. Can I still vote in Indian elections?
+  identification_failures[35]  page      | ALLask+F8p:WRONG PAGE | G1:correct | G123:correct | G1235:correct | I moved to Singapore for work. How do I enrol as a voter?
+  identification_failures[36]  page      | ALLask+F8p:WRONG PAGE | G2:asks (among) | G123:asks (among) | G1235:asks (among) | i work in dubai, can i vote in india
+  identification_failures[37]  page      | ALLask+F8p:asks (among) | G1:correct | G123:correct | G1235:correct | I am an NRI. How do I register as a voter?
+  identification_failures[40]  page      | ALLask+F8p:WRONG PAGE | G1:correct | G123:correct | G1235:correct | I have shifted to a new house in Madurai. How do I change my address in the vote
+  identification_failures[56]  page      | ALLask+F8p:WRONG PAGE | G3a:correct | G123:correct | G1235:correct | how do i get an idp
+  residence_and_documents[0]   page      | ALLask+F8p:WRONG PAGE | G1:correct | G123:correct | G1235:correct | My daughter studies in Australia. Can she register as a voter?
+  residence_and_documents[2]   page      | ALLask+F8p:WRONG PAGE | G1:correct | G2:asks (among) | G3a:asks (among) | G123:correct | G1235:correct | i am an nri working in kuwait, how do i register to vote
+  residence_and_documents[3]   page      | ALLask+F8p:WRONG PAGE | G1:correct | G123:correct | G1235:correct | We are Indian citizens living in the USA. Can we register as voters?
+  residence_and_documents[7]   page      | ALLask+F8p:asks (among) | G1:correct | G123:correct | G1235:correct | Which form do I use to shift my vote to a new constituency?
+  residence_and_documents[8]   page      | ALLask+F8p:WRONG PAGE | G1:correct | G123:correct | G1235:correct | How do I update my address on my voter ID after moving house?
+  residence_and_documents[10]  page      | ALLask+F8p:MISSED | G3a:correct | G123:correct | G1235:correct | what is edli
+  residence_and_documents[11]  page      | ALLask+F8p:asks (among) | G3a:correct | G123:correct | G1235:correct | how much do i contribute to eps
+
+## not correct under G1235
+  WRONG PAGE         answers[7]                   page      expected [27] got matched [26] | What is the fee for an International Driving Permit?
+  asks (among)       answers[39]                  page      expected [23] got ambiguous [22, 23] | I have a learner's licence and want my first full driving licence
+  asks (among)       answers[61]                  page      expected [37] got ambiguous [37, 36] | How much does the central government contribute to the pension scheme?
+  clarified          answers[72]                  ambiguous expected [] got no_match [] | How do I renew?
+  WRONG PAGE         heldout[3]                   page      expected [27] got matched [24] | What is the fee for renewing my driving licence after the grace period?
+  clarified          heldout[25]                  ambiguous expected [] got no_match [] | What is the fee?
+  asks (among)       population[1]                page      expected [32] got ambiguous [32, 33, 16] | How can I register on the income tax portal?
+  MISSED             population[18]               page      expected [30] got no_match [] | sold my bike, need to transfer the RC
+  asks (among)       population[19]               page      expected [19] got ambiguous [20, 19] | I turned 18, how do I get on the voter list?
+  FALSE MATCH        population[39]               none      expected [] got matched [17] | How do I get a marriage certificate?
+  asks (among)       demo_services[1]             page      expected [19] got ambiguous [20, 19] | I turned 18, how can I get my name on the voter list?
+  asks (among)       demo_services[4]             page      expected [22] got ambiguous [23, 22] | How do I get a learner's licence?
+  WRONG PAGE         demo_services[22]            page      expected [16, 31, 32, 33] got matched [17] | What documents do I need to file my income tax return?
+  FALSE MATCH        demo_services[26]            none      expected [] got matched [17] | How do I apply for a marriage certificate?
+  MISSED             audit_probe                  page      expected [27, 24] got no_match [] | How much do I pay to get my DL renewed?
+  MISSED             audit_probe                  page      expected [30] got no_match [] | I sold my bike. What does the buyer have to do and by when?
+  WRONG PAGE         audit_probe                  page      expected [19] got matched [20] | How do I get my name on the voters list?
+  asks (among)       audit_probe                  page      expected [21] got ambiguous [19, 21] | I work in Dubai. Can I vote in India?
+  asks (among)       audit_probe                  page      expected [35] got ambiguous [35, 18] | What's the charge to fix my address in Aadhaar at the post office?
+  asks               multi_need[7]                none      expected [] got ambiguous [26, 23] | How do I apply for a driving licence in India?
+  asks (among)       multi_need[13]               page      expected [16, 31, 32, 33] got ambiguous [32, 31, 33] | How do I file my income tax return?
+  MISSED             safety[22]                   page      expected [36] got no_match [] | Can an employer deduct the employer's share from my wages?
+  FALSE MATCH        identification_failures[0]   none      expected [] got matched [17] | Where do I get a marriage certificate in Tamil Nadu?
+  FALSE MATCH        identification_failures[4]   none      expected [] got matched [17] | How do I get a birth certificate in Tamil Nadu?
+  MISSED             identification_failures[5]   page      expected [17] got no_match [] | What documents are needed for an inter caste marriage certificate in Tamil Nadu?
+  MISSED             identification_failures[6]   page      expected [17] got no_match [] | What documents do I need for a widow certificate in Tamil Nadu?
+  asks               identification_failures[11]  none      expected [] got ambiguous [31, 32] | What is the fee to apply for a PAN card?
+  asks (among)       identification_failures[17]  page      expected [25] got ambiguous [27, 25] | My driving licence got torn. How do I get a new copy?
+  MISSED             identification_failures[28]  page      expected [17] got no_match [] | What documents are needed for an OBC certificate in Tamil Nadu?
+  MISSED             identification_failures[29]  page      expected [17] got no_match [] | How do I apply for a solvency certificate in Tamil Nadu?
+  asks (among)       identification_failures[36]  page      expected [21] got ambiguous [19, 21] | i work in dubai, can i vote in india
+  WRONG PAGE         identification_failures[58]  page      expected [36] got matched [37] | Can I withdraw my PF before retirement?
+  MISSED             identification_failures[61]  page      expected [30] got no_match [] | bought a second hand bike, how do i get the RC in my name
+  asks (among)       identification_failures[64]  page      expected [29] got ambiguous [21, 29, 17] | shifted house, need to update address on my RC
+  MISSED             residence_and_documents[1]   page      expected [21] got no_match [] | I live in Qatar. Can I vote in the Lok Sabha election?
+  WRONG PAGE         residence_and_documents[4]   page      expected [21] got matched [19] | I work in the Gulf. How do I register to vote?
+  MISSED             residence_and_documents[15]  page      expected [17] got no_match [] | Do I need a birth certificate for a nativity certificate in Tamil Nadu?
+  MISSED             residence_and_documents[16]  page      expected [17] got no_match [] | How do I apply for an inter caste marriage certificate?
+  FALSE MATCH        residence_and_documents[17]  none      expected [] got matched [17] | How do I get a marriage registration certificate?
+
+## totals
+  ALLask+F8p  in scope: correct 187, wrong page 17, missed 13, asks 16, clarified 0, multiple 0 | out of scope: correct 54, false match 5, asks 3, clarified 0 | unnamed: asked which 6, false match 0, other 0 | ambiguous: ok 3, forced 0
+  G1          in scope: correct 200, wrong page 8, missed 13, asks 12, clarified 0, multiple 0 | out of scope: correct 54, false match 5, asks 3, clarified 0 | unnamed: asked which 6, false match 0, other 0 | ambiguous: ok 3, forced 0
+  G2          in scope: correct 187, wrong page 15, missed 13, asks 18, clarified 0, multiple 0 | out of scope: correct 54, false match 5, asks 3, clarified 0 | unnamed: asked which 6, false match 0, other 0 | ambiguous: ok 3, forced 0
+  G3a         in scope: correct 190, wrong page 15, missed 12, asks 16, clarified 0, multiple 0 | out of scope: correct 55, false match 5, asks 2, clarified 0 | unnamed: asked which 6, false match 0, other 0 | ambiguous: ok 3, forced 0
+  G5          in scope: correct 187, wrong page 17, missed 13, asks 16, clarified 0, multiple 0 | out of scope: correct 54, false match 5, asks 3, clarified 0 | unnamed: asked which 6, false match 0, other 0 | ambiguous: ok 3, forced 0
+  G123        in scope: correct 203, wrong page 6, missed 12, asks 12, clarified 0, multiple 0 | out of scope: correct 55, false match 5, asks 2, clarified 0 | unnamed: asked which 6, false match 0, other 0 | ambiguous: ok 3, forced 0
+  G1235       in scope: correct 203, wrong page 6, missed 12, asks 12, clarified 0, multiple 0 | out of scope: correct 55, false match 5, asks 2, clarified 0 | unnamed: asked which 6, false match 0, other 0 | ambiguous: ok 3, forced 0

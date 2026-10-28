@@ -4,7 +4,7 @@ import AdminLogin from "./AdminLogin";
 import AdminPage from "./AdminPage";
 import AdminProcedureList from "./AdminProcedureList";
 import CitizenPage from "./CitizenPage";
-import { getSession, logout, UNAUTHORIZED_EVENT } from "./api";
+import { getSession, logout, UNAUTHORIZED_EVENT, UNREACHABLE } from "./api";
 
 
 export default function App() {
@@ -21,7 +21,11 @@ function AdminApp() {
   useEffect(() => {
     getSession().then(
       (session) => setAdmin(session.username),
-      () => setAdmin(null),
+      // A server that cannot be reached is not the same as being signed out.
+      (error: unknown) => {
+        setAdmin(null);
+        if (error instanceof Error && error.message === UNREACHABLE) setNotice(UNREACHABLE);
+      },
     );
     function expire() {
       setAdmin(null);

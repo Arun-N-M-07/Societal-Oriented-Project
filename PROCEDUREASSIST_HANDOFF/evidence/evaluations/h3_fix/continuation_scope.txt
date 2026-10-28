@@ -1,0 +1,6 @@
+===== procedureassist_staging
+  [probe] page 39 +[588, 589, 590]: What is the fee to renew the RC of a motorcycle?
+  [probe] page 39 +[588, 589, 590]: How much does a duplicate RC cost?
+retrievals changed by continuation: 2/137
+===== procedureassist
+retrievals changed by continuation: 0/132

@@ -1,0 +1,169 @@
+
+### citizen duplicate fee: 'What is the fee for a duplicate driving licence?' [en]
+  source contains evidence: n/a
+  (english) | identify: ambiguous [27, 25] | top scores: [(27, 0.73), (25, 0.716), (24, 0.548)] | clarification: None
+
+### citizen duplicate fee, follow-up: 'What is the fee for a duplicate driving licence?' [en] (open page duplicate-licence)
+  source contains evidence: n/a
+  page 25 Duplicate Driving Licence; retrieved: [(67, 0.716, False)]
+  answer: insufficient= True partial= None
+
+### school duplicate fee: 'What is the duplicate licence fee for a driving school?' [en]
+  source contains evidence: ['27', '33', '36']
+  (english) | identify: matched [27] | top scores: [(27, 0.75), (25, 0.612), (24, 0.51)] | clarification: None
+  page 27 Driving Licence Fees and Charges; retrieved: [(70, 0.75, True), (69, 0.704, False)]
+  evidence chunks on page: [(70, 0.75)]
+  answer: insufficient= False partial= None
+    - [27/70] The duplicate licence fee for a driving school is Rs. 5000.00/-
+
+### renewal fee: 'How much does it cost to renew my driving licence?' [en]
+  source contains evidence: ['27']
+  (english) | identify: matched [27] | top scores: [(27, 0.736), (24, 0.664), (22, 0.533)] | clarification: None
+  page 27 Driving Licence Fees and Charges; retrieved: [(70, 0.736, False), (69, 0.707, True)]
+  evidence chunks on page: [(69, 0.707)]
+  answer: insufficient= False partial= True
+    - [27/69] Renewal of driving licence Rs. 200.00/-
+
+### renewal follow-up: 'How much is the renewal fee?' [en] (open page content/renewal)
+  source contains evidence: ['24', '27']
+  page 24 Renewal of Driving Licence; retrieved: [(66, 0.594, True)]
+  evidence chunks on page: [(66, 0.594)]
+  answer: insufficient= False partial= None
+    - [24/66] A fee of Rs. 30/- will be realised.
+
+### late charge: 'What is the late fee if I renew my licence more than 30 days after it expires?' [en] (open page content/renewal)
+  source contains evidence: ['24', '27']
+  page 24 Renewal of Driving Licence; retrieved: [(66, 0.753, True)]
+  evidence chunks on page: [(66, 0.753)]
+  answer: insufficient= False partial= None
+    - [24/66] If the application is made more than 30 days after the date of expiry of the licence, the renewal will be made with effect from the date of receipt of
+
+### driving test fee: 'What is the fee for the driving test?' [en]
+  source contains evidence: ['27']
+  (english) | identify: matched [27] | top scores: [(27, 0.686), (23, 0.558), (22, 0.462)] | clarification: None
+  page 27 Driving Licence Fees and Charges; retrieved: [(69, 0.686, True), (70, 0.567, False)]
+  evidence chunks on page: [(69, 0.686)]
+  answer: insufficient= False partial= None
+    - [27/69] The fee for the test, or repeat test, as the case may be, of competence to drive (for each class of vehicle) is Rs. 300.00/-.
+
+### grace-period fee: 'What is the fee to renew a driving licence after the grace period?' [en]
+  source contains evidence: ['27']
+  (english) | identify: ambiguous [24, 27] | top scores: [(24, 0.688), (27, 0.683), (22, 0.504)] | clarification: None
+
+### Aadhaar address proof: 'What documents are accepted as proof of address for Aadhaar update?' [en]
+  source contains evidence: ['18', '30']
+  (english) | identify: matched [18] | top scores: [(18, 0.738), (35, 0.622), (17, 0.575)] | clarification: None
+  page 18 Updating Data on Aadhaar; retrieved: [(43, 0.738, True), (45, 0.705, False), (44, 0.675, False), (37, 0.624, False), (39, 0.617, True)]
+  evidence chunks on page: [(39, 0.617), (42, 0.585), (43, 0.738)]
+  answer: insufficient= True partial= None
+
+### transport vehicle age: 'At what age can I get a licence to drive a transport vehicle?' [en]
+  source contains evidence: ['22']
+  (english) | identify: matched [22] | top scores: [(22, 0.817), (23, 0.555), (24, 0.546)] | clarification: None
+  page 22 Learner's Licence; retrieved: [(63, 0.817, True), (62, 0.693, False)]
+  evidence chunks on page: [(63, 0.817)]
+  answer: insufficient= False partial= True
+    - [22/63] An applicant who has completed twenty years of age will be eligible for applying for a licence to drive a transport vehicle.
+
+### vehicle age fee (Rule 81): 'How old must a vehicle be for the higher registration renewal fee?' [en]
+  source contains evidence: []
+  (english) | identify: ambiguous [28, 24] | top scores: [(28, 0.617), (24, 0.588), (22, 0.534)] | clarification: None
+
+### RC renewal fee: 'What is the fee to renew the registration certificate of my car?' [en]
+  source contains evidence: ['28', '29', '30']
+  (english) | identify: matched [28] | top scores: [(28, 0.71), (27, 0.595), (24, 0.586)] | clarification: None
+  page 28 Renewal of Vehicle Registration Certificate; retrieved: [(71, 0.71, True), (72, 0.35, False)]
+  evidence chunks on page: [(71, 0.71)]
+  answer: insufficient= True partial= None
+
+### passport fee (calculator only): 'What is the fee for a passport?' [en]
+  source contains evidence: n/a
+  (english) | identify: matched [15] | top scores: [(15, 0.582), (27, 0.486), (35, 0.457)] | clarification: None
+  page 15 Apply for Fresh / Re-issue Ordinary Passport; retrieved: [(12, 0.582, False), (9, 0.566, False), (8, 0.561, False), (13, 0.502, False), (11, 0.49, False)]
+  answer: insufficient= True partial= None
+
+### polling order: 'What happens at the polling booth when I go to vote?' [en]
+  source contains evidence: ['20']
+  (english) | identify: matched [20] | top scores: [(20, 0.689), (19, 0.552), (21, 0.486)] | clarification: None
+  page 20 How to Vote; retrieved: [(52, 0.689, True), (53, 0.608, False), (51, 0.514, False), (54, 0.507, False), (55, 0.42, False)]
+  evidence chunks on page: [(52, 0.689)]
+  answer: insufficient= False partial= None
+    - [20/52] First polling official will check your name on the voter list and check your ID proof
+    - [20/52] Second polling official will ink your finger, give you a slip and take your signature on a register (Form 17A)
+    - [20/52] You will have to deposit the slip at the third polling official and show your inked finger and then proceed to the polling booth
+    - [20/52] Record your vote by pressing the ballot button opposite the symbol of the candidate of your choice on the Electronic Voting Machine (EVM); You will he
+    - [20/53] Check the slip that appears in the transparent window of the VVPAT machine. The slip with the Candidate serial No., Name and Symbol shall be visible f
+    - [20/53] You can press NOTA, None of the Above, if you don't like any candidate; it's the last button on the EVM
+
+### VVPAT duration: 'How long can I see the VVPAT slip?' [en]
+  source contains evidence: ['20']
+  (english) | identify: matched [20] | top scores: [(20, 0.541), (15, 0.482), (33, 0.472)] | clarification: None
+  page 20 How to Vote; retrieved: [(53, 0.541, True), (51, 0.425, False), (54, 0.409, False), (52, 0.406, False), (56, 0.375, False)]
+  evidence chunks on page: [(53, 0.541)]
+  answer: insufficient= False partial= None
+    - [20/53] Check the slip that appears in the transparent window of the VVPAT machine. The slip with the Candidate serial No., Name and Symbol shall be visible f
+
+### learner vs permanent: "I have a learner's licence and want my first full driving licence. What do I do?" [en]
+  source contains evidence: ['23', '26']
+  (english) | identify: matched [23] | top scores: [(22, 0.634), (23, 0.625), (27, 0.566)] | clarification: None
+  page 23 Permanent Driving Licence; retrieved: [(64, 0.625, True), (65, 0.564, False)]
+  evidence chunks on page: [(64, 0.625)]
+  answer: insufficient= False partial= None
+    - [23/64] Schedule an appointment for the test of competence online by visiting the website or any RTO office where such facility exists. In other cases schedul
+    - [23/64] An application in Form 4, for a permanent driving licence shall be made along with the Learners' Licence obtained for such class of vehicle.
+    - [23/64] The applicant who has held a valid Learners' Licence, for a period of at least 30 days, shall be competent to appear for the test of competence.
+    - [23/65] The applicant should bring a vehicle of the type to which the application relates.
+    - [23/65] The candidate who passes the test of competence successfully will be issued with a driving licence and sent through speed post to the address furnishe
+
+### EPF vs EPS: 'How much does the central government contribute to the pension fund?' [en]
+  source contains evidence: ['37']
+  (english) | identify: matched [37] | top scores: [(37, 0.541), (36, 0.516), (34, 0.454)] | clarification: None
+  page 37 Employees' Pension Scheme (EPS); retrieved: [(123, 0.541, True), (125, 0.497, False), (124, 0.442, False), (126, 0.396, False)]
+  evidence chunks on page: [(123, 0.541)]
+  answer: insufficient= False partial= None
+    - [37/123] The Central Government contributes 1.16% (subject to wage ceiling) towards the Pension Fund.
+
+### EPF age (div text): 'What is the age limit to join EPF?' [en]
+  source contains evidence: []
+  (english) | identify: matched [36] | top scores: [(36, 0.693), (37, 0.627), (34, 0.539)] | clarification: None
+  page 36 Employees' Provident Fund Scheme; retrieved: [(122, 0.693, False), (118, 0.593, False), (121, 0.528, False), (120, 0.462, False), (119, 0.368, False)]
+  answer: insufficient= True partial= None
+
+### EPF FAQ question text: 'Can apprentices become EPF members?' [en]
+  source contains evidence: ['36']
+  (english) | identify: matched [36] | top scores: [(36, 0.777), (37, 0.613), (34, 0.465)] | clarification: None
+  page 36 Employees' Provident Fund Scheme; retrieved: [(122, 0.777, True), (118, 0.572, False), (121, 0.55, False), (120, 0.475, False), (119, 0.421, False)]
+  evidence chunks on page: [(122, 0.777)]
+  answer: insufficient= False partial= True
+    - [36/122] Apprentices can become EPF members.
+
+### TN income certificate docs: 'What documents are needed for an income certificate in Tamil Nadu?' [en]
+  source contains evidence: ['17']
+  (english) | identify: matched [17] | top scores: [(17, 0.594), (16, 0.552), (33, 0.514)] | clarification: None
+  page 17 REV-101 Community Certificate; retrieved: [(36, 0.594, False), (33, 0.542, False), (35, 0.539, False), (34, 0.427, True)]
+  evidence chunks on page: [(34, 0.427)]
+  answer: insufficient= False partial= True
+    - [17/35] Proof of Income (Payslip, Income Certificate, etc)
+
+### Tamil renewal fee: 'ஓட்டுநர் உரிமம் புதுப்பிக்க கட்டணம் எவ்வளவு?' [ta]
+  source contains evidence: ['27']
+  normalized: 'How much is the fee to renew a driving licence?' | identify: matched [27] | top scores: [(27, 0.735), (24, 0.691), (22, 0.529)] | clarification: None
+  page 27 Driving Licence Fees and Charges; retrieved: [(69, 0.735, True), (70, 0.722, False)]
+  evidence chunks on page: [(69, 0.735)]
+  answer: insufficient= False partial= None
+    - [27/69] The fee for renewal of a driving licence is Rs. 200.00/-.
+
+### Romanized renewal fee: 'DL renew panna evlo fees?' [ta]
+  source contains evidence: ['27']
+  normalized: 'How much is the fee for renewing a driving licence?' | identify: matched [27] | top scores: [(27, 0.734), (24, 0.69), (28, 0.523)] | clarification: None
+  page 27 Driving Licence Fees and Charges; retrieved: [(69, 0.734, True), (70, 0.722, False)]
+  evidence chunks on page: [(69, 0.734)]
+  answer: insufficient= False partial= None
+    - [27/69] The fee for renewal of a driving licence is Rs. 200.00/-.
+
+### mixed Aadhaar docs: 'Aadhaar la address change panna enna documents venum?' [ta]
+  source contains evidence: ['18', '30']
+  normalized: 'What documents are needed to change the address on Aadhaar?' | identify: matched [18] | top scores: [(18, 0.698), (29, 0.625), (35, 0.596)] | clarification: None
+  page 18 Updating Data on Aadhaar; retrieved: [(43, 0.698, True), (45, 0.647, False), (38, 0.642, False), (37, 0.611, False), (39, 0.611, True)]
+  evidence chunks on page: [(39, 0.611), (42, 0.538), (43, 0.698)]
+  answer: insufficient= True partial= None

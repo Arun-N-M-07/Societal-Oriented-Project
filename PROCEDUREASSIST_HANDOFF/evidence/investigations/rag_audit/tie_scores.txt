@@ -1,0 +1,7 @@
+"I have a learner's licence and want my first full driving lice"   [('Permanent Driving Licence', 0.631), ("Learner's Licence", 0.628), ('Driving Licence Fees and C', 0.573)] -> ambiguous (wanted: Permanent)
+'I live abroad. How do I register to vote?'                        [('Overseas (NRI) Voter Regis', 0.647), ('Register to Vote', 0.627), ('How to Vote', 0.547)] -> ambiguous (wanted: Overseas)
+'I just turned 18 and want to vote.'                               [('Register to Vote', 0.636), ("Learner's Licence", 0.519), ('How to Vote', 0.516)] -> matched (wanted: Register to Vote)
+'Which form is used to correct entries in the electoral roll?'     [('Overseas (NRI) Voter Regis', 0.615), ('Register to Vote', 0.598), ('How to Vote', 0.46)] -> ambiguous (wanted: Register to Vote)
+'What is the fee for renewing my driving licence after the grac'   [('Renewal of Driving Licence', 0.688), ('Driving Licence Fees and C', 0.661), ('Vehicle Registration Fees ', 0.607)] -> ambiguous (wanted: Fees)
+"What's the charge to fix my address in Aadhaar at the post off"   [('Aadhaar Enrolment and Upda', 0.693), ('Updating Data on Aadhaar', 0.67), ('Link PAN with Aadhaar', 0.557)] -> ambiguous (wanted: Post Offices)
+'How do I get my name on the voters list?'                         [('How to Vote', 0.693), ('Register to Vote', 0.607), ('Overseas (NRI) Voter Regis', 0.504)] -> matched (wanted: Register to Vote)

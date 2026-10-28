@@ -1,0 +1,76 @@
+### procedureassist: 286 distinct labelled questions: {'page': 216, 'ambiguous': 5, 'none': 59, 'clarify': 6}; 10 romanised Tamil skipped
+
+## questions whose verdict changes (V0 -> each variant)
+  demo_services[1]             page      | V0:WRONG PAGE | ALLask:asks (among) | I turned 18, how can I get my name on the voter list?
+  audit_probe                  page      | V0:WRONG PAGE | ALLask:asks (among) | I work in Dubai. Can I vote in India?
+  generalisation[0]            none      | V0:FALSE MATCH | ALLask:correct | how do i renew my uk driving licence
+  generalisation[9]            clarify   | V0:FALSE MATCH | ALLask:correct | How do I apply for a certificate in Tamil Nadu?
+  identification_failures[11]  none      | V0:FALSE MATCH | ALLask:asks | What is the fee to apply for a PAN card?
+  identification_failures[16]  page      | V0:WRONG PAGE | ALLask:correct | How do I register on the income tax e-filing portal with my PAN?
+  identification_failures[21]  clarify   | V0:FALSE MATCH | ALLask:correct | I need a certificate from the Tamil Nadu government. How do I apply?
+  identification_failures[22]  clarify   | V0:no clarification | ALLask:correct | How do I get a certificate?
+  identification_failures[23]  clarify   | V0:FALSE MATCH | ALLask:correct | Which documents are required for a certificate in Tamil Nadu?
+  identification_failures[24]  clarify   | V0:no clarification | ALLask:correct | How do I apply for a certificate online?
+  identification_failures[25]  clarify   | V0:no clarification | ALLask:correct | What is the fee for a certificate?
+  identification_failures[34]  page      | V0:WRONG PAGE | ALLask:asks (among) | I study in Canada. Can I still vote in Indian elections?
+  identification_failures[37]  page      | V0:WRONG PAGE | ALLask:asks (among) | I am an NRI. How do I register as a voter?
+  identification_failures[45]  none      | V0:FALSE MATCH | ALLask:correct | how do i apply for a uk passport
+  identification_failures[46]  none      | V0:asks | ALLask:correct | how do i renew my uk driving licence online
+  identification_failures[51]  page      | V0:MISSED | ALLask:correct | How do I register to vote in Kerala?
+  identification_failures[54]  page      | V0:MISSED | ALLask:correct | How do I transfer ownership of a car I bought in Karnataka?
+
+## not correct under ALLask
+  WRONG PAGE         answers[7]                   page      expected [27] got matched [26] | What is the fee for an International Driving Permit?
+  asks (among)       answers[39]                  page      expected [23] got ambiguous [22, 23] | I have a learner's licence and want my first full driving licence
+  asks (among)       answers[40]                  page      expected [21] got ambiguous [19, 21] | I live abroad. How do I register to vote?
+  asks (among)       answers[61]                  page      expected [37] got ambiguous [37, 36] | How much does the central government contribute to the pension scheme?
+  clarified          answers[72]                  ambiguous expected [] got no_match [] | How do I renew?
+  WRONG PAGE         heldout[3]                   page      expected [27] got matched [24] | What is the fee for renewing my driving licence after the grace period?
+  asks (among)       heldout[10]                  page      expected [19] got ambiguous [21, 19] | Which form is used to correct entries in the electoral roll?
+  clarified          heldout[25]                  ambiguous expected [] got no_match [] | What is the fee?
+  asks (among)       population[1]                page      expected [32] got ambiguous [32, 33, 16] | How can I register on the income tax portal?
+  MISSED             population[18]               page      expected [30] got no_match [] | sold my bike, need to transfer the RC
+  WRONG PAGE         population[19]               page      expected [19] got matched [20] | I turned 18, how do I get on the voter list?
+  FALSE MATCH        population[38]               none      expected [] got matched [32] | How do I change the name on my PAN card?
+  FALSE MATCH        population[39]               none      expected [] got matched [17] | How do I get a marriage certificate?
+  asks (among)       demo_services[1]             page      expected [19] got ambiguous [20, 19] | I turned 18, how can I get my name on the voter list?
+  asks (among)       demo_services[4]             page      expected [22] got ambiguous [23, 22] | How do I get a learner's licence?
+  WRONG PAGE         demo_services[22]            page      expected [16, 31, 32, 33] got matched [17] | What documents do I need to file my income tax return?
+  FALSE MATCH        demo_services[26]            none      expected [] got matched [17] | How do I apply for a marriage certificate?
+  MISSED             audit_probe                  page      expected [27, 24] got no_match [] | How much do I pay to get my DL renewed?
+  MISSED             audit_probe                  page      expected [30] got no_match [] | I sold my bike. What does the buyer have to do and by when?
+  WRONG PAGE         audit_probe                  page      expected [19] got matched [20] | How do I get my name on the voters list?
+  asks (among)       audit_probe                  page      expected [21] got ambiguous [19, 21] | I work in Dubai. Can I vote in India?
+  asks (among)       audit_probe                  page      expected [35] got ambiguous [35, 18] | What's the charge to fix my address in Aadhaar at the post office?
+  asks               multi_need[7]                none      expected [] got ambiguous [26, 23] | How do I apply for a driving licence in India?
+  asks (among)       multi_need[13]               page      expected [16, 31, 32, 33] got ambiguous [32, 31, 33] | How do I file my income tax return?
+  MISSED             safety[22]                   page      expected [36] got no_match [] | Can an employer deduct the employer's share from my wages?
+  FALSE MATCH        generalisation[4]            none      expected [] got matched [32] | How do I correct the spelling of my name on my PAN card?
+  FALSE MATCH        generalisation[5]            none      expected [] got matched [32] | How do I apply for a new PAN card?
+  FALSE MATCH        identification_failures[0]   none      expected [] got matched [17] | Where do I get a marriage certificate in Tamil Nadu?
+  FALSE MATCH        identification_failures[4]   none      expected [] got matched [17] | How do I get a birth certificate in Tamil Nadu?
+  MISSED             identification_failures[5]   page      expected [17] got no_match [] | What documents are needed for an inter caste marriage certificate in Tamil Nadu?
+  MISSED             identification_failures[6]   page      expected [17] got no_match [] | What documents do I need for a widow certificate in Tamil Nadu?
+  asks               identification_failures[8]   none      expected [] got ambiguous [32, 17] | How do I update my address on my PAN card?
+  asks               identification_failures[9]   none      expected [] got ambiguous [25, 32] | I lost my PAN card. How do I get a duplicate?
+  FALSE MATCH        identification_failures[10]  none      expected [] got matched [32] | How do I reprint my PAN card?
+  asks               identification_failures[11]  none      expected [] got ambiguous [31, 32] | What is the fee to apply for a PAN card?
+  asks               identification_failures[12]  none      expected [] got ambiguous [17, 32] | how do i change my date of birth on my pan card
+  asks (among)       identification_failures[17]  page      expected [25] got ambiguous [27, 25] | My driving licence got torn. How do I get a new copy?
+  WRONG PAGE         identification_failures[20]  page      expected [19] got matched [21] | How do I change my address in the electoral roll?
+  MISSED             identification_failures[28]  page      expected [17] got no_match [] | What documents are needed for an OBC certificate in Tamil Nadu?
+  MISSED             identification_failures[29]  page      expected [17] got no_match [] | How do I apply for a solvency certificate in Tamil Nadu?
+  WRONG PAGE         identification_failures[33]  page      expected [21] got matched [19] | I am an Indian citizen working in Saudi Arabia. How can I register to vote?
+  asks (among)       identification_failures[34]  page      expected [21] got ambiguous [19, 21] | I study in Canada. Can I still vote in Indian elections?
+  WRONG PAGE         identification_failures[35]  page      expected [21] got matched [19] | I moved to Singapore for work. How do I enrol as a voter?
+  WRONG PAGE         identification_failures[36]  page      expected [21] got matched [19] | i work in dubai, can i vote in india
+  asks (among)       identification_failures[37]  page      expected [21] got ambiguous [19, 21] | I am an NRI. How do I register as a voter?
+  WRONG PAGE         identification_failures[40]  page      expected [19] got matched [21] | I have shifted to a new house in Madurai. How do I change my address in the voter lis
+  WRONG PAGE         identification_failures[56]  page      expected [26] got matched [18] | how do i get an idp
+  WRONG PAGE         identification_failures[58]  page      expected [36] got matched [37] | Can I withdraw my PF before retirement?
+  MISSED             identification_failures[61]  page      expected [30] got no_match [] | bought a second hand bike, how do i get the RC in my name
+  asks (among)       identification_failures[64]  page      expected [29] got ambiguous [21, 29, 17] | shifted house, need to update address on my RC
+
+## totals
+  V0          in scope: correct 178, wrong page 17, missed 11, asks 10, clarified 0, multiple 0 | out of scope: correct 43, false match 11, asks 5, clarified 0 | unnamed: asked which 0, false match 3, other 3 | ambiguous: ok 3, forced 0
+  ALLask      in scope: correct 181, wrong page 12, missed 9, asks 14, clarified 0, multiple 0 | out of scope: correct 46, false match 8, asks 5, clarified 0 | unnamed: asked which 6, false match 0, other 0 | ambiguous: ok 3, forced 0

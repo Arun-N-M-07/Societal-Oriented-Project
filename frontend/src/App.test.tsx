@@ -42,6 +42,12 @@ describe("admin sign in", () => {
     expect(screen.queryByRole("alert")).toBeNull();
   });
 
+  it("says when the server cannot be reached rather than only asking to sign in", async () => {
+    vi.mocked(api.getSession).mockRejectedValue(new Error(api.UNREACHABLE));
+    render(<App />);
+    expect((await screen.findByRole("alert")).textContent).toBe(api.UNREACHABLE);
+  });
+
   it("opens the review page after signing in", async () => {
     vi.mocked(api.login).mockResolvedValue({ username: "admin" });
     render(<App />);

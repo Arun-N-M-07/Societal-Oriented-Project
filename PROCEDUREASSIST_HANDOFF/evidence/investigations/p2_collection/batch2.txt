@@ -1,0 +1,22 @@
+FAIL https://consumer.tn.gov.in/eligibility_ration.htm
+     SourceUnavailableError: Unable to retrieve the source page.
+FAIL http://consumer.tn.gov.in/eligibility_ration.htm
+     SourceUnavailableError: Unable to retrieve the source page.
+FAIL https://www.scd.tn.gov.in/social_sec_schemes.php
+     SourceUnavailableError: Unable to retrieve the source page.
+FAIL https://nha.gov.in/PM-JAY
+     ScraperError: No meaningful page content found.
+OK   https://chennai.nic.in/about-district/egovernance/
+     final https://chennai.nic.in/about-district/egovernance | 9340 chars, 88 paragraphs, 12 chunks | 'Facebook\n\nX\n\neGovernance\n\ne-District Projects\n\nIntroduction: It is a part of State Mission Mode Project (SMMP) under NeGP.The Project aims to apply Information '
+OK   https://chennai.nic.in/work-flow/
+     final https://chennai.nic.in/work-flow | 1857 chars, 24 paragraphs, 2 chunks | 'Facebook\n\nX\n\nCertificate issuing authority\n\nS.No Service Name Initiator First Second Third Approver Application Flow\n\n1 Legal Heir Certificate CSC VAO RI HQDT T'
+OK   https://tiruchirappalli.nic.in/egovernance/csc-application-submission-procedure/
+     final https://tiruchirappalli.nic.in/egovernance/csc-application-submission-procedure | 3043 chars, 120 paragraphs, 4 chunks | 'Facebook\n\nX\n\nCSC- Supporting Document details for Application Submission\n\nREVENUE AND DISASTER MANAGEMENT DEPARTMENT TIRUCHIRAPPALLI DISTRICT\n\nIncome Certificat'
+OK   https://www.incometax.gov.in/iec/foportal/help/how-to-e-verify-your-e-filing-return?mobile-app=1
+     final https://www.incometax.gov.in/iec/foportal/help/how-to-e-verify-your-e-filing-return?mobile-app=1 | 12285 chars, 148 paragraphs, 15 chunks | 'How to e-Verify User Manual\n\n1. Overview\n\nThe e-Verify service is available to both registered and unregistered users on the e-Filing portal.\n\nYou can e-Verify '
+FAIL https://uidai.gov.in/en/283-faqs/aadhaar-online-services/e-aadhaar.html
+     ScraperError: The source page returned HTTP 404.
+OK   https://pfrda.org.in/web/pfrda/schemes/national-pension-system/nps-for-all-citizen-models
+     final https://pfrda.org.in/web/pfrda/schemes/national-pension-system/nps-for-all-citizen-models | 11116 chars, 140 paragraphs, 14 chunks | 'All Citizen Models\n\nEligibility\n\nAn individual meeting the following eligibility criteria can voluntarily subscribe to the National Pension System (NPS):\n\nMust '
+FAIL https://app.indiapost.gov.in/banking-services/saving
+     SourceUnavailableError: The source page returned HTTP 503.

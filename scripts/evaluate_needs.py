@@ -40,7 +40,8 @@ def label(status, procedures):
 
 
 def correct(expected, shown):
-    return expected is None and shown is None or bool(expected and shown and expected in shown)
+    return expected is None and shown is None or bool(
+        expected and shown and re.search(re.escape(expected) + r"(?![A-Za-z0-9])", shown))  # "psp/Apply" is not "psp/ApplyPCC"
 
 
 def check_answers(db, owner, asked, relation, case):
@@ -48,7 +49,7 @@ def check_answers(db, owner, asked, relation, case):
     notes = []
     for procedure_id, question in asked:
         start = time.time()
-        claims, _ = answer_question(db, procedure_id, question)
+        claims, _, _ = answer_question(db, procedure_id, question)
         stats["latency"].append(time.time() - start)
         stats["answered" if claims else "abstained"] += 1
         stats["leaked"] += sum(owner[c["chunk_id"]] != procedure_id for c in claims)

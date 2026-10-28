@@ -1,0 +1,18 @@
+DB: procedureassist
+
+## Can apprentices become EPF members?
+   identify: matched [(36, "Employees' Provident Fund Scheme")] named=True
+   card shown: "Employees' Provident Fund Scheme" | steps: ['Employees and employers contribute 12% of basic wages + dearness allow', 'Employee’s entire contribution goes to EPF, while employer’s share is ', 'Members are allotted a Universal Account Number (UAN) for portability '] ...
+   answer: 1 claims (partial)
+     - [36] Apprentices can become EPF members.
+
+## What documents are needed for an income certificate in Tamil Nadu?
+   identify: matched [(17, 'REV-101 Community Certificate')] named=False
+   card shown: 'REV-101 Community Certificate' | steps: ['Go to https://www.tnesevai.tn.gov.in/ on your web browser.', "In the Sign In section, click on 'Citizen Login'.", 'Enter the login credentials.'] ...
+   answer: 1 claims (partial)
+     - [17] Proof of Income (Payslip, Income Certificate, etc)
+
+## How do I apply for a marriage certificate?
+   identify: matched [(17, 'REV-101 Community Certificate')] named=False
+   card shown: 'REV-101 Community Certificate' | steps: ['Go to https://www.tnesevai.tn.gov.in/ on your web browser.', "In the Sign In section, click on 'Citizen Login'.", 'Enter the login credentials.'] ...
+   answer: insufficient evidence

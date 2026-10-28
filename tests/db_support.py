@@ -115,6 +115,11 @@ class DatabaseTestCase(unittest.TestCase):
         embed_patch = patch("backend.rag.embed_texts", side_effect=fake_embed)
         self.embed = embed_patch.start()
         self.addCleanup(embed_patch.stop)
+        # The model's second reading (check_claims) passes every claim and calls the
+        # answer complete; tests of that step stop this patch (self.check.stop()).
+        self.check = patch("backend.rag.check_claims", side_effect=lambda question, claims, chunks: (claims, bool(claims)))
+        self.check.start()
+        self.addCleanup(self.check.stop)
 
     def tearDown(self):
         self.session.close()

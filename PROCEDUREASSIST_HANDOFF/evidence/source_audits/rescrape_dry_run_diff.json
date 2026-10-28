@@ -1,0 +1,513 @@
+{
+ "15": {
+  "url": "https://www.passportindia.gov.in/psp/Apply",
+  "removed_blocks": [],
+  "added_blocks": [],
+  "chunks_old": 7,
+  "chunks_new": 7
+ },
+ "16": {
+  "url": "https://www.incometax.gov.in/iec/foportal/help/all-topics/e-filing-services/file-itr-2-online/itr-2-UM?mobile-app=1&utm_source=chatgpt.com",
+  "removed_blocks": [],
+  "added_blocks": [],
+  "chunks_old": 18,
+  "chunks_new": 18
+ },
+ "17": {
+  "url": "https://tnesevai.tn.gov.in/Citizen/FAQ.html",
+  "removed_blocks": [],
+  "added_blocks": [
+   "Email: tnesevaihelpdesk@tn.gov.in | Toll Free Number : 1100",
+   "A- A A+ Last Updated: 30/11/2020",
+   "1. What is CAN ?",
+   "CAN is Citizen Access Number required to avail all e-Sevai services offered by various departments through TNeGA.",
+   "2. Why I Need CAN ?",
+   "To avail the services of eSevai CAN is required.",
+   "3. If I already havea CAN can I use it?",
+   "Yes, we can use the Same CAN for applying for all the services in e-sevai.",
+   "4. What should I do if I lost my CAN?",
+   "Search using Mobile number, date of Birth, Name , Email id",
+   "5. What is the validity of CAN ?",
+   "CAN is valid for lifetime",
+   "6. How do I edit the details of my CAN?",
+   "Online application being a green initiative has the following advantages",
+   "7. What are the documents required for applying Community Certificate?",
+   "8. What are the documents required for applying for Nativity Certificate?",
+   "9. What are the documents required for applying for Income Certificate?",
+   "10. What are the documents required for applying solvency certificate?",
+   "11. What are the documents required for applying no male child certificate?",
+   "12. What are the documents required for applying unmarried certificate?",
+   "13. What are the documents required for applying Inter Caste Marriage Certificate?",
+   "14. What are the documents required for applying Widow certificate?",
+   "15. What are the documents required for applying OBC certificate?",
+   "16. What are the documents required for applying Deserted Women certificate?",
+   "17. How can I check the status of my application?",
+   "After logging in, go to the \"Check Status\" tab and enter your application number to check the status or you can go to the link https://tnedistrict.tn.gov.in/tneda/out_status.xhtml and check the status by entering application number.",
+   "18. Where can I find my returned applications?",
+   "After logging in, click on the \"Service name\" and go to “Returned application” tab."
+  ],
+  "chunks_old": 4,
+  "chunks_new": 5
+ },
+ "18": {
+  "url": "https://uidai.gov.in/en/updating-data-on-aadhaar",
+  "removed_blocks": [
+   "Demographic Information",
+   "Name, Address, Date of Birth/Age, Gender, Mobile Number, Email Address, Relationship Status and Information Sharing Consent",
+   "Biometric Information",
+   "Iris, Finger Prints and Facial Photograph"
+  ],
+  "added_blocks": [
+   "Biometric devices are instruments, designed to capture biometric data inputs including fingerprint and iris information from Aadhaar number holders for the purpose of authentication and identity verification.",
+   "Demographic Information Name, Address, Date of Birth/Age, Gender, Mobile Number, Email Address, Relationship Status and Information Sharing Consent",
+   "Biometric Information Iris, Finger Prints and Facial Photograph",
+   "1. Via Online",
+   "a. Update Client Standard",
+   "Document Verification",
+   "Form Filling and Acknowledgement",
+   "b. Update Client Lite (UCL)",
+   "Document Verification",
+   "Form Filling in software and Acknowledgement",
+   "Frequently Asked Questions",
+   "You can download the Aadhaar app on your Android/iOS device from the Play Store/App Store. For Android: https://play.google.com/store/apps/details?id=in.gov.uidai.pehchaan For iOS: https://apps.apple.com/in/app/aadhaar/id6744029871",
+   "After downloading the app, the Aadhaar Number Holder (ANH): →Select Language→ Enters their Aadhaar number → Agrees to the Terms and Conditions and Privacy Policy → Chooses the SIM card → Performs Face Authentication → Gets registered on the app → Sets a 6-digit PIN to secure access to the app.",
+   "Presently, the Aadhaar app offers various services like - Mobile Number Update, Address Update, Biometric lock/unlock, Selective Sharing of Aadhaar Verifiable Credential, check Authentication History, download e-Aadhaar, share Contact Card, Track my request, etc."
+  ],
+  "chunks_old": 10,
+  "chunks_new": 11
+ },
+ "19": {
+  "url": "https://ecisveep.nic.in/voters/general-voters",
+  "removed_blocks": [
+   "Gallery 0 How to Register By Director (SVEEP) , April 16, 2019 0 It's so Easy, Worker By Director (SVEEP) , March 7, 2019 0 Im Ready Girl.jpg By Director (SVEEP) , September 13, 2018 0 Poster BSF.jpg By Director (SVEEP) , October 3, 2018"
+  ],
+  "added_blocks": [],
+  "chunks_old": 4,
+  "chunks_new": 3
+ },
+ "20": {
+  "url": "https://ecisveep.nic.in/voters/how-to-vote",
+  "removed_blocks": [
+   "Images 0 How to Register By Director (SVEEP) , April 16, 2019 0 It's so Easy, Worker By Director (SVEEP) , March 7, 2019 0 Im Ready Girl.jpg By Director (SVEEP) , September 13, 2018 0 Poster BSF.jpg By Director (SVEEP) , October 3, 2018"
+  ],
+  "added_blocks": [
+   "You can vote only if your name appears in the Voter List (also known as Electoral Roll). Voters can also find information on Polling Booths, Contesting candidates, Election Dates & Timings, Identity cards and EVM."
+  ],
+  "chunks_old": 6,
+  "chunks_new": 6
+ },
+ "21": {
+  "url": "https://ecisveep.nic.in/voters/overseas-voters",
+  "removed_blocks": [],
+  "added_blocks": [],
+  "chunks_old": 5,
+  "chunks_new": 5
+ },
+ "22": {
+  "url": "https://parivahan.gov.in/en/content/learners-license",
+  "removed_blocks": [],
+  "added_blocks": [
+   "View PDF"
+  ],
+  "chunks_old": 2,
+  "chunks_new": 2
+ },
+ "23": {
+  "url": "https://parivahan.gov.in/en/content/permanent-license",
+  "removed_blocks": [],
+  "added_blocks": [
+   "View PDF"
+  ],
+  "chunks_old": 2,
+  "chunks_new": 2
+ },
+ "24": {
+  "url": "https://parivahan.gov.in/en/content/renewal",
+  "removed_blocks": [],
+  "added_blocks": [
+   "View PDF"
+  ],
+  "chunks_old": 1,
+  "chunks_new": 1
+ },
+ "25": {
+  "url": "https://parivahan.gov.in/en/content/duplicate-licence",
+  "removed_blocks": [],
+  "added_blocks": [
+   "View PDF"
+  ],
+  "chunks_old": 1,
+  "chunks_new": 1
+ },
+ "26": {
+  "url": "https://parivahan.gov.in/en/content/international-driving-permit",
+  "removed_blocks": [],
+  "added_blocks": [
+   "View PDF"
+  ],
+  "chunks_old": 1,
+  "chunks_new": 1
+ },
+ "27": {
+  "url": "https://parivahan.gov.in/en/content/licensing-related-fees-charges",
+  "removed_blocks": [
+   "Sl. No.",
+   "Purpose",
+   "Amount in Rs.",
+   "1",
+   "Issue of learner’s licence in Form 3 for each class of vehicle",
+   "Rs. 150.00/-",
+   "2",
+   "Learner’s licence test fee or repeat test fee, as the case may be",
+   "Rs. 50.00/-",
+   "3",
+   "For test, or repeat test, as the case may be, of competence to drive (for each class of vehicle)",
+   "Rs. 300.00/-",
+   "4",
+   "Issue of a driving licence",
+   "Rs. 200.00/-",
+   "5",
+   "Issue of International Driving Permit",
+   "Rs. 1000.00/-",
+   "6",
+   "Addition of another class of vehicle to driving licence",
+   "Rs. 500.00/-",
+   "7",
+   "Endorsement or renewal of authorisation for vehicle carrying hazardous goods",
+   "Rs. 1000.00/-",
+   "8",
+   "Renewal of driving licence",
+   "Rs. 200.00/-",
+   "9",
+   "Renewal of a driving licence for which application is made after the grace period",
+   "Rs. 300.00/- (Additional fee at the rate of Rupees One Thousand Only for delay of each year or part thereof reckoned from the date of expiry of the grace period shall be levied.)",
+   "10",
+   "Issue or renewal of licence to a school or establishment for imparting instructions in driving",
+   "Rs. 10000.00/-",
+   "11",
+   "Issue of duplicate licence to a school or establishment for imparting instructions in driving",
+   "Rs. 5000.00/-",
+   "12",
+   "An appeal against the orders of licensing authority referred to in rule 29",
+   "Rs. 500.00/-",
+   "13",
+   "Any application for change in address or any other particulars recorded in the driving licence e.g. address etc.",
+   "Rs. 200.00/-",
+   "14",
+   "THE GAZETTE OF INDIA",
+   "Click Here"
+  ],
+  "added_blocks": [
+   "Sl. No. Purpose Amount in Rs.",
+   "1 Issue of learner’s licence in Form 3 for each class of vehicle Rs. 150.00/-",
+   "2 Learner’s licence test fee or repeat test fee, as the case may be Rs. 50.00/-",
+   "3 For test, or repeat test, as the case may be, of competence to drive (for each class of vehicle) Rs. 300.00/-",
+   "4 Issue of a driving licence Rs. 200.00/-",
+   "5 Issue of International Driving Permit Rs. 1000.00/-",
+   "6 Addition of another class of vehicle to driving licence Rs. 500.00/-",
+   "7 Endorsement or renewal of authorisation for vehicle carrying hazardous goods Rs. 1000.00/-",
+   "8 Renewal of driving licence Rs. 200.00/-",
+   "9 Renewal of a driving licence for which application is made after the grace period Rs. 300.00/- (Additional fee at the rate of Rupees One Thousand Only for delay of each year or part thereof reckoned from the date of expiry of the grace period shall be levied.)",
+   "10 Issue or renewal of licence to a school or establishment for imparting instructions in driving Rs. 10000.00/-",
+   "11 Issue of duplicate licence to a school or establishment for imparting instructions in driving Rs. 5000.00/-",
+   "12 An appeal against the orders of licensing authority referred to in rule 29 Rs. 500.00/-",
+   "13 Any application for change in address or any other particulars recorded in the driving licence e.g. address etc. Rs. 200.00/-",
+   "14 THE GAZETTE OF INDIA Click Here",
+   "View PDF"
+  ],
+  "chunks_old": 2,
+  "chunks_new": 2
+ },
+ "28": {
+  "url": "https://parivahan.gov.in/en/content/renewal-of-rc",
+  "removed_blocks": [],
+  "added_blocks": [
+   "View PDF"
+  ],
+  "chunks_old": 2,
+  "chunks_new": 2
+ },
+ "29": {
+  "url": "https://parivahan.gov.in/en/content/address-change",
+  "removed_blocks": [],
+  "added_blocks": [
+   "View PDF"
+  ],
+  "chunks_old": 2,
+  "chunks_new": 2
+ },
+ "30": {
+  "url": "https://parivahan.gov.in/en/content/ownership-transfer",
+  "removed_blocks": [],
+  "added_blocks": [
+   "View PDF"
+  ],
+  "chunks_old": 7,
+  "chunks_new": 7
+ },
+ "31": {
+  "url": "https://www.incometax.gov.in/iec/foportal/help/how-to-link-aadhaar",
+  "removed_blocks": [
+   "Individual/HUF Salaried Employees Guidance to file Tax Return Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Assisted filing Downloads Business/Profession Guidance to file Tax Return Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Assisted filing Downloads Senior / Super Senior Citizen Guidance to file Tax Return Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Assisted filing Downloads Non Resident Guidance to file Tax Return Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Assisted filing Downloads Hindu Undivided Family (HUF) Guidance to file Tax Return Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Assisted filing Downloads",
+   "Non-Company AOP/BOI/Trust/AJP Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Downloads Firm/LLP Guidance to file Tax Return Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Downloads Local Authority Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Downloads"
+  ],
+  "added_blocks": [
+   "Do not have an account?",
+   "Register",
+   "Already have an account?",
+   "Login",
+   "Search"
+  ],
+  "chunks_old": 9,
+  "chunks_new": 8
+ },
+ "32": {
+  "url": "https://www.incometax.gov.in/iec/foportal/help/how-to-register-e-filing",
+  "removed_blocks": [
+   "Individual/HUF Salaried Employees Guidance to file Tax Return Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Assisted filing Downloads Business/Profession Guidance to file Tax Return Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Assisted filing Downloads Senior / Super Senior Citizen Guidance to file Tax Return Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Assisted filing Downloads Non Resident Guidance to file Tax Return Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Assisted filing Downloads Hindu Undivided Family (HUF) Guidance to file Tax Return Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Assisted filing Downloads",
+   "Non-Company AOP/BOI/Trust/AJP Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Downloads Firm/LLP Guidance to file Tax Return Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Downloads Local Authority Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Downloads"
+  ],
+  "added_blocks": [
+   "Do not have an account?",
+   "Register",
+   "Already have an account?",
+   "Search"
+  ],
+  "chunks_old": 5,
+  "chunks_new": 4
+ },
+ "33": {
+  "url": "https://www.incometax.gov.in/iec/foportal/help/how-to-file-itr1-form-sahaj",
+  "removed_blocks": [
+   "Individual/HUF Salaried Employees Guidance to file Tax Return Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Assisted filing Downloads Business/Profession Guidance to file Tax Return Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Assisted filing Downloads Senior / Super Senior Citizen Guidance to file Tax Return Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Assisted filing Downloads Non Resident Guidance to file Tax Return Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Assisted filing Downloads Hindu Undivided Family (HUF) Guidance to file Tax Return Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Assisted filing Downloads",
+   "Non-Company AOP/BOI/Trust/AJP Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Downloads Firm/LLP Guidance to file Tax Return Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Downloads Local Authority Return / Forms applicable to me Tax slabs Deductions on which I can get tax benefit Downloads"
+  ],
+  "added_blocks": [
+   "Do not have an account?",
+   "Register",
+   "Already have an account?",
+   "Login",
+   "Search"
+  ],
+  "chunks_old": 17,
+  "chunks_new": 16
+ },
+ "34": {
+  "url": "https://www.indiapost.gov.in/insurance-services/apy",
+  "removed_blocks": [],
+  "added_blocks": [
+   "Jansuraksha Scheme"
+  ],
+  "chunks_old": 2,
+  "chunks_new": 2
+ },
+ "35": {
+  "url": "https://www.indiapost.gov.in/otheronlineservices/aadhaar-updation",
+  "removed_blocks": [
+   "S.no",
+   "Service",
+   "Fee* (in Rs.) Fee* collected from Resident (in Rs.)",
+   "1",
+   "FREE",
+   "2",
+   "Biometric update: Update of enrolled biometrics (fingerprint, iris and photo) - If done first time between the age of 5 to 7 years",
+   "FREE",
+   "3",
+   "Biometric update: Update of enrolled biometrics (fingerprint, iris and photo) - If done first or second time between the age of 15 to 17 years",
+   "FREE",
+   "4",
+   "Biometric update: Update of enrolled biometrics (fingerprint, iris and photo)",
+   "₹125",
+   "5",
+   "Demographic update: Update of enrolled name, gender, date of birth, address, mobile number or email address, or any combination - If done at the same time with biometric update",
+   "FREE",
+   "6",
+   "Demographic update: Update of enrolled name, gender, date of birth, address, mobile number or email address, or any combination - If done separately",
+   "₹75",
+   "7",
+   "Document update: Submission of documents as proofs of identity and address - At Aadhaar centre",
+   "₹75"
+  ],
+  "added_blocks": [
+   "*Inclusive of GST",
+   "S.no Service Fee* (in Rs.) Fee* collected from Resident (in Rs.)",
+   "1 Aadhaar Enrolment FREE",
+   "2 Biometric update: Update of enrolled biometrics (fingerprint, iris and photo) - If done first time between the age of 5 to 7 years FREE",
+   "3 Biometric update: Update of enrolled biometrics (fingerprint, iris and photo) - If done first or second time between the age of 15 to 17 years FREE",
+   "4 Biometric update: Update of enrolled biometrics (fingerprint, iris and photo) ₹125",
+   "5 Demographic update: Update of enrolled name, gender, date of birth, address, mobile number or email address, or any combination - If done at the same time with biometric update FREE",
+   "6 Demographic update: Update of enrolled name, gender, date of birth, address, mobile number or email address, or any combination - If done separately ₹75",
+   "7 Document update: Submission of documents as proofs of identity and address - At Aadhaar centre ₹75",
+   "List of Aadhaar Centres List of Acceptable Documents for Enrolment and Update"
+  ],
+  "chunks_old": 3,
+  "chunks_new": 3
+ },
+ "36": {
+  "url": "https://www.epfo.gov.in/epf-scheme",
+  "removed_blocks": [],
+  "added_blocks": [
+   "View Scheme",
+   "Employees below ₹15,000 per month (mandatory).",
+   "Private sector employees in covered establishments.",
+   "Age group: 18–54 years.",
+   "Must be an Indian resident.",
+   "Voluntary coverage for higher salaried employees.",
+   "Retirement Savings",
+   "Tax-Free Growth Interest earned",
+   "Employer Contribution",
+   "Security for Family",
+   "Partial Advance withdrawals",
+   "12 % Contribution Rate",
+   "Online Passbook Access",
+   "Easy account Transfer",
+   "Nomination Facility",
+   "Full Withdrawal Options",
+   "Let’s see virtually how it works",
+   "Can an employer deduct employer’s share from employee wages?",
+   "Are daily-rated or piece-rate employees eligible for EPF membership?",
+   "What happens if the employer recovers contribution but doesn’t deposit?",
+   "Can EPF contributions be made after leaving service?",
+   "How does one check the EPF balance?",
+   "Can contributions be made voluntarily above 12%?",
+   "Can EPF amounts be attached for liabilities?",
+   "What happens to contributions if the employer becomes insolvent?",
+   "Is there a restriction on EPF membership by salary?",
+   "Can apprentices become EPF members?"
+  ],
+  "chunks_old": 5,
+  "chunks_new": 5
+ },
+ "37": {
+  "url": "https://www.epfo.gov.in/pension-scheme-eps",
+  "removed_blocks": [],
+  "added_blocks": [
+   "View Scheme",
+   "All employees in factories and establishments",
+   "Past members of ceased Family Pension Scheme, 1971",
+   "Employees between 1 Apr 1993 – 15 Nov 1995",
+   "Membership continues until age 58 years",
+   "Monthly Superannuation pension",
+   "Family Pension",
+   "Disablement Pension",
+   "Withdrawal Benefit",
+   "Minimum Pension Guarantee",
+   "9.49% Contribution Rate",
+   "Pensionable Salary & Service Weightage",
+   "Easy account Transfer",
+   "EPFO Trustees Oversight",
+   "Establishment’s Exemptions allowed",
+   "Let’s see virtually how it works",
+   "Who is eligible for EPS benefits?",
+   "How is the pension amount calculated?",
+   "What benefits exist on death or disability?",
+   "Can pension be drawn before retirement?",
+   "How are nominations updated?",
+   "Are pensions payable across India?",
+   "Can pension be surrendered for lump sum?",
+   "What are service/ scheme certificates?",
+   "Who can claim pension if no nominee exists?",
+   "What certificates must pensioners submit regularly?"
+  ],
+  "chunks_old": 4,
+  "chunks_new": 5
+ },
+ "38": {
+  "url": "https://www.epfo.gov.in/insurance-scheme-edli",
+  "removed_blocks": [],
+  "added_blocks": [
+   "View Scheme",
+   "All employees of factories and establishments",
+   "Automatic membership for EPF employees",
+   "Not applicable to tea factories (Assam)",
+   "Life insurance cover",
+   "Assurance benefit paid to nominee/ legal heirs on death",
+   "Minimum benefit: ₹2.5 lakh.",
+   "Maximum benefit: ₹7 lakh",
+   "Employer’s remit contributions monthly",
+   "No Employee Contribution",
+   "Nomination facility",
+   "Claims settled within 20 days",
+   "Exemptions allowed",
+   "Let’s see virtually how it works",
+   "What is the coverage of EDLI?",
+   "Who contributes to EDLI?",
+   "What is the maximum benefit under EDLI?",
+   "How can one claim EDLI benefits?",
+   "Is EDLI payable after retirement?",
+   "Are EDLI claims available for missing members?",
+   "Is there any cost to the employee for EDLI?"
+  ],
+  "chunks_old": 3,
+  "chunks_new": 4
+ },
+ "https://parivahan.gov.in/en/content/fees-and-user-charges": {
+  "url": "https://parivahan.gov.in/en/content/fees-and-user-charges",
+  "removed_blocks": [
+   ""
+  ],
+  "added_blocks": [
+   "Fees & User Charges",
+   "Sl.No. Purpose Amount Rule Section",
+   "1. Grant or renewal of trade certificate in respect of each class of vehicle:",
+   "(a) Motorcycle Rupees Five Hundred Only 34(1) ---",
+   "(b) Invalid Carriage Rupees Five Hundred Only 34(1) ---",
+   "(c) Others Rupees One Thousand Only 34(1) ---",
+   "2. Duplicate trade certificate:",
+   "(a) Motorcycle Rupees Three Hundred Only 38(1) ---",
+   "(b) Invalid Carriage Rupees Three Hundred Only 38(1) ---",
+   "(c) Others Rupees Five Hundred Only 38(1) ---",
+   "3. Appeal under rule 46 Rupees One Thousand Only 46(1) ---",
+   "4. Issue or renewal of certificate of registration and assignment of new registration mark:",
+   "(a) Invalid Carriage Rupees Fifty Only 47(1) 52(1) 54(1) 76(1) and 78(1) ---",
+   "(b) Motor cycle Rupees Three Hundred Only 47(1) 52(1) 54(1) 76(1) and 78(1) ---",
+   "(c) Three wheeler/Quadricycle/Light Motor Vehicles:",
+   "i) Non transport; Rupees Six Hundred Only 47(1) 52(1) 54(1) 76(1) and 78(1) ---",
+   "ii) Transport Rupees One Thousand Only 47(1) 52(1) 54(1) 76(1) and 78(1) ---",
+   "(d) Medium goods vehicle Rupees One Thousand Only 47(1) 52(1) 54(1) 76(1) and 78(1) ---",
+   "(e) Medium passenger motor vehicle Rupees One Thousand Only 47(1) 52(1) 54(1) 76(1) and 78(1) ---",
+   "(f) Heavy goods vehicle Rupees One Thousand and Five Hundred Only 47(1) 52(1) 54(1) 76(1) and 78(1) ---",
+   "(g) Heavy passenger motor vehicle Rupees One Thousand and Five Hundred Only 47(1) 52(1) 54(1) 76(1) and 78(1) ---",
+   "(h) Imported motor vehicle Rupees Five Thousand Only 47(1) 52(1) 54(1) 76(1) and 78(1) ---",
+   "(i) Imported motor cycle Rupees Two Thousand and Five Hundred Only 47(1) 52(1) 54(1) 76(1) and 78(1) ---",
+   "(j) Any other vehicle not mentioned above Rupees Three Thousand Only 47(1) 52(1) 54(1) 76(1) and 78(1) ---",
+   "Note 1: Additional fee of Two Hundred Rupees shall be levied if the certificate of registration is a smart card type issued or renewed in Form 23A.",
+   "Note 2: In case of delay in applying for renewal of certificate of registration, an additional fee of Rupees Three Hundred Only for delay of every month or part thereof in respect of motor cycles and Rupees Five Hundred Only for delay of every month or part thereof in respect of other classes of nontransport vehicles shall be levied.",
+   "5. Issue of duplicate certificate of registration Half of the fee mentioned against Serial No.4 53(2) ---",
+   "6. Transfer of ownership Half of the fee mentioned against Serial No.4. 55(2)(iii), 55(3), 56(2)(a) and 57(1)(a) ---",
+   "Note: In case of delay in submission of ‘No Objection Certificate’, an additional fee of Rupees Three Hundred Only for delay of each month or part thereof in case of motor cycles and Rupees Five Hundred Only for each month of delay or part thereof for other vehicles shall be levied.",
+   "7. Change of residence Half of the fee mentioned against Serial No.4. 59 ---",
+   "Note: In case of delay in submitting ‘No Objection Certificate’ for change of residence, an additional fee of Rupees Three Hundred Only for delay of each month or part thereof in case of motor cycles and Rupee Five Hundred Only for each month of delay or part thereof for other vehicles shall be levied.",
+   "8. Recording alteration in the certificate of registration Half of the fee mentioned against Serial No.4 --- ---",
+   "9. Endorsing hire purchase/lease/hypothecation agreement:",
+   "(a) Motorcycle Rupees Five Hundred Only 60 ---",
+   "(b) Three wheeler/quadricycle/light motor vehicle Rupees One Thousand and Five Hundred Only 60 ---",
+   "(c) Medium or heavy vehicle Rupees Three Thousand Only 60 ---",
+   "Note: No separate fee will be levied for cancellation of lease, etc, or for issue of fresh Certificate of Registration thereafter.",
+   "10. Conducting test of a vehicle for grant or renewal of certificate of fitness:",
+   "(a) Motorcycle (i) Manual: Rupees Two Hundred Only (ii) Automated: Rupees Four Hundred Only 62(2) ---",
+   "(b) Three wheeled or light motor vehicle or quadricycle (i) Manual : Rupees Four Hundred Only (ii) Automated: Rupees Six Hundred Only 62(2) ---",
+   "(c) Medium or heavy motor vehicle (i) Manual: Rupees Six Hundred Only (ii) Automated: Rupees One Thousand Only 62(2) ---",
+   "11. Grant or renewal of certificate of fitness for motor vehicle Rupees Two Hundred Only. 62(2) ---",
+   "Note: Additional fee of Rupees Fifty Only for each day of delay after expiry of certificate of fitness shall be levied.",
+   "12. Grant or renewal of letter of authority Rupees Fifteen Thousand Only 63(2)(a) ---",
+   "13. Issue of duplicate letter of authority Rupees Seven Thousand and Five Hundred Only 66(2) ---",
+   "14. Appeal under rule 70 Rupees Three Thousand Only 71(1) ---",
+   "15. Any application not covered under entries at Serial Nos. 1 to 14 above Rupees Two Hundred Only 64(p) ---",
+   "16. Renewal of certificate of registration for motor vehicle older than 20 years from date of first registration",
+   "(a) Invalid carriage Hundred rupees 52(1) --",
+   "(b) Motor Cycle Two thousand rupees 52(1) --",
+   "(c) Three Wheeler / Quadricycle Five thousand rupees 52(1) --",
+   "(d) Light motor vehicle Ten thousand rupees 52(1) --",
+   "(e) Imported motor vehicle (Two or Three wheeled ) Twenty thousand rupees 52(1) --",
+   "(f) Imported motor vehicle (Four or more wheeled ) Eighty thousand rupees 52(1) --",
+   "(g) Any other vehicle not mentioned above Twelve thousand rupees 52(1) --",
+   "Note 1: For the removal of doubts, it is hereby clarified that medium passenger motor vehicles, heavy goods vehicles, imported motor vehicles or any other vehicles not mentioned against Serial No.4 of the above Table include both transport and non-transport vehicles.",
+   "Note 2: Where the certificate of registration issued is in the form of any Smart Card Type, an additional fee of Rupees Two Hundred Only shall be charged except in the case of issue of fresh certificate of registration after cancellation of hire purchase or lease or hypothecation agreement.",
+   "Note 3: All fees specified in the Table above are exclusive of Goods and Services Tax",
+   "View PDF"
+  ],
+  "chunks_old": 0,
+  "chunks_new": 7
+ }
+}

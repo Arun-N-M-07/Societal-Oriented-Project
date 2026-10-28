@@ -1,0 +1,46 @@
+Delegated approval of N3, N4, N8 (owner's brief of 27 Oct, section 5), Wed Oct 28 09:33:10 IST 2026
+N1 deferred, N10 deferred: see candidate_review_27oct.md
+== N3 09:33:10
+database: procedureassist_staging
+200 
+3336 characters, 5 chunks
+text SHA-256 aa80aec7a22330ec, reviewed aa80aec7a22330ec: SAME
+-- staging
+database: procedureassist_staging
+200 {'id': 41, 'name': 'Apply for Police Clearance Certificate (PCC)', 'status': 'saved'}
+id 41: 5 chunks, equal to chunk_text(source_text): True; vectors 1024 finite non-zero: True
+-- approved (production)
+database: procedureassist
+200 {'id': 39, 'name': 'Apply for Police Clearance Certificate (PCC)', 'status': 'saved'}
+id 39: 5 chunks, equal to chunk_text(source_text): True; vectors 1024 finite non-zero: True
+== N4 09:33:31
+database: procedureassist_staging
+200 
+3747 characters, 5 chunks
+text SHA-256 811eee71570e0fda, reviewed 811eee71570e0fda: SAME
+-- staging
+database: procedureassist_staging
+200 {'id': 42, 'name': 'Aadhaar Enrolment', 'status': 'saved'}
+id 42: 5 chunks, equal to chunk_text(source_text): True; vectors 1024 finite non-zero: True
+-- approved (production)
+database: procedureassist
+200 {'id': 40, 'name': 'Aadhaar Enrolment', 'status': 'saved'}
+id 40: 5 chunks, equal to chunk_text(source_text): True; vectors 1024 finite non-zero: True
+== N8 09:33:41
+database: procedureassist_staging
+200 
+1684 characters, 2 chunks
+text SHA-256 2c1763d2d215df7a, reviewed 2c1763d2d215df7a: SAME
+-- staging
+database: procedureassist_staging
+200 {'id': 43, 'name': 'Registration of Births and Deaths', 'status': 'saved'}
+id 43: 2 chunks, equal to chunk_text(source_text): True; vectors 1024 finite non-zero: True
+-- approved (production)
+database: procedureassist
+200 {'id': 41, 'name': 'Registration of Births and Deaths', 'status': 'saved'}
+id 41: 2 chunks, equal to chunk_text(source_text): True; vectors 1024 finite non-zero: True
+procedureassist after: pages|27 chunks|134 procedures_md5|750d4dc2f448e94373f8eb509b339fe2 chunks_md5|e7fee54863a0304e9455ce09edaf4a69 orphan_chunks|0 embedding_dims|1024 pages_with_index_gaps|0 
+procedureassist_staging after: pages|28 chunks|146 procedures_md5|c442a59cbdfbd0af9c49c9a7eb542372 chunks_md5|290cf4965b0fd93d6f43c472012d151d orphan_chunks|0 embedding_dims|1024 pages_with_index_gaps|0 
+Unrelated-record check after the approvals:
+  procedureassist: rows with id <= 38: 016980eee56654079df99cddfbabaf00 3e45c78f7b85623ad6d9468fa9b34171 -> IDENTICAL to before the approvals
+  procedureassist_staging: rows with id <= 40: 96697b50b666c5937d9e6bc10186123e 73da35b39dc3956bbaed33125ef6f6ca -> IDENTICAL to before the approvals

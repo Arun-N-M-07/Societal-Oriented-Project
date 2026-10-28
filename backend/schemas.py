@@ -88,10 +88,6 @@ class ProcedureDraft(ProcedureExtraction):
     _validate_source_url = field_validator("source_url")(_http_url)
 
 
-class ReExtractRequest(ScrapeResult):
-    provenance_token: str = Field(max_length=512)
-
-
 class ExtractionResponse(StrictModel):
     source_text: str
     procedure: ProcedureDraft
@@ -159,6 +155,9 @@ class IdentifyResponse(StrictModel):
     # search, a request to say which service the question is about.
     normalized_query: str | None = None
     clarification: str | None = None
+    # Only for status "matched": the question names the procedure itself (its own abbreviation or
+    # its whole name), so a follow-up asked on another open procedure may move to it.
+    named: bool = False
 
 
 class GuidanceRequest(StrictModel):
@@ -175,13 +174,21 @@ class Claim(StrictModel):
     quote: str
 
 
+class GuidanceClaim(Claim):
+    # Only for a claim from a related page that names the procedure (a fee table).
+    procedure_id: int | None = None
+    source_url: str | None = None
+
+
 class GuidanceResponse(StrictModel):
     procedure_id: int
     source_url: str
     insufficient_evidence: bool
-    claims: list[Claim]
+    claims: list[GuidanceClaim]
     omitted_claims: int
     normalized_query: str | None = None
+    # Only when the verified claims answer part of the question.
+    partial: bool | None = None
 
 
 class TranscriptionResponse(StrictModel):

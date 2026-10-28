@@ -219,20 +219,4 @@ describe("approval", () => {
     );
     expect(api.approveProcedure).not.toHaveBeenCalled();
   });
-
-  it("replaces the steps when re-extracting", async () => {
-    await openReview();
-    vi.mocked(api.reExtractProcedure).mockResolvedValue({
-      ...extraction.procedure,
-      steps: ["Only step."],
-    });
-
-    fireEvent.click(screen.getByRole("button", { name: "Re-extract" }));
-    await waitFor(() => expect(stepTexts()).toEqual(["Only step."]));
-    expect(api.reExtractProcedure).toHaveBeenCalledWith({
-      source_url: extraction.procedure.source_url,
-      source_text: "Official source text.",
-      provenance_token: "token-1",
-    });
-  });
 });

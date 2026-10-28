@@ -1,0 +1,10 @@
+FAIL https://kmut.tn.gov.in/about-kmut.html
+     SourceUnavailableError: The rendered page could not be loaded.
+OK   https://eservices.tn.gov.in/eservicesnew/aboutthisportal.html
+     final https://eservices.tn.gov.in/eservicesnew/aboutthisportal.html | 859 chars, 11 paragraphs, 1 chunks | 'E-Services of Land Records | TamilNadu Government\n\nHome\n\nAbout this Portal\n\nThis is one of the eServices offered by the Government of Tamil Nadu for the Citizen'
+OK   https://chennai.nic.in/service/eservices-anytime-anywhere-land/
+     final https://chennai.nic.in/service/eservices-anytime-anywhere-land | 359 chars, 10 paragraphs, 1 chunks | 'Facebook\n\nX\n\neServices (Anytime/Anywhere) – Land\n\nView Patta & FMB / Chitta / TSLR Extract\n\nView A-Register Extract\n\nVerify Patta\n\nVerify Poramboke Land\n\nVisit '
+OK   https://cuddalore.nic.in/service/e-services-anytime-anywhere-land/
+     final https://cuddalore.nic.in/service/e-services-anytime-anywhere-land | 901 chars, 20 paragraphs, 1 chunks | 'Facebook\n\nX\n\nLand e-Services (Anytime / Anywhere) – View, Verify & Download\n\nView Patta, Chitta, FMB, TSLR, and A-Register extracts, verify land records, and ac'
+FAIL https://ariyalur.nic.in/document/apply-for-patta-transfer-its-status-through-online/
+     ScraperError: No meaningful page content found.

@@ -88,7 +88,7 @@ class NormalizedApiTest(DatabaseTestCase):
         body = self.identify("How do I renew my passport?")
 
         llm.assert_not_called()
-        self.assertEqual(set(body), {"status", "candidates"})
+        self.assertEqual(set(body), {"status", "candidates", "named"})  # "passport" names the Passport page
         self.assertEqual(body, self.identify("How do I renew my passport?", language="en"))
 
     def test_vague_question_asks_for_clarification_without_searching(self, llm):

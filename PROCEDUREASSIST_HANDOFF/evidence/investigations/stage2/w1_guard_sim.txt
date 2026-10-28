@@ -1,0 +1,36 @@
+== fixture cases: target = context page (follow-ups) or the expected page
+  FIRES answers[3] target 40 names [34]: How do I join Atal Pension Yojana?
+  FIRES answers[4] target 27 names [24]: What is the fee for renewing a driving licence?
+  FIRES answers[5] target 27 names [22]: How much does a learner's licence cost?
+  FIRES answers[7] target 27 names [26]: What is the fee for an International Driving Permit?
+  FIRES answers[10] target 40 names [34]: Who can join Atal Pension Yojana?
+  FIRES answers[12] target 21 names [19]: Who can register as an overseas voter?
+  FIRES answers[29] target 23 names [22]: How long must I hold a learner's licence before taking the driving test?
+  FIRES answers[39] target 23 names [22]: I have a learner's licence and want my first full driving licence
+  FIRES answers[40] target 21 names [19, 20]: I live abroad. How do I register to vote?
+  FIRES answers[51] target 27 names [24]: Driving licence renew panna evlo fees?
+  FIRES answers[64] target 27 names [22]: How much is the fee for a learner's licence test?
+  FIRES answers[66] target 27 names [25]: What is the fee for a duplicate driving licence?
+  FIRES answers[69] target 25 names [22]: What is the fee for a learner's licence?
+  FIRES answers[79] target 40 names [34]: How many days does it take to open an Atal Pension Yojana account?
+  FIRES heldout[2] target 27 names [25]: What is the fee for a duplicate licence for my driving school?
+  FIRES heldout[3] target 27 names [24]: What is the fee for renewing my driving licence after the grace period?
+  fired on 16/92 English fixture cases
+== W1 follow-up cases (target = open page)
+  A1 open 36: guard FIRES -> names [37] | What about EPS?
+  A2 open 36: guard FIRES -> names [38] | How do I claim EDLI insurance?
+  A3 open 22: guard FIRES -> names [19, 20] | How do I register to vote?
+  A4 open 15: guard FIRES -> names [31] | And what about linking PAN with Aadhaar?
+  A5 open 19: guard silent | What about voters living abroad?
+  B1 open 26: guard silent | And how much does it cost?
+  B2 open 23: guard silent | What documents are required?
+  B3 open 36: guard silent | What is the eligibility?
+  B4 open 15: guard silent | What about the application process?
+  B5 open 24: guard silent | Can I do it online?
+  B6 open 30: guard silent | What if the owner died?
+  C1 open 36: guard silent | What about the pension?
+  C2 open 24: guard silent | What is the fee?
+  C3 open 28: guard silent | What about the certificate?
+  C4 open 18: guard silent | Can I do this at a post office?
+  X1 open 36: guard silent | Is EPS part of EPF?
+  X2 open 36: guard FIRES -> names [37] | How much of my employer's share goes to EPS?

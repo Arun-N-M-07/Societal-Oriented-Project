@@ -1,0 +1,17 @@
+Copied 24 Oct 2026 from the 23 Oct session scratchpad .../db3bcd4a-2175-4a9c-b255-6119f2c7a242/scratchpad/audit2/ (cp -p keeps the original times)
+
+Original modification times (IST):
+  23 Oct 21:22:04  dry.json
+  23 Oct 21:23:23  mobile.json
+  23 Oct 21:25:19  staging_drafts.json
+  23 Oct 21:57:13  apy_candidates.json
+  23 Oct 21:59:57  fees39.html
+  23 Oct 22:01:43  final_rescrape.json
+
+SHA-256:
+4cdb2cf142c4613f784911ac584eaa203f091f4c686c56e8fb8935ea3eb941bf  dry.json
+37ad67ad622a76772827851ba83ecee13365641119fd86edd7f83ad56d04b6b5  mobile.json
+db2dbb859f89bc8770508ce6c531d139f49fe8f18b0c1ee6a448563f50ada5e1  staging_drafts.json
+64e0d1b3d588b9556fcf33224ab864c76b253f9d57d9d554837865b77c57b312  apy_candidates.json
+3860681fdae96d59b95fa445c976d2bc91e0c2c01c479377d04ddff11bdbc133  fees39.html
+17c872d3343b28fe1fa09f025bc0aa0f7e185dfbf84fc9d5102867ee03d109e0  final_rescrape.json

@@ -1,0 +1,23 @@
+ABSTAINED page 17: How do I get a marriage certificate?
+ABSTAINED page 17: How do I apply for a marriage certificate?
+ABSTAINED page 17: Where do I get a marriage certificate in Tamil Nadu?
+ANSWERED  page 17: How do I get a birth certificate in Tamil Nadu?
+     claim: Go to https://www.tnesevai.tn.gov.in/ on your web browser. | quote: Go to https://www.tnesevai.tn.gov.in/ on your web browser.
+     claim: In the Sign In section, click on 'Citizen Login'. | quote: In the Sign In section, click on 'Citizen Login'.
+     claim: Enter the login credentials. | quote: Enter the login credentials.
+     claim: Correctly enter the Captcha Code (Not case sensitive) and click on 'Login'. | quote: Correctly enter the Captcha Code (Not case sensitive) and click on 'Login'.
+     claim: In the 'Services' tab, select 'DEPARTMENT WISE' and then click on 'Revenue Department'. | quote: In the 'Services' tab, select 'DEPARTMENT WISE' and then click on 'Revenue Department'.
+     claim: Click on 'REV-101 Community Certificate'. This will open a new browser tab. | quote: Click on 'REV-101 Community Certificate'. This will open a new browser tab.
+     claim: Click on the 'Proceed' button. | quote: Click on the 'Proceed' button.
+     claim: In this Search section, look for your CAN using any of the six fields provided. | quote: In this Search section, look for your CAN using any of the six fields provided.
+     claim: Once found, select it by clicking the Radio button. This will auto-fill the 'Mobile Number' field at the bottom. | quote: Once found, select it by clicking the Radio button. This will auto-fill the 'Mobile Number' field at
+     claim: Click on 'Generate OTP' and then enter the OTP that has been sent to your registered phone number. Click on 'Confirm OTP' once done. | quote: Click on 'Generate OTP' and then enter the OTP that has been sent to your registered phone number. C
+ABSTAINED page 32: How do I change the name on my PAN card?
+ABSTAINED page 32: How do I correct the spelling of my name on my PAN card?
+ANSWERED  page 32: How do I apply for a new PAN card?
+     claim: Enter your PAN under Register as a Taxpayer option and click Validate . In case the PAN is already registered or invalid, an error message is displaye | quote: Enter your PAN under Register as a Taxpayer option and click Validate . In case the PAN is already r
+     claim: Enter all the mandatory details including Name, DOB / DOI, Gender (if applicable) and Residential Status as per your PAN on the Basic Details page and | quote: Enter all the mandatory details including Name, DOB / DOI, Gender (if applicable) and Residential St
+     claim: Enter the separate 6 digit OTPs received on the mobile number and email ID and click Continue. | quote: Enter the separate 6 digit OTPs received on the mobile number and email ID and click Continue.
+     claim: Edit the details in the page if necessary and click Confirm. | quote: Edit the details in the page if necessary and click Confirm.
+ABSTAINED page 32: How do I reprint my PAN card?
+ABSTAINED page 31: What is the fee to apply for a PAN card?

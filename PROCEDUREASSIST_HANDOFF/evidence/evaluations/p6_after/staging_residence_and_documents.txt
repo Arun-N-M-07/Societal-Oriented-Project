@@ -1,0 +1,31 @@
+ok   [abroad] My daughter studies in Australia. Can she register as a vote ['https://ecisveep.nic.in/voters/overseas-voters'] (1s)
+FAIL [abroad] I live in Qatar. Can I vote in the Lok Sabha election?       identify: [None] (1s)
+ok   [abroad] i am an nri working in kuwait, how do i register to vote     ['https://ecisveep.nic.in/voters/overseas-voters'] (1s)
+ok   [abroad] We are Indian citizens living in the USA. Can we register as ['https://ecisveep.nic.in/voters/overseas-voters'] (1s)
+ok   [abroad] I work in the Gulf. How do I register to vote?               ['https://ecisveep.nic.in/voters/overseas-voters'] (1s)
+ok   [abroad] I am going abroad for a year. Do I need an International Dri ['https://parivahan.gov.in/en/content/international-driving-permit'] (1s)
+ok   [resident] I live in Pune. How do I register to vote?                   ['https://ecisveep.nic.in/voters/general-voters'] (1s)
+ok   [resident] Which form do I use to shift my vote to a new constituency?  ['https://ecisveep.nic.in/voters/general-voters'] (0s)
+ok   [resident] How do I update my address on my voter ID after moving house ['https://ecisveep.nic.in/voters/general-voters'] (0s)
+ok   [abbreviation] how do i open an apy account                                 ['https://www.pfrda.org.in/schemes/atal-pension-yojana-apy'] (0s)
+ok   [abbreviation] what is edli                                                 ['https://www.epfo.gov.in/insurance-scheme-edli'] (0s)
+ok   [abbreviation] how much do i contribute to eps                              ['https://www.epfo.gov.in/pension-scheme-eps'] (0s)
+ok   [abbreviation] how do i link pan and aadhaar                                ['https://www.incometax.gov.in/iec/foportal/help/how-to-link-aadhaar?mobile-app=1'] (1s)
+ok   [abbreviation] how to transfer rc to my name after buying a used car        ['https://parivahan.gov.in/en/content/ownership-transfer'] (0s)
+ok   [requirement] Is a marriage certificate needed for a widow certificate in  ['https://tnesevai.tn.gov.in/Citizen/FAQ.html'] (0s)
+ok   [requirement] Do I need a birth certificate for a nativity certificate in  ['https://tnesevai.tn.gov.in/Citizen/FAQ.html'] (0s)
+ok   [requirement] How do I apply for an inter caste marriage certificate?      ['https://tnesevai.tn.gov.in/Citizen/FAQ.html'] (0s)
+FAIL [obtain] How do I get a marriage registration certificate?            identify: ['https://tnesevai.tn.gov.in/Citizen/FAQ.html'] (0s)
+ok   [obtain] What is the fee for a marriage certificate in Tamil Nadu?    [None] (0s)
+ok   [obtain] Can NRIs apply for a PAN card?                               [None] (0s)
+
+18/20 as expected end to end
+  abbreviation: 5/5
+  abroad: 5/6
+  obtain: 2/3
+  requirement: 3/3
+  resident: 3/3
+outcomes: {'correct': 16, 'retrieval failure': 2, 'appropriate abstention or no match': 2}
+failures by stage: {'identify': 2}
+identification: {'correct': 18, 'missed (no match)': 1, 'confident wrong page': 1}
+latency per question: median 0s, max 1s

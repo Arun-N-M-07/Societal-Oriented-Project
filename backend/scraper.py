@@ -1,6 +1,7 @@
 import ipaddress
 import re
 import socket
+from collections import Counter
 from urllib.parse import urljoin, urlparse, urlsplit, urlunsplit
 
 import httpx
@@ -11,6 +12,7 @@ from playwright.sync_api import (
     sync_playwright,
 )
 
+from backend.config import OFFICIAL_SOURCE_DOMAINS
 from backend.schemas import MAX_SOURCE_TEXT_LENGTH, ScrapeResult
 
 
@@ -23,13 +25,63 @@ USER_AGENT = "ProcedureAssistAI/1.0"
 HTML_CONTENT_TYPES = {"text/html", "application/xhtml+xml"}
 MIN_SOURCE_CHARACTERS = 200
 MIN_SOURCE_WORDS = 20
+# A short page saying only this is a placeholder or an error page served as success ("404 ... not found").
 PLACEHOLDER_PATTERN = re.compile(
-    r"\b(enable javascript|javascript is required|loading)\b", re.IGNORECASE
+    r"\b(enable javascript|javascript is required|loading|404|not found)\b", re.IGNORECASE
 )
 CONTENT_TAGS = (
     "title", "h1", "h2", "h3", "h4", "h5", "h6",
-    "p", "li", "th", "td", "dt", "dd", "label", "legend",
+    "p", "li", "th", "td", "dt", "dd", "label", "legend", "summary",
 )
+# Tags that hold other blocks, so a <div> or <span> containing one is a wrapper, not text.
+BLOCK_TAGS = (*CONTENT_TAGS, "div", "tr", "ul", "ol", "table", "section", "article", "details")
+# A table row holding any of these is page layout, not one row of data.
+LAYOUT_TAGS = ("table", "ul", "ol", "li", "h1", "h2", "h3", "h4", "h5", "h6")
+
+
+def is_menu(text: str) -> bool:
+    """A run of link labels, not prose: the same four words three or more times and no
+    sentence ending ("... Guidance to file Tax Return Return / Forms applicable to me ...")."""
+    words = text.split()
+    repeats = Counter(tuple(words[i:i + 4]) for i in range(len(words) - 3))
+    return max(repeats.values(), default=0) >= 3 and not re.search(r"[.?!](?:\s|$)", text)
+
+
+def _is_block(tag) -> bool:
+    """One paragraph of the page: a content tag; a table row of plain cells, so a fee stays
+    with its purpose ("Renewal of driving licence Rs. 200.00/-"); or a <div> or <span>
+    holding text itself rather than other blocks (accordion questions, scheme cards)."""
+    if tag.name == "tr":
+        return tag.find(LAYOUT_TAGS) is None
+    if tag.name in ("div", "span"):
+        return tag.find(BLOCK_TAGS) is None and bool(tag.get_text(strip=True))
+    return tag.name in CONTENT_TAGS
+
+
+def _text(tag) -> str:
+    return " ".join(tag.get_text(" ", strip=True).split())
+
+
+def _row_context(row) -> str:
+    """The rows a fee sub-row belongs to. In a fee schedule a row with an empty first cell
+    ("| (b) Motor cycle | Rupees Three Hundred Only |") continues the numbered row above it
+    ("4. Issue or renewal of certificate of registration ...:"), and a row such as
+    "i) Non transport;" also continues the label-only row "(c) Three wheeler ...:" above it."""
+    cells = row.find_all(["td", "th"], recursive=False)
+    if len(cells) < 2 or cells[0].name == "th" or _text(cells[0]):
+        return ""
+    own, sub = _text(cells[1]), None
+    for previous in row.find_previous_siblings("tr"):
+        before = previous.find_all(["td", "th"], recursive=False)
+        if not before or before[0].name == "th":
+            return ""
+        if _text(before[0]):  # the numbered row this one continues
+            return " ".join(filter(None, [_text(previous), sub]))
+        label = _text(before[1]) if len(before) > 1 else ""
+        if label.startswith("(") and sub is None:
+            # The nearest "(x)" row heads this one only if it is a label alone and this row is not an "(x)" row.
+            sub = label if len(before) == 2 and not own.startswith("(") else ""
+    return ""
 
 
 class ScraperError(Exception):
@@ -101,6 +153,22 @@ def validate_url(url: str) -> str:
     return url
 
 
+def require_official(url: str) -> str:
+    """The page itself, before and after redirects, must be on an official domain. Pages may still load
+    scripts and styles from elsewhere when rendered; those are only checked for safety (validate_url)."""
+    host = (urlparse(url).hostname or "").lower().rstrip(".")
+    if not any(host == domain or host.endswith(f".{domain}") for domain in OFFICIAL_SOURCE_DOMAINS):
+        raise ScraperError("Only official government websites can be used as sources.")
+    return url
+
+
+def _check_connected_address(address: str | None) -> None:
+    """The address actually connected to must be public too: a host can resolve differently between
+    validate_url and the connection (DNS rebinding). Checked before the page is read."""
+    if address and not _is_public_address(address):
+        raise ScraperError("Private or local network URLs are not allowed.")
+
+
 def _get_with_retry(client: httpx.Client, url: str) -> httpx.Response:
     # Some government sites reset the first connection at random; retry once.
     try:
@@ -134,6 +202,8 @@ def fetch_static_html(
             for _ in range(MAX_REDIRECTS + 1):
                 response = _get_with_retry(client, current_url)
                 try:
+                    stream = response.extensions.get("network_stream")
+                    _check_connected_address((stream.get_extra_info("server_addr") or [None])[0] if stream else None)
                     if response.is_redirect:
                         location = response.headers.get("location")
                         if not location:
@@ -218,12 +288,14 @@ def clean_html(html: str) -> str:
             tag.decompose()
 
     blocks = []
-    for tag in content.find_all(CONTENT_TAGS):
-        if tag.find_parent(CONTENT_TAGS):
+    for tag in content.find_all(_is_block):
+        if tag.find_parent(_is_block):
             continue
 
-        text = " ".join(tag.get_text(" ", strip=True).split())
-        if text and (not blocks or text != blocks[-1]):
+        text = _text(tag)
+        if tag.name == "tr" and (context := _row_context(tag)):
+            text = f"{context} {text}"
+        if text and (not blocks or text != blocks[-1]) and not is_menu(text):
             blocks.append(text)
 
     source_text = "\n\n".join(blocks)
@@ -275,6 +347,8 @@ def fetch_rendered_html(
                     wait_until="domcontentloaded",
                     timeout=timeout_ms,
                 )
+                server = response.server_addr() if response is not None else None
+                _check_connected_address(server.get("ipAddress") if isinstance(server, dict) else None)
                 if response is not None and not response.ok:
                     error_class = (
                         SourceUnavailableError if response.status >= 500 else ScraperError
@@ -303,13 +377,19 @@ def fetch_rendered_html(
 
 
 def _result(final_url: str, source_text: str) -> ScrapeResult:
+    require_official(final_url)
     if len(source_text) > MAX_SOURCE_TEXT_LENGTH:
         raise ScraperError("The source page has too much text to process.")
     return ScrapeResult(source_url=normalize_url(final_url), source_text=source_text)
 
 
 def scrape_url(url: str) -> ScrapeResult:
-    final_url, html = fetch_static_html(url)  # both fetchers validate the URL
+    require_official(url)
+    try:
+        final_url, html = fetch_static_html(url)  # both fetchers validate the URL
+    except SourceUnavailableError:
+        # Some official servers send an incomplete certificate chain: a browser completes and still verifies it.
+        html = ""
 
     try:
         source_text = clean_html(html)

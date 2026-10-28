@@ -1,0 +1,81 @@
+UNVERIFIABLE (source incomplete): How much do I pay to get my DL renewed?
+UNVERIFIABLE (source incomplete): What is the fee for an International Driving Permit?
+UNVERIFIABLE (source incomplete): And how much does it cost?
+UNVERIFIABLE (source incomplete): What is the fee?
+ok   [A jurisdiction] How do I renew my driving licence in the UK?                 [None] (0s)
+ok   [A jurisdiction] How do I apply for a US passport?                            [None] (0s)
+ok   [A jurisdiction] How do I apply for a UK passport online?                     [None] (0s)
+ok   [A jurisdiction] How do I apply for a driving licence in the UK?              [None] (0s)
+FAIL [A jurisdiction] I work in Dubai. Can I vote in India?                        asks to choose: ['https://ecisveep.nic.in/voters/general-voters', 'https://ecisveep.nic.in/voters/overseas-voters'] (1s)
+ok   [A jurisdiction] I live abroad. How do I register to vote?                    ['https://ecisveep.nic.in/voters/overseas-voters'] (1s)
+ok   [A jurisdiction] I live in the UK. How do I register as an overseas voter?    ['https://ecisveep.nic.in/voters/overseas-voters'] (1s)
+ok   [A jurisdiction] I am going to the USA next month. How do I get an Internatio ['https://parivahan.gov.in/en/content/international-driving-permit'] (1s)
+ok   [A jurisdiction] I am travelling to the UK. How do I get an International Dri ['https://parivahan.gov.in/en/content/international-driving-permit'] (1s)
+ok   [A jurisdiction] How do I get an International Driving Permit to drive abroad ['https://parivahan.gov.in/en/content/international-driving-permit'] (0s)
+FAIL [B document type] How do I get a marriage certificate?                         identify: ['https://tnesevai.tn.gov.in/Citizen/FAQ.html'] (0s)
+FAIL [B document type] How do I apply for a marriage certificate?                   identify: ['https://tnesevai.tn.gov.in/Citizen/FAQ.html'] (0s)
+ok   [B document type] How do I change the name on my PAN card?                     [None] (0s)
+FAIL [B document type] What documents are needed for an income certificate in Tamil forbidden claim: ['Proof of Income (Payslip, Income Certificate, etc)', '(and a misleading card)'] (partial) (5s)
+ok   [B document type] What documents are needed for a community certificate in Tam 1 claims (partial) (22s)
+FAIL [B document type] What documents do I need for a nativity certificate in Tamil forbidden claim: ['You need to provide Community Certificate of Father or Community Certificate of Mother or Community Certificate of Siblings.'] (12s)
+ok   [B document type] How do I renew the registration certificate of my vehicle?   5 claims (14s)
+FAIL [C identification miss] sold my bike, need to transfer the RC                        identify: [None] (1s)
+SKIP [C identification miss] How much does a duplicate RC cost?                           needs ['fees-and-user-charges'] stored, [] not stored
+FAIL [C identification miss] How much do I pay to get my DL renewed?                      identify: [None] (0s)
+FAIL [C identification miss] I sold my bike. What does the buyer have to do and by when?  identify: [None] (1s)
+FAIL [D source data] Can apprentices become EPF members?                          missed answer: no verified claim (4s)
+FAIL [D source data] Can an employer deduct the employer's share from my wages?   identify: [None] (0s)
+FAIL [D source data] Can I keep contributing to EPF after leaving my job?         incomplete: ['Employees drawing more than Rs.15000/- can also become a member of EPF', 'The option has to be submitted to the EPF office within 6 months of jo', 'Contributions are mandatory for salaries up to ₹15,000, with voluntary'] (9s)
+FAIL [D source data] My dad passed away; can I keep using his car?                incomplete: ['When the registered owner of a vehicle dies, transfer of ownership is '] (partial) (18s)
+SKIP [E verification] What is the fee to renew the registration certificate of my  needs ['fees-and-user-charges'] stored, [] not stored
+FAIL [E verification] What is the fee to renew the RC of a motorcycle?             missed answer: no verified claim (1s)
+SKIP [E verification] What is the fee to renew the RC of a motorcycle?             needs ['fees-and-user-charges'] stored, [] not stored
+SKIP [E verification] What is the fitness test fee for a motorcycle?               needs ['fees-and-user-charges'] stored, [] not stored
+SKIP [E verification] What is the hypothecation endorsement fee for a car?         needs ['fees-and-user-charges'] stored, [] not stored
+SKIP [E verification] What is the RC renewal fee for an imported car older than 20 needs ['fees-and-user-charges'] stored, [] not stored
+ok   [E verification] What is the fee for renewing a driving licence?              1 claims (7s)
+ok   [E verification] What is the fee for an International Driving Permit?         1 claims (4s)
+ok   [E verification] Which form do NRI voters fill to register?                   2 claims (8s)
+ok   [E verification] Can an NRI file ITR-1?                                       1 claims (5s)
+ok   [E verification] If I renew my driving licence 40 days after it expired, from 1 claims (6s)
+ok   [F follow-up] What about EPS?                                              8 claims (20s)
+ok   [F follow-up] How do I register to vote?                                   3 claims (15s)
+ok   [F follow-up] And what about linking PAN with Aadhaar?                     7 claims (23s)
+ok   [F follow-up] And how much does it cost?                                   2 claims (22s)
+ok   [F follow-up] What is the fee?                                             1 claims (partial) (22s)
+ok   [F follow-up] What about the certificate?                                  4 claims (partial) (14s)
+ok   [F follow-up] What about the pension?                                      5 claims (17s)
+ok   [F follow-up] What if the owner died?                                      1 claims (partial) (16s)
+ok   [F follow-up] What about a transport vehicle?                              1 claims (partial) (7s)
+ok   [F follow-up] What about voters living abroad?                             5 claims (20s)
+ok   [G out of scope] How do I apply for a ration card in Tamil Nadu?              [None] (0s)
+SKIP [G out of scope] How do I get a birth certificate?                            needs ['krishnagiri'] stored, [] not stored
+ok   [G out of scope] How do I apply for an Ayushman Bharat card?                  [None] (0s)
+ok   [G out of scope] Someone stole my bag with my passport inside. Where do I fil [None] (2s)
+ok   [G out of scope] How do I register for GST?                                   [None] (0s)
+ok   [G out of scope] How do I report a lost phone to the police?                  [None] (0s)
+ok   [H precision] My Indian passport has expired. How do I get it reissued?    ['https://www.passportindia.gov.in/psp/Apply'] (1s)
+ok   [H precision] I need a passport for the first time and I live in Bengaluru ['https://www.passportindia.gov.in/psp/Apply'] (1s)
+ok   [H precision] How can I edit my CAN details on the TN e-Sevai portal?      2 claims (7s)
+ok   [H precision] Can I renew my DL early?                                     1 claims (partial) (7s)
+ok   [H precision] What is the minimum EDLI benefit?                            ['https://www.epfo.gov.in/insurance-scheme-edli'] (0s)
+ok   [H precision] When can I take out my whole PF money?                       ['https://www.epfo.gov.in/epf-scheme'] (0s)
+ok   [H precision] How do I get an IDP?                                         ['https://parivahan.gov.in/en/content/international-driving-permit'] (0s)
+SKIP [I page 17 deleted] What documents are needed for an income certificate in Tamil needs [] stored, ['tnesevai'] not stored
+SKIP [I page 17 deleted] What documents are needed for a community certificate in Tam needs [] stored, ['tnesevai'] not stored
+SKIP [I page 17 deleted] What documents do I need for a nativity certificate in Tamil needs [] stored, ['tnesevai'] not stored
+SKIP [I page 17 deleted] How can I edit my CAN details on the TN e-Sevai portal?      needs [] stored, ['tnesevai'] not stored
+
+39/52 as expected end to end (11 skipped)
+  A jurisdiction: 9/10
+  B document type: 3/7
+  C identification miss: 0/3
+  D source data: 0/4
+  E verification: 5/6
+  F follow-up: 10/10
+  G out of scope: 5/5
+  H precision: 7/7
+outcomes: {'correct': 23, 'appropriate abstention or no match': 10, 'retrieval failure': 6, 'correct (partial, flagged)': 6, 'incorrect or misleading': 2, 'missed answer': 2, 'incomplete': 2, 'clarification': 1}
+failures by stage: {'asks to choose': 1, 'identify': 6, 'forbidden claim': 2, 'missed answer': 2, 'incomplete': 2}
+identification: {'correct': 45, 'missed (no match)': 4, 'confident wrong page': 2, 'asked': 1}
+latency per question: median 1s, max 23s

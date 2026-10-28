@@ -1,0 +1,14 @@
+== procedureassist_staging
+  letters-hyphen-digits (ITR-1, REV-101): 12 distinct; most common [('ITR-1', 10), ('ITR-2', 5), ('Tier-1', 2), ('SSR-2023', 2), ('Form-8', 1), ('Rule-15', 1), ('Part-1', 1), ('section-406', 1), ('REV-101', 1), ('SSR-2022', 1), ('EPS-95', 1), ('No-2', 1)]
+  Form N: 20 distinct; most common [('Form 6A', 6), ('Form 6', 5), ('Form 60', 5), ('Form 8', 3), ('Form 30', 3), ('Form 2', 2), ('Form 25', 2), ('Form 61', 2), ('Form 33', 2), ('Form 29', 2), ('Form 31', 2), ('Form 32', 2)]
+  Rule/Section/para N: 32 distinct; most common [('rule 81', 4), ('u/s 112A', 4), ('Section 115BAC', 2), ('Section 139(1)', 2), ('Section 80CCD', 2), ('Section 80CCH', 2), ('Rule 81', 1), ('Section 41', 1), ('Rule 52)', 1), ('Section\n\n1', 1), ('rule 46', 1), ('rule 70', 1)]
+  digits+letter (6A, 112A): 16 distinct; most common [('112A', 9), ('6A', 8), ('115AD', 5), ('80G', 4), ('5A', 3), ('6MB', 2), ('1A', 1), ('4A', 1), ('23A', 1), ('234H', 1), ('194N', 1), ('115JC', 1)]
+  Schedule/Part: 6 distinct; most common [('Schedule 112A', 5), ('Schedule-115AD', 3), ('Schedule 80G', 3), ('Schedule 80GGA', 3), ('Schedule 5A', 3), ('Schedule 115AD', 2)]
+  procedure names with digits: ['File ITR-1 (Sahaj) Online', 'Filing of ITR-2', 'REV-101 Community Certificate']
+== procedureassist
+  letters-hyphen-digits (ITR-1, REV-101): 12 distinct; most common [('ITR-1', 10), ('ITR-2', 5), ('Tier-1', 2), ('SSR-2023', 2), ('Form-8', 1), ('Rule-15', 1), ('REV-101', 1), ('SSR-2022', 1), ('Part-1', 1), ('section-406', 1), ('EPS-95', 1), ('No-2', 1)]
+  Form N: 19 distinct; most common [('Form 6A', 6), ('Form 6', 5), ('Form 60', 5), ('Form 8', 3), ('Form 30', 3), ('Form 2', 2), ('Form 25', 2), ('Form 61', 2), ('Form 33', 2), ('Form 29', 2), ('Form 31', 2), ('Form 32', 2)]
+  Rule/Section/para N: 29 distinct; most common [('rule 81', 4), ('u/s 112A', 4), ('Section 115BAC', 2), ('Section 139(1)', 2), ('Section 80CCD', 2), ('Section 80CCH', 2), ('u/s 139(1)', 1), ('u/s 16', 1), ('u/s 57', 1), ('Section 80', 1), ('Section 80G', 1), ('Section 80GGA', 1)]
+  digits+letter (6A, 112A): 15 distinct; most common [('112A', 9), ('6A', 8), ('115AD', 5), ('80G', 4), ('5A', 3), ('6MB', 2), ('1A', 1), ('115JC', 1), ('115JD', 1), ('115UA', 1), ('115UB', 1), ('17A', 1)]
+  Schedule/Part: 6 distinct; most common [('Schedule 112A', 5), ('Schedule-115AD', 3), ('Schedule 80G', 3), ('Schedule 80GGA', 3), ('Schedule 5A', 3), ('Schedule 115AD', 2)]
+  procedure names with digits: ['Filing of ITR-2', 'REV-101 Community Certificate', 'File ITR-1 (Sahaj) Online']

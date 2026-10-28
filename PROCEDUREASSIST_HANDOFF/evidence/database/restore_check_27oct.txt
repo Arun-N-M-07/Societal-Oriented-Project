@@ -1,0 +1,14 @@
+pg_restore exit 0
+== restored copy
+pages|24 chunks|122 procedures_md5|016980eee56654079df99cddfbabaf00 chunks_md5|3e45c78f7b85623ad6d9468fa9b34171 
+pages | 24
+chunks | 122
+duplicate source_url | 0
+orphaned chunks | 0
+chunks without embedding | 0
+embedding dimensions | 1024
+pages without chunks | 0
+chunk numbering gaps | 0
+chunk foreign key on delete | CASCADE
+unique constraint on source_url | 1
+dropped scratch database procedureassist_restorecheck

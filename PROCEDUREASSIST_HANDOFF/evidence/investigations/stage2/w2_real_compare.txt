@@ -1,0 +1,10 @@
+[heldout] 'What is the fee to renew my vehicle RC?'
+   old ('matched', [28]) ['Renewal of Vehicle Registration Certificate']
+   new ('matched', [39]) ['Vehicle Registration Fees and User Charges']
+[w2] 'What is the fee to renew the RC of a motorcycle?'
+   old ('matched', [28]) ['Renewal of Vehicle Registration Certificate']
+   new ('matched', [39]) ['Vehicle Registration Fees and User Charges']
+[w2] 'RC renewal fee for a car'
+   old ('matched', [28]) ['Renewal of Vehicle Registration Certificate']
+   new ('matched', [39]) ['Vehicle Registration Fees and User Charges']
+changed 3/240

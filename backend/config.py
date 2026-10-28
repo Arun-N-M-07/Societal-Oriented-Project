@@ -35,6 +35,10 @@ ADMIN_PASSWORD_HASH = _required_setting("ADMIN_PASSWORD_HASH")
 if not ADMIN_PASSWORD_HASH.startswith("scrypt$"):
     raise RuntimeError("ADMIN_PASSWORD_HASH must come from: python -m backend.auth")
 COOKIE_SECURE = _setting("COOKIE_SECURE", "false").lower() == "true"
+# Sources must be official: pages on these domains or their subdomains (comma-separated).
+OFFICIAL_SOURCE_DOMAINS = tuple(
+    d.strip().lower() for d in _setting("OFFICIAL_SOURCE_DOMAINS", "gov.in,nic.in,pfrda.org.in").split(",") if d.strip()
+)
 # Procedure identification thresholds (cosine similarity, chosen from
 # scripts/evaluate_identification.py on the labelled evaluation set).
 IDENTIFY_MIN_SCORE = float(_setting("IDENTIFY_MIN_SCORE", "0.53"))

@@ -1,0 +1,103 @@
+===== procedureassist_staging
+
+## What is the fee to renew my vehicle RC?   [expected: RC renewal, no class: rows 4(a)-(j), not item 11/16]
+  top5     chunks [587, 594, 595, 596, 597] -> verified 1, kept 1, complete=False
+      - The fee to renew a certificate of fitness for a motor vehicle is Rupees Two Hundred Only.
+  continue chunks [587, 588, 589, 590, 591, 594, 595, 596, 597] -> verified 1, kept 1, complete=False
+      - The fee to renew your vehicle RC is Rupees Two Hundred Only.
+  page     chunks [587, 588, 589, 590, 591, 592, 593, 594, 595, 596, 597, 598] -> verified 6, kept 6, complete=True
+      - The fee for the renewal of certificate of registration for a motor vehicle older than 20 years from the date of first registration is Rupees Two thous
+      - The fee for the renewal of certificate of registration for a motor vehicle older than 20 years from the date of first registration is Rupees Five thou
+      - The fee for the renewal of certificate of registration for a motor vehicle older than 20 years from the date of first registration is Rupees Ten thous
+      - The fee for the renewal of certificate of registration for a motor vehicle older than 20 years from the date of first registration is Rupees Twenty th
+      - The fee for the renewal of certificate of registration for a motor vehicle older than 20 years from the date of first registration is Rupees Eighty th
+      - The fee for the renewal of certificate of registration for a motor vehicle older than 20 years from the date of first registration is Rupees Twelve th
+
+## What is the fee to renew the RC of a motorcycle?   [expected: 4(b) Rs 300]
+  top5     chunks [587, 591, 594, 595, 596] -> verified 2, kept 1, complete=False
+      - The fee for renewal of certificate of registration for a motorcycle older than 20 years from date of first registration is Two thousand rupees.
+  continue chunks [587, 588, 589, 590, 591, 594, 595, 596] -> verified 1, kept 1, complete=True
+      - The fee for renewing the certificate of registration for a motorcycle older than 20 years from the date of first registration is Two thousand rupees.
+  page     chunks [587, 588, 589, 590, 591, 592, 593, 594, 595, 596, 597, 598] -> verified 1, kept 1, complete=True
+      - The fee for the renewal of certificate of registration for a motorcycle older than 20 years from the date of first registration is Two thousand rupees
+
+## What is the fee to renew the registration certificate of my motorcycle?   [expected: 4(b) Rs 300]
+  top5     chunks [587, 590, 591, 595, 596] -> verified 0, kept 0, complete=False
+  continue chunks [587, 588, 589, 590, 591, 595, 596] -> verified 1, kept 1, complete=True
+      - The fee for renewal of certificate of registration for a motorcycle is Rupees Three Hundred Only.
+  page     chunks [587, 588, 589, 590, 591, 592, 593, 594, 595, 596, 597, 598] -> verified 2, kept 1, complete=False
+      - The fee for the renewal of the certificate of registration for a motorcycle is Rupees Three Hundred Only.
+
+## RC renewal fee for a car   [expected: 4(c)i Rs 600 (non-transport LMV)]
+  top5     chunks [587, 591, 595, 596, 597] -> verified 7, kept 1, complete=False
+      - The RC renewal fee for a car is Rupees Two Hundred Only.
+  continue chunks [587, 588, 589, 590, 591, 595, 596, 597] -> verified 18, kept 11, complete=True
+      - The RC renewal fee for a car is Rupees Two Hundred Only.
+      - The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Invalid Carriage is Rupees Fifty Only.
+      - The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Motor cycle is Rupees Three Hundred Only.
+      - The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Three wheeler/Quadricycle/Light Motor Vehi
+      - The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Three wheeler/Quadricycle/Light Motor Vehi
+      - The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Medium goods vehicle is Rupees One Thousan
+      - The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Medium passenger motor vehicle is Rupees O
+      - The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Heavy goods vehicle is Rupees One Thousand
+      - The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Imported motor vehicle is Rupees Five Thou
+      - The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Imported motor cycle is Rupees Two Thousan
+      - The fee for the issue or renewal of certificate of registration and assignment of new registration mark for Any other vehicle not mentioned above is R
+  page     chunks [587, 588, 589, 590, 591, 592, 593, 594, 595, 596, 597, 598] -> verified 6, kept 6, complete=True
+      - The fee for the renewal of certificate of registration for a motor vehicle older than 20 years from the date of first registration is Rupees Two thous
+      - The fee for the renewal of certificate of registration for a motor vehicle older than 20 years from the date of first registration is Rupees Five thou
+      - The fee for the renewal of certificate of registration for a motor vehicle older than 20 years from the date of first registration is Rupees Ten thous
+      - The fee for the renewal of certificate of registration for a motor vehicle older than 20 years from the date of first registration is Rupees Twenty th
+      - The fee for the renewal of certificate of registration for a motor vehicle older than 20 years from the date of first registration is Rupees Eighty th
+      - The fee for the renewal of certificate of registration for a motor vehicle older than 20 years from the date of first registration is Rupees Twelve th
+
+## What is the RC renewal fee for a heavy goods vehicle?   [expected: 4(f) Rs 1500]
+  top5     chunks [587, 589, 595, 596, 597] -> verified 0, kept 0, complete=False
+  continue chunks [587, 588, 589, 590, 591, 595, 596, 597] -> verified 0, kept 0, complete=False
+  page     chunks [587, 588, 589, 590, 591, 592, 593, 594, 595, 596, 597, 598] -> verified 1, kept 1, complete=True
+      - The RC renewal fee for a heavy goods vehicle is Rupees One Thousand and Five Hundred Only.
+
+## What is the fitness test fee for a motorcycle?   [expected: 10(a) manual 200 / automated 400]
+  top5     chunks [587, 591, 593, 594, 595] -> verified 1, kept 1, complete=False
+      - The fitness test fee for a motorcycle is Rupees Two Hundred Only.
+  continue chunks [587, 588, 589, 590, 591, 593, 594, 595] -> verified 2, kept 1, complete=False
+      - The grant or renewal of certificate of fitness for a motor vehicle is Rupees Two Hundred Only.
+  page     chunks [587, 588, 589, 590, 591, 592, 593, 594, 595, 596, 597, 598] -> verified 0, kept 0, complete=False
+
+## What is the RC renewal fee for an imported car older than 20 years?   [expected: item 16 (older than 20 years)]
+  top5     chunks [590, 591, 595, 596, 597] -> verified 0, kept 0, complete=False
+  continue chunks [590, 591, 595, 596, 597] -> verified 0, kept 0, complete=False
+  page     chunks [587, 588, 589, 590, 591, 592, 593, 594, 595, 596, 597, 598] -> verified 2, kept 1, complete=False
+      - The RC renewal fee for an imported motor vehicle older than 20 years is Twenty thousand rupees.
+
+## How much does a duplicate RC cost?   [expected: 5: half of item 4]
+  top5     chunks [587, 591, 595, 596, 598] -> verified 2, kept 1, complete=False
+      - The cost of a duplicate trade certificate for Invalid Carriage is Rupees Three Hundred Only.
+  continue chunks [587, 588, 589, 590, 591, 595, 596, 598] -> verified 1, kept 1, complete=True
+      - The cost of a duplicate certificate of registration is Half of the fee mentioned against Serial No.4.
+  page     chunks [587, 588, 589, 590, 591, 592, 593, 594, 595, 596, 597, 598] -> verified 1, kept 1, complete=True
+      - The cost of a duplicate RC (certificate of registration) is Half of the fee mentioned against Serial No.4.
+== chunks that can trigger continuation (ends with a numbered item that the next chunk continues)
+  page 39 chunk 587 -> 588: 4. Issue or renewal of certificate of registration and assignment of n
+  page 39 chunk 588 -> 589: 4. Issue or renewal of certificate of registration and assignment of n
+  page 39 chunk 589 -> 590: 4. Issue or renewal of certificate of registration and assignment of n
+  page 39 chunk 590 -> 591: 4. Issue or renewal of certificate of registration and assignment of n
+  page 39 chunk 593 -> 594: 10. Conducting test of a vehicle for grant or renewal of certificate o
+
+== retrievals that change (question asked on its expected page)
+  [probe] page 39 +[588, 589, 590]: What is the fee to renew the RC of a motorcycle?
+  [probe] page 39 +[588, 589, 590]: What is the fitness test fee for a motorcycle?
+  [probe] page 39 +[588, 589, 590]: How much does a duplicate RC cost?
+  [probe] page 39 +[594]: What is the hypothecation endorsement fee for a car?
+  changed 4/137
+===== procedureassist
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-arunnm-Projects-SOP/bebaf14e-7bdf-4da2-8b3f-9c2a6edb540d/scratchpad/h3/continuation_scope.py", line 9, in <module>
+    from variants import continuation, ITEM
+  File "/private/tmp/claude-501/-Users-arunnm-Projects-SOP/bebaf14e-7bdf-4da2-8b3f-9c2a6edb540d/scratchpad/h3/variants.py", line 40, in <module>
+    variants = {"top5": base, "continue": continuation(db, base),
+                                          ~~~~~~~~~~~~^^^^^^^^^^
+  File "/private/tmp/claude-501/-Users-arunnm-Projects-SOP/bebaf14e-7bdf-4da2-8b3f-9c2a6edb540d/scratchpad/h3/variants.py", line 16, in continuation
+    page = db.query(ProcedureChunk).filter_by(procedure_id=chunks[0].procedure_id).order_by(ProcedureChunk.chunk_index).all()
+                                                           ~~~~~~^^^
+IndexError: list index out of range

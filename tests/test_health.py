@@ -56,5 +56,32 @@ class ReadinessTest(DatabaseTestCase):
         get.assert_not_called()
 
 
+class RequestLoggingTest(DatabaseTestCase):
+    def test_each_request_gets_an_id_and_one_log_line_without_its_content(self):
+        from fastapi.testclient import TestClient
+        from backend.main import app
+
+        with self.assertLogs("procedureassist", "INFO") as logs:
+            response = TestClient(app).post("/api/identify", json={"question": "PRIVATE QUESTION " * 100})
+        self.assertEqual(response.status_code, 422)
+        self.assertRegex(response.headers["X-Request-ID"], r"^[0-9a-f]{12}$")
+        self.assertEqual(len(logs.output), 1)
+        self.assertIn("POST /api/identify 422", logs.output[0])
+        self.assertNotIn("PRIVATE", logs.output[0])
+
+    def test_an_unreachable_database_gives_a_message_and_an_id_not_a_bare_500(self):
+        from fastapi.testclient import TestClient
+        from backend.main import app
+
+        down = OperationalError("SELECT 1", {}, Exception("connection refused"))
+        with patch("backend.routes.identify_needs", side_effect=down), self.assertLogs("procedureassist", "INFO") as logs:
+            response = TestClient(app).post("/api/identify", json={"question": "PRIVATE passport question"})
+        self.assertEqual(response.status_code, 503)
+        self.assertEqual(response.json(), {"detail": "The procedure database is unavailable. Try again."})
+        self.assertRegex(response.headers["X-Request-ID"], r"^[0-9a-f]{12}$")
+        self.assertTrue(any("POST /api/identify 503" in line for line in logs.output))
+        self.assertFalse(any("PRIVATE" in line for line in logs.output))
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -1,0 +1,19 @@
+Fri Oct 23 23:55:41 IST 2026
+total 1376
+drwxr-xr-x@  3 arunnm  staff      96 Oct 23 21:48 .
+drwxr-xr-x  17 arunnm  staff     544 Oct 23 21:48 ..
+-rw-r--r--@  1 arunnm  staff  700813 Oct 23 21:48 procedureassist_2026-10-23_before_source_cleanup.dump
+4e22ba1f5b5bb67c0ae5f3e25007583d6da8353f06530f12ef1ae75bbde42a04  /Users/arunnm/Projects/SOP-backups/procedureassist_2026-10-23_before_source_cleanup.dump
+2; 3079 24931 EXTENSION - vector 
+4084; 0 0 COMMENT - EXTENSION vector 
+219; 1259 25260 TABLE public procedure_chunks arunnm
+217; 1259 23382 TABLE public procedures arunnm
+4077; 0 25260 TABLE DATA public procedure_chunks arunnm
+4075; 0 23382 TABLE DATA public procedures arunnm
+3927; 2606 25267 CONSTRAINT public procedure_chunks procedure_chunks_pkey arunnm
+3929; 2606 25269 CONSTRAINT public procedure_chunks procedure_chunks_procedure_id_chunk_index_key arunnm
+3922; 2606 23389 CONSTRAINT public procedures procedures_pkey arunnm
+3924; 2606 23391 CONSTRAINT public procedures procedures_source_url_key arunnm
+3925; 1259 25275 INDEX public ix_procedure_chunks_procedure_id arunnm
+3930; 2606 25270 FK CONSTRAINT public procedure_chunks procedure_chunks_procedure_id_fkey arunnm
+Restore test 23 Oct 2026 21:43 IST: restored into scratch DB procedureassist_verify; procedures md5 016980eee56654079df99cddfbabaf00 and chunks md5 3e45c78f7b85623ad6d9468fa9b34171 matched the live approved DB; scratch DB then dropped.

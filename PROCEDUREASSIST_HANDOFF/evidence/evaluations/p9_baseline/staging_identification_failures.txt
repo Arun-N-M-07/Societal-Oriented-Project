@@ -1,0 +1,90 @@
+ok   [document] Where do I get a marriage certificate in Tamil Nadu?         [None] (0s)
+ok   [document] How can I register my marriage online?                       [None] (0s)
+SKIP [document] How do I get a death certificate?                            needs ['krishnagiri'] stored, [] not stored
+ok   [document] How do I get a legal heir certificate?                       [None] (0s)
+SKIP [document] How do I get a birth certificate in Tamil Nadu?              needs ['krishnagiri'] stored, [] not stored
+SKIP [document] What documents are needed for an inter caste marriage certif needs ['tnesevai'] stored, [] not stored
+SKIP [document] What documents do I need for a widow certificate in Tamil Na needs ['tnesevai'] stored, [] not stored
+SKIP [document] How do I apply for a caste certificate in Tamil Nadu?        needs ['tnesevai'] stored, [] not stored
+ok   [action] How do I update my address on my PAN card?                   [None] (0s)
+ok   [action] I lost my PAN card. How do I get a duplicate?                [None] (1s)
+ok   [action] How do I reprint my PAN card?                                [None] (0s)
+SKIP [action] What is the fee to apply for a PAN card?                     needs ['instant-e-pan'] stored, [] not stored
+ok   [action] how do i change my date of birth on my pan card              [None] (0s)
+ok   [action] Is it mandatory to link my PAN with Aadhaar?                 ['https://www.incometax.gov.in/iec/foportal/help/how-to-link-aadhaar?mobile-app=1'] (0s)
+ok   [action] What happens if my PAN is not linked to Aadhaar?             ['https://www.incometax.gov.in/iec/foportal/help/how-to-link-aadhaar?mobile-app=1'] (0s)
+ok   [action] How do I pay the fee for linking PAN and Aadhaar?            ['https://www.incometax.gov.in/iec/foportal/help/how-to-link-aadhaar?mobile-app=1'] (1s)
+ok   [action] How do I register on the income tax e-filing portal with my  ['https://www.incometax.gov.in/iec/foportal/help/how-to-register-e-filing?mobile-app=1'] (0s)
+ok   [action] My driving licence got torn. How do I get a new copy?        ['https://parivahan.gov.in/en/content/duplicate-licence'] (1s)
+ok   [action] How do I change the address on my vehicle's registration cer ['https://parivahan.gov.in/en/content/address-change'] (0s)
+ok   [action] I have a learner's licence. How do I apply for the permanent ['https://parivahan.gov.in/en/content/permanent-license'] (1s)
+ok   [action] How do I change my address in the electoral roll?            ['https://ecisveep.nic.in/voters/general-voters'] (0s)
+ok   [ambiguous] I need a certificate from the Tamil Nadu government. How do  [None] (1s)
+ok   [ambiguous] How do I get a certificate?                                  [None] (0s)
+ok   [ambiguous] Which documents are required for a certificate in Tamil Nadu [None] (0s)
+ok   [ambiguous] How do I apply for a certificate online?                     [None] (0s)
+ok   [ambiguous] What is the fee for a certificate?                           [None] (0s)
+ok   [named kind] How do I renew my registration certificate?                  ['https://parivahan.gov.in/en/content/renewal-of-rc'] (0s)
+SKIP [named kind] What documents do I need for a nativity certificate?         needs ['tnesevai'] stored, [] not stored
+SKIP [named kind] What documents are needed for an OBC certificate in Tamil Na needs ['tnesevai'] stored, [] not stored
+SKIP [named kind] How do I apply for a solvency certificate in Tamil Nadu?     needs ['tnesevai'] stored, [] not stored
+ok   [named kind] What is a learner's licence?                                 ['https://parivahan.gov.in/en/content/learners-license'] (0s)
+ok   [named kind] How do I get a gun licence?                                  [None] (0s)
+ok   [named kind] How do I get a trade licence in Chennai?                     [None] (0s)
+ok   [overseas] I am an Indian citizen working in Saudi Arabia. How can I re ['https://ecisveep.nic.in/voters/overseas-voters'] (1s)
+ok   [overseas] I study in Canada. Can I still vote in Indian elections?     ['https://ecisveep.nic.in/voters/overseas-voters'] (1s)
+ok   [overseas] I moved to Singapore for work. How do I enrol as a voter?    ['https://ecisveep.nic.in/voters/overseas-voters'] (1s)
+FAIL [overseas] i work in dubai, can i vote in india                         asks to choose: ['https://ecisveep.nic.in/voters/general-voters', 'https://ecisveep.nic.in/voters/overseas-voters'] (1s)
+ok   [overseas] I am an NRI. How do I register as a voter?                   ['https://ecisveep.nic.in/voters/overseas-voters'] (1s)
+ok   [overseas] I have taken citizenship of the USA. Can I register as an ov ['https://ecisveep.nic.in/voters/overseas-voters'] (1s)
+ok   [overseas] I live in Chennai. How do I register to vote?                ['https://ecisveep.nic.in/voters/general-voters'] (1s)
+ok   [overseas] I have shifted to a new house in Madurai. How do I change my ['https://ecisveep.nic.in/voters/general-voters'] (1s)
+ok   [overseas] I am going to Germany for a holiday. Do I need an Internatio ['https://parivahan.gov.in/en/content/international-driving-permit'] (1s)
+ok   [foreign] How do I apply for a Canadian passport?                      [None] (0s)
+ok   [foreign] How do I renew my Australian driving licence?                [None] (0s)
+ok   [foreign] How do I get a driving licence in Dubai?                     [None] (0s)
+ok   [foreign] how do i apply for a uk passport                             [None] (0s)
+ok   [foreign] how do i renew my uk driving licence online                  [None] (0s)
+ok   [foreign] How do I apply for a visa to the UK?                         [None] (0s)
+ok   [foreign] i am travelling to the uk next month. how do i get an intern ['https://parivahan.gov.in/en/content/international-driving-permit'] (1s)
+ok   [state] How do I get a community certificate in Andhra Pradesh?      [None] (0s)
+ok   [state] What documents are needed for an income certificate in Mahar [None] (0s)
+ok   [state] How do I register to vote in Kerala?                         ['https://ecisveep.nic.in/voters/general-voters'] (0s)
+SKIP [state] How do I get a nativity certificate in tamil nadu?           needs ['tnesevai'] stored, [] not stored
+SKIP [state] How do I apply for an income certificate in tamilnadu?       needs ['tnesevai'] stored, [] not stored
+ok   [state] How do I transfer ownership of a car I bought in Karnataka?  ['https://parivahan.gov.in/en/content/ownership-transfer'] (0s)
+ok   [abbreviation] how do i link pan with aadhaar                               ['https://www.incometax.gov.in/iec/foportal/help/how-to-link-aadhaar?mobile-app=1'] (0s)
+ok   [abbreviation] how do i get an idp                                          ['https://parivahan.gov.in/en/content/international-driving-permit'] (0s)
+ok   [abbreviation] What is EDLI?                                                ['https://www.epfo.gov.in/insurance-scheme-edli'] (0s)
+ok   [abbreviation] Can I withdraw my PF before retirement?                      ['https://www.epfo.gov.in/epf-scheme'] (0s)
+ok   [abbreviation] Can I file ITR-1 if I earn rent from two houses?             ['https://www.incometax.gov.in/iec/foportal/help/how-to-file-itr1-form-sahaj?mobile-app=1'] (0s)
+ok   [abbreviation] Who should file ITR-2?                                       ['https://www.incometax.gov.in/iec/foportal/help/all-topics/e-filing-services/file-itr-2-online/itr-2-UM?mobile-app=1'] (0s)
+FAIL [colloquial] bought a second hand bike, how do i get the RC in my name    identify: [None] (1s)
+ok   [colloquial] lost my licence, what now                                    ['https://parivahan.gov.in/en/content/duplicate-licence'] (1s)
+ok   [colloquial] my passport is expiring soon, what do i do                   ['https://www.passportindia.gov.in/psp/Apply'] (1s)
+FAIL [colloquial] shifted house, need to update address on my RC               asks to choose: ['https://uidai.gov.in/en/updating-data-on-aadhaar', 'https://ecisveep.nic.in/voters/overseas-voters', 'https://parivahan.gov.in/en/content/address-change'] (1s)
+ok   [colloquial] dad passed away and the car is in his name                   ['https://parivahan.gov.in/en/content/ownership-transfer'] (1s)
+ok   [colloquial] want to vote but i'm working abroad                          ['https://ecisveep.nic.in/voters/overseas-voters'] (0s)
+ok   [out of scope] How do I apply for a ration card in Kerala?                  [None] (0s)
+ok   [out of scope] How do I register a property in Tamil Nadu?                  [None] (0s)
+ok   [out of scope] How do I apply for a college scholarship in Tamil Nadu?      [None] (0s)
+ok   [out of scope] How do I get a liquor licence?                               [None] (0s)
+ok   [out of scope] How do I pay my electricity bill online?                     [None] (0s)
+ok   [out of scope] How do I file a police complaint for a stolen bike?          [None] (0s)
+ok   [out of scope] How do I get a building permit in Chennai?                   [None] (0s)
+
+60/63 as expected end to end (11 skipped)
+  abbreviation: 6/6
+  action: 12/12
+  ambiguous: 5/5
+  colloquial: 4/6
+  document: 3/3
+  foreign: 7/7
+  named kind: 4/4
+  out of scope: 7/7
+  overseas: 8/9
+  state: 4/4
+outcomes: {'correct': 31, 'appropriate abstention or no match': 24, 'clarification (expected)': 5, 'clarification': 2, 'retrieval failure': 1}
+failures by stage: {'asks to choose': 2, 'identify': 1}
+identification: {'correct': 60, 'asked': 2, 'missed (no match)': 1}
+latency per question: median 0s, max 1s

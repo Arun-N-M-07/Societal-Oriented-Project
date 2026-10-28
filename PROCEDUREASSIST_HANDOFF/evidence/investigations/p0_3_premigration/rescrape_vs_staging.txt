@@ -1,0 +1,27 @@
+15 https://www.passportindia.gov.in/psp/Apply                             chars 4862->4862 blocks -0 +0 chunks 7->7
+16 https://www.incometax.gov.in/iec/foportal/help/all-topics/e-filing-ser chars 14719->14719 blocks -0 +0 chunks 19->19
+17 https://tnesevai.tn.gov.in/Citizen/FAQ.html                            chars 4732->4732 blocks -0 +0 chunks 6->6
+18 https://uidai.gov.in/en/updating-data-on-aadhaar                       chars 8591->8591 blocks -0 +0 chunks 11->11
+19 https://ecisveep.nic.in/voters/general-voters                          chars 2766->2766 blocks -0 +0 chunks 3->3
+20 https://ecisveep.nic.in/voters/how-to-vote                             chars 4706->4706 blocks -0 +0 chunks 6->6
+21 https://ecisveep.nic.in/voters/overseas-voters                         chars 3697->3697 blocks -0 +0 chunks 5->5
+22 https://parivahan.gov.in/en/content/learners-license                   chars 1020->1030 blocks -0 +1 chunks 2->2
+23 https://parivahan.gov.in/en/content/permanent-license                  chars 1208->1218 blocks -0 +1 chunks 2->2
+24 https://parivahan.gov.in/en/content/renewal                            chars 942->952 blocks -0 +1 chunks 1->1
+25 https://parivahan.gov.in/en/content/duplicate-licence                  chars 459->469 blocks -0 +1 chunks 1->1
+26 https://parivahan.gov.in/en/content/international-driving-permit       chars 541->551 blocks -0 +1 chunks 1->1
+27 https://parivahan.gov.in/en/content/licensing-related-fees-charges     chars 1416->1416 blocks -0 +0 chunks 2->2
+28 https://parivahan.gov.in/en/content/renewal-of-rc                      chars 1088->1098 blocks -0 +1 chunks 2->2
+29 https://parivahan.gov.in/en/content/address-change                     chars 1109->1119 blocks -0 +1 chunks 2->2
+30 https://parivahan.gov.in/en/content/ownership-transfer                 chars 5195->5205 blocks -0 +1 chunks 7->7
+31 https://www.incometax.gov.in/iec/foportal/help/how-to-link-aadhaar?mob chars 5906->5906 blocks -0 +0 chunks 8->8
+32 https://www.incometax.gov.in/iec/foportal/help/how-to-register-e-filin chars 2355->2355 blocks -0 +0 chunks 3->3
+33 https://www.incometax.gov.in/iec/foportal/help/how-to-file-itr1-form-s chars 12171->12171 blocks -0 +0 chunks 17->17
+34 https://www.indiapost.gov.in/insurance-services/apy                    chars 1434->1475 blocks -0 +1 chunks 2->2
+35 https://www.indiapost.gov.in/otheronlineservices/aadhaar-updation      chars 2554->2554 blocks -0 +0 chunks 3->3
+36 https://www.epfo.gov.in/epf-scheme                                     chars 4583->4583 blocks -0 +0 chunks 5->5
+37 https://www.epfo.gov.in/pension-scheme-eps                             chars 4338->4338 blocks -0 +0 chunks 5->5
+38 https://www.epfo.gov.in/insurance-scheme-edli                          chars 2959->2959 blocks -0 +0 chunks 4->4
+39 https://parivahan.gov.in/en/content/fees-and-user-charges              chars 9151->9151 blocks -0 +0 chunks 12->12
+40 https://www.pfrda.org.in/schemes/atal-pension-yojana-apy               chars 2536->2536 blocks -0 +0 chunks 4->4
+exit 0

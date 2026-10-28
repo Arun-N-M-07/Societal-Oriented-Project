@@ -1,0 +1,15 @@
+{
+ "name": "Registration of Births and Deaths",
+ "department": "Krishnagiri District Administration (Civil Registration System)",
+ "jurisdiction": "Tamil Nadu",
+ "summary": "Registration of births and deaths under the Tamil Nadu Registration of Birth and Death Rules, 2000 and the Registration of Births and Deaths Act, 1969, as published by the Krishnagiri district administration: where and within how many days to register, the free certificate, late registration, the cause-of-death forms and the RCH ID for a birth.",
+ "eligibility": "All citizens. Registration of births and deaths is compulsory at the place of occurrence.",
+ "steps": [
+  "Register the birth or death at the place of occurrence, not in the native place or at the place of burial.",
+  "Register it within 21 days of its occurrence. Immediately after registration, the birth or death certificate is issued free of cost to the informant.",
+  "For a death, give the registrar the Medical Certificate of Cause of Death at the time of registration: Form 4 for a death in an institution, Form 4A for a death that did not occur in an institution.",
+  "For a birth, the pregnant mother should have registered her pregnancy with the village health nurse or urban health nurse to get an RCH ID. This page states that the RCH ID is mandatory for getting the birth certificate.",
+  "After 21 days but within one year, the event can be registered with a late fee; the page also requires the written permission of the prescribed authorities, with the late fee, for registration within one year, without saying from which day. After one year, it can be registered with an order of the Sub District Magistrate (Revenue Divisional Officer) and a late fee.",
+  "A child's name cannot be changed once registered. If a change is needed, use the gazette notification along with the birth certificate."
+ ]
+}

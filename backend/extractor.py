@@ -1,4 +1,6 @@
 import json
+import logging
+import time
 
 import httpx
 from pydantic import ValidationError
@@ -8,6 +10,32 @@ from backend.schemas import ProcedureExtraction, ProcedureDraft, ScrapeResult
 
 
 QWEN_TIMEOUT_SECONDS = 60.0
+# Model calls log their duration and outcome; main.py adds the handler and the request id.
+log = logging.getLogger("procedureassist")
+log.addHandler(logging.NullHandler())
+
+
+def ollama_post(path: str, payload: dict, timeout: float, retry_statuses: tuple[int, ...] = ()) -> httpx.Response:
+    """POST to Ollama, logging the call. One retry for a failure that is usually transient: a dropped
+    connection, a 5xx, or a status in retry_statuses (an embedding batch twice got a 400 that the same
+    request did not repeat). A timeout is not retried: the citizen has already waited that long."""
+    for attempt in (1, 2):
+        start = time.perf_counter()
+        try:
+            response = httpx.post(f"{OLLAMA_BASE_URL.rstrip('/')}{path}", json=payload, timeout=timeout)
+            response.raise_for_status()
+        except httpx.HTTPError as error:
+            status = error.response.status_code if isinstance(error, httpx.HTTPStatusError) else None
+            transient = not isinstance(error, httpx.TimeoutException) and (status is None or status >= 500 or status in retry_statuses)
+            retrying = transient and attempt == 1
+            log.warning("ollama %s failed: %s%s after %.0fms%s", path, type(error).__name__, f" {status}" if status else "",
+                        (time.perf_counter() - start) * 1000, ", retrying" if retrying else "")
+            if retrying:
+                continue
+            raise
+        log.info("ollama %s %.0fms", path, (time.perf_counter() - start) * 1000)
+        return response
+    raise AssertionError("unreachable")
 
 
 class ExtractionError(Exception):
@@ -45,9 +73,9 @@ Do not add fields, Markdown, explanations, or invented steps.
 
 def call_qwen(prompt: str) -> str:
     try:
-        response = httpx.post(
-            f"{OLLAMA_BASE_URL.rstrip('/')}/api/generate",
-            json={
+        response = ollama_post(
+            "/api/generate",
+            {
                 "model": LLM_MODEL,
                 "prompt": prompt,
                 "stream": False,
@@ -55,9 +83,8 @@ def call_qwen(prompt: str) -> str:
                 "think": False,
                 "options": {"temperature": 0, "num_ctx": LLM_CONTEXT_TOKENS},
             },
-            timeout=QWEN_TIMEOUT_SECONDS,
+            QWEN_TIMEOUT_SECONDS,
         )
-        response.raise_for_status()
     except httpx.TimeoutException as error:
         raise ExtractionError("Qwen extraction timed out.") from error
     except httpx.HTTPStatusError as error:

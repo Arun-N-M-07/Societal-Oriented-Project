@@ -1,0 +1,21 @@
+Sat Oct 24 00:59:30 IST 2026
+procedureassist: stored chunks == chunk_text(source_text) for all 24 pages: False; blocks whose heading changes: 9
+    (25, 'A duplicate driving licence will be issued in the following ', 'A duplicate driving licence will be issued in the following circumstances')
+    (25, 'When the licence is lost or destroyed', 'A duplicate driving licence will be issued in the following circumstances')
+    (25, 'When the licence is defaced or torn or completely written up', 'A duplicate driving licence will be issued in the following circumstances')
+    (25, 'When the photograph affixed to the licence requires replacem', 'A duplicate driving licence will be issued in the following circumstances')
+    (25, 'Requirements', 'A duplicate driving licence will be issued in the following circumstances')
+    (25, 'Application in Form 2', 'A duplicate driving licence will be issued in the following circumstances')
+    (25, 'Original licence written or defaced if available.', 'A duplicate driving licence will be issued in the following circumstances')
+    (25, 'Attested photocopies of DL if available in case of loss of l', 'A duplicate driving licence will be issued in the following circumstances')
+    (25, 'Fees as prescribed along with user charges', 'A duplicate driving licence will be issued in the following circumstances')
+procedureassist_staging: stored chunks == chunk_text(source_text) for all 26 pages: True; blocks whose heading changes: 9
+    (25, 'A duplicate driving licence will be issued in the following ', 'A duplicate driving licence will be issued in the following circumstances')
+    (25, 'When the licence is lost or destroyed', 'A duplicate driving licence will be issued in the following circumstances')
+    (25, 'When the licence is defaced or torn or completely written up', 'A duplicate driving licence will be issued in the following circumstances')
+    (25, 'When the photograph affixed to the licence requires replacem', 'A duplicate driving licence will be issued in the following circumstances')
+    (25, 'Requirements', 'A duplicate driving licence will be issued in the following circumstances')
+    (25, 'Application in Form 2', 'A duplicate driving licence will be issued in the following circumstances')
+    (25, 'Original licence written or defaced if available.', 'A duplicate driving licence will be issued in the following circumstances')
+    (25, 'Attested photocopies of DL if available in case of loss of l', 'A duplicate driving licence will be issued in the following circumstances')
+    (25, 'Fees as prescribed along with user charges', 'A duplicate driving licence will be issued in the following circumstances')

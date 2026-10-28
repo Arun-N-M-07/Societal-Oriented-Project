@@ -1,0 +1,87 @@
+### procedureassist_staging
+
+## 'I am an NRI. How do I register as a voter?'
+  names_something -> True
+  extract_needs (multi-need gate passed) -> ([{'phrase': 'register as a voter', 'question': 'How do I register as a voter?'}], None)
+    _decide('register as a voter')
+      ranked 19:Register to Vote 0.739, 20:How to Vote 0.645, 21:Overseas (NRI) Voter Registr 0.579
+      classify -> ('matched', [19])
+      mentions(19:Register to Vote) -> True
+      covers('India') -> True
+    => matched ['19:Register to Vote']
+    _decide('How do I register as a voter?')
+      ranked 19:Register to Vote 0.742, 20:How to Vote 0.658, 21:Overseas (NRI) Voter Registr 0.577
+      classify -> ('matched', [19])
+      mentions(19:Register to Vote) -> True
+      covers('India') -> True
+    => matched ['19:Register to Vote']
+    _decide('I am an NRI. How do I register as a voter?')
+      ranked 21:Overseas (NRI) Voter Registr 0.788, 19:Register to Vote 0.726, 20:How to Vote 0.595
+      classify -> ('matched', [21])
+      mentions(21:Overseas (NRI) Voter Registr) -> True
+      covers('India') -> True
+    => matched ['21:Overseas (NRI) Voter Registr']
+  RESULT status=matched candidates=['19:Register to Vote'] named=True clarification=None
+
+## 'I study in Canada. Can I still vote in Indian elections?'
+  names_something -> True
+  extract_needs (multi-need gate passed) -> ([{'phrase': 'vote in Indian elections', 'question': 'Can I still vote in Indian elections if I study in Canada?'}], None)
+    _decide('vote in Indian elections')
+      ranked 19:Register to Vote 0.678, 20:How to Vote 0.593, 21:Overseas (NRI) Voter Registr 0.546
+      classify -> ('matched', [19])
+      mentions(19:Register to Vote) -> True
+      covers('India') -> True
+    => matched ['19:Register to Vote']
+    _decide('Can I still vote in Indian elections if I study in Canada?')
+      ranked 21:Overseas (NRI) Voter Registr 0.574, 19:Register to Vote 0.536, 20:How to Vote 0.460
+      classify -> ('matched', [21])
+      mentions(21:Overseas (NRI) Voter Registr) -> False
+    => no_match []
+    _decide('I study in Canada. Can I still vote in Indian elections?')
+      ranked 21:Overseas (NRI) Voter Registr 0.558, 19:Register to Vote 0.557, 20:How to Vote 0.484
+      classify -> ('ambiguous', [21, 19])
+      mentions(21:Overseas (NRI) Voter Registr) -> False
+      mentions(19:Register to Vote) -> False
+    => no_match []
+  RESULT status=matched candidates=['19:Register to Vote'] named=False clarification=None
+
+## 'I moved to Singapore for work. How do I enrol as a voter?'
+  names_something -> True
+  extract_needs (multi-need gate passed) -> ([{'phrase': 'enrol as a voter', 'question': 'How do I enrol as a voter in Singapore?'}], None)
+    _decide('enrol as a voter')
+      ranked 19:Register to Vote 0.719, 20:How to Vote 0.638, 21:Overseas (NRI) Voter Registr 0.618
+      classify -> ('matched', [19])
+      mentions(19:Register to Vote) -> True
+      covers('India') -> True
+    => matched ['19:Register to Vote']
+    _decide('How do I enrol as a voter in Singapore?')
+      ranked 19:Register to Vote 0.638, 20:How to Vote 0.593, 21:Overseas (NRI) Voter Registr 0.556
+      classify -> ('matched', [19])
+      mentions(19:Register to Vote) -> False
+    => no_match []
+    _decide('I moved to Singapore for work. How do I enrol as a voter?')
+      ranked 19:Register to Vote 0.580, 21:Overseas (NRI) Voter Registr 0.562, 20:How to Vote 0.538
+      classify -> ('ambiguous', [19, 21])
+      mentions(19:Register to Vote) -> False
+      mentions(21:Overseas (NRI) Voter Registr) -> False
+    => no_match []
+  RESULT status=matched candidates=['19:Register to Vote'] named=False clarification=None
+
+## 'How do I register to vote in Kerala?'
+  names_something -> True
+    _decide('How do I register to vote in Kerala?')
+      ranked 19:Register to Vote 0.677, 20:How to Vote 0.590, 21:Overseas (NRI) Voter Registr 0.499
+      classify -> ('matched', [19])
+      mentions(19:Register to Vote) -> False
+    => no_match []
+  RESULT status=no_match candidates=[] named=False clarification=None
+
+## 'How do I change my address in the electoral roll?'
+  names_something -> True
+    _decide('How do I change my address in the electoral roll?')
+      ranked 21:Overseas (NRI) Voter Registr 0.709, 19:Register to Vote 0.613, 29:Change of Address in Vehicle 0.523
+      classify -> ('matched', [21])
+      mentions(21:Overseas (NRI) Voter Registr) -> True
+      covers('India') -> True
+    => matched ['21:Overseas (NRI) Voter Registr']
+  RESULT status=matched candidates=['21:Overseas (NRI) Voter Registr'] named=False clarification=None

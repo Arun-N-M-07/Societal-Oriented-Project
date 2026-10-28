@@ -1,0 +1,15 @@
+== C4: retrieved [77, 78, 75, 76, 81] quote in chunk 77
+  verify_claims KEPT; check_claims x3 ['KEPT', 'KEPT', 'KEPT'] :: For a vehicle registered within the same State, the buyer must apply within thirty days of the transfer in Form 30.
+  verify_claims KEPT; check_claims x3 ['KEPT', 'KEPT', 'KEPT'] :: For a vehicle registered within the same State, the buyer must apply within fourteen days of the transfer in Form 30.
+
+== W10: pages whose stored text says 'as prescribed'
+  page 23 Permanent Driving Licence: 'Fees as prescribed along with user charges'
+  page 24 Renewal of Driving Licence: 'Fees as prescribed along with user charges'
+  page 25 Duplicate Driving Licence: 'Fees as prescribed along with user charges'
+  page 26 International Driving Permit: 'Fees as prescribed along with user charges.'
+
+== W10: IDP page (26), follow-up 'And how much does it cost?'
+  [And how much does it cost?] generated+verified: ['Fees as prescribed along with user charges.'] | check_claims kept 1 complete=True
+     answer_from_naming_pages -> (27, ['The fee for the issue of a learner’s licence in Form 3 for each class of vehicle is Rs. 150.00/-.', 'The fee for the learner’s licence test or repeat test fee, as the case may be, is Rs. 50.00/-.', 'The fee for the test, or repeat test, as the case may be, of competence to drive (for each class of vehicle) is Rs. 300.00/-.', 'The fee for the issue of a driving licence is Rs. 200.00/-.', 'The fee for the issue of an International Driving Permit is Rs. 1000.00/-.', 'The fee for the addition of another class of vehicle to a driving licence is Rs. 500.00/-.', 'The fee for the endorsement or renewal of authorisation for a vehicle carrying hazardous goods is Rs. 1000.00/-.', 'The fee for the renewal of a driving licence is Rs. 200.00/-.'], 'complete')
+  [What is the fee for an International Driving Permit?] generated+verified: [] | check_claims kept 0 complete=False
+     answer_from_naming_pages -> (27, ['The fee for the issue of an International Driving Permit is Rs. 1000.00/-'], 'complete')

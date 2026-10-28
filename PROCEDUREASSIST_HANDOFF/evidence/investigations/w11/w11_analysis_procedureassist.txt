@@ -1,0 +1,63 @@
+### procedureassist: 182 distinct questions (156 in scope, 21 out of scope, 5 ambiguous)
+outcomes today: {'correct': 154, 'WRONG PAGE': 5, 'asks (expected among)': 9, 'FORCED MATCH': 2, 'MISSED (no_match)': 6, 'FALSE MATCH': 5, 'ambiguous (safe)': 1}
+
+## misses (in scope, no match) and their cause
+  threshold   best Transfer of Vehicle Ownership:0.445 | population[18]     sold my bike, need to transfer the RC
+  name check  best Apply for Fresh / Re-issue Ord:0.649 | identification[19] My Indian passport has expired. How do I get it reissued?
+  name check  best Apply for Fresh / Re-issue Ord:0.621 | identification[20] I need a passport for the first time and I live in Bengaluru.
+  threshold   best Renewal of Driving Licence:0.518 | audit_probe        How much do I pay to get my DL renewed?
+  threshold   best Transfer of Vehicle Ownership:0.529 | audit_probe        I sold my bike. What does the buyer have to do and by when?
+  name check  best Overseas (NRI) Voter Registrat:0.555 | audit_probe        I work in Dubai. Can I vote in India?
+
+## de-duplicated threshold sweep
+   t     correct  wrong  missed  asks | out-of-scope false match | ambiguous forced
+  0.45      136      5       4    11 |            8 |      2
+  0.46      136      5       4    11 |            9 |      2
+  0.47      136      5       4    11 |            8 |      2
+  0.48      136      5       4    11 |            8 |      2
+  0.49      136      5       4    11 |            7 |      2
+  0.50      137      5       4    10 |            6 |      2
+  0.51      138      5       4     9 |            6 |      2
+  0.52      137      5       5     9 |            6 |      2
+  0.53*     136      5       6     9 |            5 |      2
+  0.54      135      5       7     9 |            5 |      1
+  0.55      135      5       7     9 |            5 |      1
+  0.56      134      5       8     9 |            5 |      1
+  0.57      133      5       9     9 |            5 |      1
+  0.58      132      5      11     8 |            5 |      1
+  0.59      131      5      13     7 |            5 |      1
+  0.60      130      6      14     6 |            4 |      2
+
+## margin variant (second candidate below the threshold also counts as close)
+  correct                -> asks (expected among)  | population[12]     dl renewal process
+  summary: {('correct', 'asks (expected among)'): 1}
+
+## real /api/identify for every question not correct today (need extraction included)
+  whole-message WRONG PAGE             | real API matched [26] -> WRONG PAGE             | What is the fee for an International Driving Permit?
+  whole-message asks (expected among)  | real API ambiguous [22, 23] -> asks (expected among)  | I have a learner's licence and want my first full driving licence
+  whole-message asks (expected among)  | real API ambiguous [19, 21] -> asks (expected among)  | I live abroad. How do I register to vote?
+  whole-message WRONG PAGE             | real API matched [27] -> correct                | Driving licence renew panna evlo fees?
+  whole-message asks (expected among)  | real API ambiguous [37, 36] -> asks (expected among)  | How much does the central government contribute to the pension scheme?
+  whole-message FORCED MATCH           | real API no_match [] -> correct                | How do I renew?
+  whole-message WRONG PAGE             | real API matched [24] -> WRONG PAGE             | What is the fee for renewing my driving licence after the grace period
+  whole-message asks (expected among)  | real API ambiguous [21, 19] -> asks (expected among)  | Which form is used to correct entries in the electoral roll?
+  whole-message FORCED MATCH           | real API no_match [] -> correct                | What is the fee?
+  whole-message asks (expected among)  | real API ambiguous [32, 33, 16] -> asks (expected among)  | How can I register on the income tax portal?
+  whole-message MISSED (no_match)      | real API no_match [] -> MISSED (no_match)      | sold my bike, need to transfer the RC
+  whole-message asks (expected among)  | real API matched [15] -> correct                | I recently updated my Aadhaar. Now I want to renew my passport.
+  whole-message FALSE MATCH            | real API matched [15] -> FALSE MATCH            | How do I apply for a US passport?
+  whole-message FALSE MATCH            | real API matched [24] -> FALSE MATCH            | How do I renew my driving licence in the UK?
+  whole-message FALSE MATCH            | real API matched [31] -> FALSE MATCH            | How do I change the name on my PAN card?
+  whole-message FALSE MATCH            | real API matched [17] -> FALSE MATCH            | How do I get a marriage certificate?
+  whole-message asks (expected among)  | real API ambiguous [23, 22] -> asks (expected among)  | How do I get a learner's licence?
+  whole-message WRONG PAGE             | real API matched [17] -> WRONG PAGE             | What documents do I need to file my income tax return?
+  whole-message FALSE MATCH            | real API matched [17] -> FALSE MATCH            | How do I apply for a marriage certificate?
+  whole-message ambiguous (safe)       | real API ambiguous [22, 23] -> ambiguous (safe)       | How do I apply for a driving licence in the UK?
+  whole-message asks (expected among)  | real API matched [18] -> correct                | I moved house and my Aadhaar card still shows my old address.
+  whole-message MISSED (no_match)      | real API matched [15] -> correct                | My Indian passport has expired. How do I get it reissued?
+  whole-message MISSED (no_match)      | real API matched [15] -> correct                | I need a passport for the first time and I live in Bengaluru.
+  whole-message MISSED (no_match)      | real API no_match [] -> MISSED (no_match)      | How much do I pay to get my DL renewed?
+  whole-message MISSED (no_match)      | real API no_match [] -> MISSED (no_match)      | I sold my bike. What does the buyer have to do and by when?
+  whole-message WRONG PAGE             | real API matched [20] -> WRONG PAGE             | How do I get my name on the voters list?
+  whole-message MISSED (no_match)      | real API matched [19] -> WRONG PAGE             | I work in Dubai. Can I vote in India?
+  whole-message asks (expected among)  | real API ambiguous [35, 18] -> asks (expected among)  | What's the charge to fix my address in Aadhaar at the post office?

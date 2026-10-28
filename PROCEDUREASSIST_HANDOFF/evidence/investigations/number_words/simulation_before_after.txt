@@ -1,0 +1,41 @@
+== number-word + unit phrases in stored text that now give a value (both databases)
+procedureassist_staging [(15, 'three', 3.0), (19, 'two', 2.0), (22, 'eighteen', 18.0), (22, 'twenty', 20.0), (24, 'five', 5.0), (24, 'one', 1.0), (30, 'forty five', 45.0), (30, 'fourteen', 14.0), (30, 'thirty', 30.0), (30, 'three', 3.0), (37, 'one', 1.0)]
+procedureassist [(15, 'three', 3.0), (19, 'two', 2.0), (22, 'eighteen', 18.0), (22, 'twenty', 20.0), (24, 'five', 5.0), (24, 'one', 1.0), (30, 'forty five', 45.0), (30, 'fourteen', 14.0), (30, 'thirty', 30.0), (30, 'three', 3.0), (37, 'one', 1.0)]
+
+== phrases: old vs new _numbers
+  'completed twenty years of age'                    old []           new ['20.0']
+  'Twenty Years'                                     old []           new ['20.0']
+  'within fourteen days'                             old []           new ['14.0']
+  'twenty-five years'                                old []           new ['25.0']
+  'one hundred and twenty years'                     old []           new ['120.0']
+  'eighteen and forty years'                         old []           new ['58.0']
+  'five years and three months'                      old []           new ['3.0', '5.0']
+  'two or three years'                               old []           new ['3.0']
+  'a period of three months'                         old []           new ['3.0']
+  'two copies of Form 6'                             old ['6.0']      new ['2.0', '6.0']
+  'three times'                                      old []           new ['3.0']
+  'one month before'                                 old []           new ['1.0']
+  'one by one'                                       old []           new []
+  'two options'                                      old []           new []
+  'five pre-filed sections'                          old []           new []
+  'six fields'                                       old []           new []
+  'Two separate OTPs'                                old []           new []
+  'penalty days'                                     old []           new []
+  'and copies'                                       old []           new []
+  'Twenty thousand rupees'                           old []           new []
+  'Rupees One Thousand Only for delay of each year'  old []           new []
+  'Rs. 300.00/- each year'                           old ['300.0']    new ['300.0']
+  '30 days'                                          old ['30.0']     new ['30.0']
+  '2 weeks'                                          old ['2.0']      new ['2.0']
+
+== verify_claims: old vs new
+  old REJECTED new KEPT     (as intended)  20 digits vs twenty
+  old KEPT     new KEPT     (as intended)  twenty vs twenty
+  old REJECTED new KEPT     (as intended)  14 digits vs fourteen
+  old KEPT     new REJECTED (as intended)  18 vs 20
+  old KEPT     new REJECTED (as intended)  20 vs 18
+  old KEPT     new REJECTED (as intended)  thirty vs fourteen days
+  old KEPT     new REJECTED (as intended)  six vs three months
+  old KEPT     new REJECTED (as intended)  three vs two copies
+  old KEPT     new REJECTED (as intended)  two weeks vs fourteen days (units not converted)
+  old KEPT     new KEPT     (as intended)  no number in claim

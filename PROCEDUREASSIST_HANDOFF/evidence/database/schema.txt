@@ -1,0 +1,32 @@
+                                  Table "public.procedure_chunks"
+    Column    |     Type     | Collation | Nullable |                   Default                    
+--------------+--------------+-----------+----------+----------------------------------------------
+ id           | integer      |           | not null | nextval('procedure_chunks_id_seq'::regclass)
+ procedure_id | integer      |           | not null | 
+ chunk_index  | integer      |           | not null | 
+ content      | text         |           | not null | 
+ embedding    | vector(1024) |           | not null | 
+Indexes:
+    "procedure_chunks_pkey" PRIMARY KEY, btree (id)
+    "ix_procedure_chunks_procedure_id" btree (procedure_id)
+    "procedure_chunks_procedure_id_chunk_index_key" UNIQUE CONSTRAINT, btree (procedure_id, chunk_index)
+Foreign-key constraints:
+    "procedure_chunks_procedure_id_fkey" FOREIGN KEY (procedure_id) REFERENCES procedures(id) ON DELETE CASCADE
+
+                                 Table "public.procedures"
+     Column      |  Type   | Collation | Nullable |                Default                 
+-----------------+---------+-----------+----------+----------------------------------------
+ id              | integer |           | not null | nextval('procedures_id_seq'::regclass)
+ name            | text    |           | not null | 
+ department      | text    |           |          | 
+ jurisdiction    | text    |           |          | 
+ summary         | text    |           | not null | 
+ source_url      | text    |           | not null | 
+ source_text     | text    |           | not null | 
+ structured_data | jsonb   |           | not null | 
+Indexes:
+    "procedures_pkey" PRIMARY KEY, btree (id)
+    "procedures_source_url_key" UNIQUE CONSTRAINT, btree (source_url)
+Referenced by:
+    TABLE "procedure_chunks" CONSTRAINT "procedure_chunks_procedure_id_fkey" FOREIGN KEY (procedure_id) REFERENCES procedures(id) ON DELETE CASCADE
+

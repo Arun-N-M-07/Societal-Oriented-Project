@@ -1,0 +1,19 @@
+DB: procedureassist
+### When is a duplicate driving licence issued? -> matched ['Duplicate Driving Licence']
+   insufficient=False partial=None
+   - A duplicate driving licence will be issued when the licence is lost or destroyed.
+       quote: 'When the licence is lost or destroyed'
+   - A duplicate driving licence will be issued when the licence is defaced or torn or completely written up.
+       quote: 'When the licence is defaced or torn or completely written up'
+   - A duplicate driving licence will be issued when the photograph affixed to the licence requires replacement.
+       quote: 'When the photograph affixed to the licence requires replacement'
+### I lost my DL, what should I do? -> matched ['Duplicate Driving Licence']
+   insufficient=False partial=None
+   - If your driving licence is lost, a duplicate licence will be issued.
+       quote: 'A duplicate driving licence will be issued in the following circumstances When the licence is lost or destroyed'
+   - To apply for a duplicate licence, you need to submit an application in Form 2.
+       quote: 'Application in Form 2'
+   - If your licence is lost, you need to provide attested photocopies of your DL if available.
+       quote: 'Attested photocopies of DL if available in case of loss of licence.'
+   - You may need to pay fees as prescribed along with user charges for the duplicate licence.
+       quote: 'Fees as prescribed along with user charges'

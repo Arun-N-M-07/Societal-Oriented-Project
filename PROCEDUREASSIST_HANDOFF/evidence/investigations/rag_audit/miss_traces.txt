@@ -1,0 +1,72 @@
+QUESTION: What is the fitness test fee for a motorcycle?
+[1-2] /api/identify -> {"status": "matched"} [(39, 'Vehicle Registration Fees and User Charges')]
+[3-5] retrieve(procedure 39 'Vehicle Registration Fees and User Charges', limit 5) -> chunks [594, 593, 595, 587, 591] (page has ? chunks)
+[6] run 1 raw model JSON: {"insufficient_evidence": false, "claims": [{"text": "The fitness test fee for a motorcycle is Rupees Two Hundred Only.", "chunk_id": 594, "quote": "10. Conducting test of a vehicle for grant or renewal of certificate of fitness: (a) 
+  [7-8] claim: 'The fitness test fee for a motorcycle is Rupees Two Hundred Only.'
+        quote: '10. Conducting test of a vehicle for grant or renewal of certificate of fitness: (a) Motorcycle (i) Manual: Rupees Two Hundred Only (ii) Automated: Rupees Four Hundred Only 62(2) ---' chunk 594
+        FAIL  all quoted money kept
+  [7-8] claim: 'The fitness test fee for a motorcycle is Rupees Two Hundred Only.'
+        quote: '11. Grant or renewal of certificate of fitness for motor vehicle Rupees Two Hundred Only. 62(2) ---' chunk 595
+        PASS  all quoted money kept
+  verify_claims kept 1
+  check_claims kept 1 complete=False
+[9] /api/guidance -> {"procedure_id": 39, "source_url": "https://parivahan.gov.in/en/content/fees-and-user-charges", "insufficient_evidence": false, "claims": [{"text": "The fitness test fee for a motorcycle is Rupees Two Hundred Only.", "chunk_id": 595, "quot
+
+QUESTION: My dad passed away; can I keep using his car?
+[1-2] /api/identify -> {"status": "matched"} [(30, 'Transfer of Vehicle Ownership')]
+[3-5] retrieve(procedure 30 'Transfer of Vehicle Ownership', limit 5) -> chunks [75, 78, 80, 76, 77] (page has ? chunks)
+[6] run 1 raw model JSON: {"insufficient_evidence": false, "claims": [{"text": "When the registered owner of a vehicle dies, transfer of ownership is affected in favour of the legal heirs of the deceased registered owner.", "chunk_id": 75, "quote": "When the r
+  [7-8] claim: 'When the registered owner of a vehicle dies, transfer of ownership is affected in favour of the legal heirs of the deceased registered owner.'
+        quote: 'When the registered owner of a vehicle dies, transfer of ownership is affected in favour of the legal heirs of the deceased registered owner.' chunk 75
+        PASS  all quoted money kept
+  [7-8] claim: 'Where the owner of a motor vehicle dies, the person succeeding to the possession of the vehicle may for a period of three months, use the vehicle as if it has been transferred to him where such person has, within thirty days of the death of the
+        quote: 'Where the owner of a motor vehicle dies, the person succeeding to the possession of the vehicle may for a period of three months, use the vehicle as if it has been transferred to him where such person has, within thirty days of the death of the
+        FAIL  quote word-for-word in passage
+        PASS  all quoted money kept
+  [7-8] claim: 'Transfer of ownership on death of owner of the vehicle Apply in Form 31 within the period of three months to the registering authority for the transfer of ownership of the vehicle in your name Pay appropriate fee and tax as specified in rule 81
+        quote: 'Transfer of ownership on death of owner of the vehicle Apply in Form 31 within the period of three months to the registering authority for the transfer of ownership of the vehicle in your name Pay appropriate fee and tax as specified in rule 81
+        PASS  all quoted money kept
+  [7-8] claim: 'Form 31 Certificate of registration Certificate of insurance Death certificate in relation to the registered owner Certificate of pollution under control * PAN card (successor) or Form 60 * Pencil Print of Chassis & Engine Number * Proof of Dat
+        quote: 'Form 31 Certificate of registration Certificate of insurance Death certificate in relation to the registered owner Certificate of pollution under control * PAN card (successor) or Form 60 * Pencil Print of Chassis & Engine Number * Proof of Dat
+        PASS  all quoted money kept
+  verify_claims kept 3
+  check_claims kept 1 complete=False
+[9] /api/guidance -> {"procedure_id": 30, "source_url": "https://parivahan.gov.in/en/content/ownership-transfer", "insufficient_evidence": false, "claims": [{"text": "When the registered owner of a vehicle dies, transfer of ownership is affected in favour of t
+
+QUESTION: How much does my boss put into my PF?
+[1-2] /api/identify -> {"status": "matched"} [(36, "Employees' Provident Fund Scheme")]
+[3-5] retrieve(procedure 36 'Employees' Provident Fund Scheme', limit 5) -> chunks [563, 565, 562, 566, 564] (page has ? chunks)
+[6] run 1 raw model JSON: {"insufficient_evidence": true, "claims": []}
+  verify_claims kept 0
+[9] /api/guidance -> {"procedure_id": 36, "source_url": "https://www.epfo.gov.in/epf-scheme", "insufficient_evidence": true, "claims": [], "omitted_claims": 0}
+
+QUESTION: What is the income limit for filing ITR-1?
+[1-2] /api/identify -> {"status": "matched"} [(33, 'File ITR-1 (Sahaj) Online')]
+[3-5] retrieve(procedure 33 'File ITR-1 (Sahaj) Online', limit 5) -> chunks [547, 548, 545, 549, 553] (page has ? chunks)
+[6] run 1 raw model JSON: {"insufficient_evidence": false, "claims": [{"text": "The income limit for filing ITR-1 is ₹ 50 lakh during the FY.", "chunk_id": 547, "quote": "Total income does not exceed ₹ 50 lakh during the FY"}, {"text": "The income limit for fi
+  [7-8] claim: 'The income limit for filing ITR-1 is ₹ 50 lakh during the FY.'
+        quote: 'Total income does not exceed ₹ 50 lakh during the FY' chunk 547
+        FAIL  numbers in claim ['1.0', '50.0'] all in quote ['50.0']
+        PASS  all quoted money kept
+        FAIL  negation agrees
+  [7-8] claim: 'The income limit for filing ITR-1 is ₹ 50 lakh during the FY.'
+        quote: 'has total income exceeding ₹ 50 lakh' chunk 548
+        FAIL  numbers in claim ['1.0', '50.0'] all in quote ['50.0']
+        PASS  all quoted money kept
+  verify_claims kept 0
+[9] /api/guidance -> {"procedure_id": 33, "source_url": "https://www.incometax.gov.in/iec/foportal/help/how-to-file-itr1-form-sahaj?mobile-app=1", "insufficient_evidence": true, "claims": [], "omitted_claims": 1}
+
+QUESTION: I am 19. Can I get a licence to drive a lorry?
+[1-2] /api/identify -> {"status": "matched"} [(22, "Learner's Licence")]
+[3-5] retrieve(procedure 22 'Learner's Licence', limit 5) -> chunks [347, 346] (page has ? chunks)
+[6] run 1 raw model JSON: {"insufficient_evidence": true, "claims": []}
+  verify_claims kept 0
+[9] /api/guidance -> {"procedure_id": 22, "source_url": "https://parivahan.gov.in/en/content/learners-license", "insufficient_evidence": true, "claims": [], "omitted_claims": 0}
+
+QUESTION: For a passport, what documents do I need, what is the fee and how do I apply?
+[1-2] /api/identify -> {"status": "matched"} [(15, 'Apply for Fresh / Re-issue Ordinary Passport')]
+[3-5] retrieve(procedure 15 'Apply for Fresh / Re-issue Ordinary Passport', limit 5) -> chunks [8, 9, 12, 11, 10] (page has ? chunks)
+[6] run 1 raw model JSON: {"insufficient_evidence": true, "claims": []}
+  verify_claims kept 0
+[9] /api/guidance -> {"procedure_id": 15, "source_url": "https://www.passportindia.gov.in/psp/Apply", "insufficient_evidence": true, "claims": [], "omitted_claims": 0}
+

@@ -83,6 +83,23 @@ class QwenClientTest(unittest.TestCase):
             call_qwen("extract this")
 
     @patch("backend.extractor.httpx.post")
+    def test_retries_a_dropped_connection_once_but_not_a_client_error(self, post):
+        request = httpx.Request("POST", "http://ollama.test/api/generate")
+        ok = httpx.Response(200, json={"response": '{"name": "x"}'}, request=request)
+        post.side_effect = [httpx.ConnectError("reset", request=request), ok]
+        with self.assertLogs("procedureassist", "WARNING") as logs:
+            self.assertEqual(call_qwen("extract this"), '{"name": "x"}')
+        self.assertEqual(post.call_count, 2)
+        self.assertIn("retrying", logs.output[0])
+        self.assertNotIn("extract this", "".join(logs.output))  # the prompt is never logged
+
+        post.reset_mock()
+        post.side_effect = [httpx.Response(404, request=request), ok]
+        with self.assertRaisesRegex(ExtractionError, "HTTP 404"):
+            call_qwen("extract this")
+        self.assertEqual(post.call_count, 1)
+
+    @patch("backend.extractor.httpx.post")
     def test_rejects_bad_ollama_responses(self, post):
         request = httpx.Request("POST", "http://ollama.test/api/generate")
         response = httpx.Response(404, request=request)

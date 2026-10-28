@@ -1,0 +1,25 @@
+DB: procedureassist
+QUESTION: At what age can I drive a transport vehicle?
+
+[1-2] /api/identify -> {"status": "matched"} [(22, "Learner's Licence")]
+     ranking (min 0.53, margin 0.03): [(22, "Learner's Licence", 0.7791), (23, 'Permanent Driving Licence', 0.5169), (28, 'Renewal of Vehicle Registration Certificate', 0.4786)]
+
+[3-5] retrieve(procedure 22 'Learner's Licence', limit 5) -> chunks [63, 62] (page has ? chunks)
+     chunk 63 (index 1, 290 chars): 'The applicant who has completed the age of eighteen years of age is eligible to apply for a driving licence to drive a motor vehicle other than a transport vehicle.\n\nAn applicant who has completed twenty years of age will be eligible for applying for a licence to drive a transport vehicle.'
+     chunk 62 (index 0, 894 chars): "Learner's License\n\nNeed for a Driving Licence\n\nNo person shall drive a motor vehicle in any public place unless he holds an effective driving licence issued to him by the Licensing Authority, authorising him to drive the vehicle.\n\nLicensing Authorities\n\nThe Joint Commissioner/ Deputy Commissioner and the Regional Transport Officers are the Licensing Authorities. The Administrative Officers and Motor Vehicle Inspectors are the Additional Licensing Authorities.\n\nAge limit to obtain Driving Licence\n\nAn applicant under the age of eighteen years shall be granted a learner's license to drive a motor cycle without gear except with the consent in writing of the person having the care of the person desiring a learner's license.\n\nThe applicant who has completed the age of eighteen years of age is eligible to apply for a driving licence to drive a motor vehicle other than a transport vehicle."
+     prompt length 3051 chars; no truncation in code (num_ctx from config)
+
+[6] run 1 raw model JSON: {"insufficient_evidence": false, "claims": [{"text": "The applicant who has completed twenty years of age will be eligible for applying for a licence to drive a transport vehicle.", "chunk_id": 63, "quote": "The applicant who has completed twenty years of age will be eligible for applying for a licence to drive a transport vehicle."}]}
+  [7-8] claim: 'The applicant who has completed twenty years of age will be eligible for applying for a licence to drive a transport vehicle.'
+        quote: 'The applicant who has completed twenty years of age will be eligible for applying for a licence to drive a transport vehicle.' chunk 63
+        PASS  cited chunk retrieved
+        FAIL  quote word-for-word in passage
+        PASS  quote long enough (>=4 words or whole item)
+        PASS  numbers in claim [] all in quote []
+        PASS  all quoted money kept
+        PASS  negation agrees
+        PASS  no back-reference opening
+        PASS  document kinds [] in heading/quote
+  verify_claims kept 0
+
+[9] /api/guidance -> {"procedure_id": 22, "source_url": "https://parivahan.gov.in/en/content/learners-license", "insufficient_evidence": true, "claims": [], "omitted_claims": 1}

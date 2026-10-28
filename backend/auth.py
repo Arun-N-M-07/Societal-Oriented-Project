@@ -11,6 +11,25 @@ PROVENANCE_TTL_SECONDS = 2 * 60 * 60
 SESSION_TTL_SECONDS = 12 * 60 * 60
 SESSION_COOKIE = "admin_session"
 _SCRYPT = {"n": 2**14, "r": 8, "p": 1}
+# Failed sign-ins allowed per client address in the window; then that address waits for the window to pass.
+# ponytail: kept in this process's memory (one server process; behind a proxy, run uvicorn with --proxy-headers
+# so the client address is the citizen's, not the proxy's).
+LOGIN_MAX_FAILURES = 5
+LOGIN_WINDOW_SECONDS = 15 * 60
+_login_failures: dict[str, list[float]] = {}
+
+
+def login_blocked(client: str) -> bool:
+    now = time.time()
+    _login_failures[client] = [t for t in _login_failures.get(client, []) if now - t < LOGIN_WINDOW_SECONDS]
+    return len(_login_failures[client]) >= LOGIN_MAX_FAILURES
+
+
+def record_login(client: str, ok: bool) -> None:
+    if ok:
+        _login_failures.pop(client, None)
+    else:
+        _login_failures.setdefault(client, []).append(time.time())
 
 
 class ProvenanceError(Exception):
@@ -66,7 +85,8 @@ def require_admin(admin_session: str | None = Cookie(default=None)) -> str:
     if (
         len(parts) == 3
         and parts[0] == "session"
-        and hmac.compare_digest(sign(payload), signature)
+        # Bytes, not str: compare_digest raises on non-ASCII text, which would be a 500 instead of a 401.
+        and hmac.compare_digest(sign(payload).encode(), signature.encode())
         and int(parts[1]) > time.time()
         and parts[2] == ADMIN_USERNAME
     ):
@@ -95,8 +115,8 @@ def verify_provenance_token(token: str, source_url: str, source_text: str) -> No
     if (
         len(parts) != 3
         or parts[0] != "provenance"
-        or not hmac.compare_digest(sign(payload), signature)
-        or not hmac.compare_digest(parts[2], _source_digest(source_url, source_text))
+        or not hmac.compare_digest(sign(payload).encode(), signature.encode())
+        or not hmac.compare_digest(parts[2].encode(), _source_digest(source_url, source_text).encode())
     ):
         raise ProvenanceError(
             "The source does not match the extracted page. Extract it again."
