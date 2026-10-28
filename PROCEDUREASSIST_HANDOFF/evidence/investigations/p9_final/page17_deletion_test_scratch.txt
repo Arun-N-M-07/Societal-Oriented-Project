@@ -1,4 +1,0 @@
-database: procedureassist_scratch
-DELETE 204
-pages 24 -> 23; chunks 122 -> 118; orphan chunks 0; every other procedure unchanged: True; every other chunk unchanged: True
-rolled back; pages now 24

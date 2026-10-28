@@ -1,6 +1,0 @@
-run 1: identify matched page 39 (Vehicle Registration Fees and User Charges); partial=True insufficient=False
-   - The fee to renew a certificate of fitness for a motor vehicle is Rupees Two Hundred Only.
-     quote: 11. Grant or renewal of certificate of fitness for motor vehicle Rupees Two Hundred Only. 62(2) ---
-run 2: identify matched page 39 (Vehicle Registration Fees and User Charges); partial=True insufficient=False
-   - The fee to renew a certificate of fitness for a motor vehicle is Rupees Two Hundred Only.
-     quote: 11. Grant or renewal of certificate of fitness for motor vehicle Rupees Two Hundred Only. 62(2) ---

@@ -13,6 +13,17 @@ OLLAMA_URL=$(setting OLLAMA_BASE_URL http://localhost:11434)
 LLM_MODEL=$(setting LLM_MODEL qwen3:8b)
 EMBEDDING_MODEL=$(setting EMBEDDING_MODEL qwen3-embedding:0.6b)
 
+# First free port at or above the given one, so a leftover server never blocks start-up.
+free_port() {
+    local port=$1
+    while lsof -nP -iTCP:"$port" -sTCP:LISTEN >/dev/null 2>&1; do port=$((port + 1)); done
+    echo "$port"
+}
+export BACKEND_PORT=$(free_port 8000)
+export FRONTEND_PORT=$(free_port 5173)
+export FRONTEND_ORIGIN="http://localhost:$FRONTEND_PORT"
+export VITE_API_BASE_URL="http://localhost:$BACKEND_PORT"
+
 brew services start postgresql@16 >/dev/null 2>&1 || true
 
 if ! curl -s "$OLLAMA_URL/api/tags" >/dev/null; then
@@ -31,5 +42,5 @@ done
 echo "Warming up $LLM_MODEL (first load is slow)..."
 ollama run "$LLM_MODEL" "hi" >/dev/null 2>&1 || true
 
-(sleep 6 && open http://localhost:5173) &
+(sleep 6 && open http://localhost:$FRONTEND_PORT) &
 exec ./run.sh

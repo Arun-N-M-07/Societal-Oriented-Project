@@ -1,7 +1,0 @@
-{"text":"How do I renew my passport","language":"en"}
-HTTP 200 in 12.999059s
-first request (with model load): 13s
-{"text":"How do I renew my passport","language":"en"}
-HTTP 200 in 2.070068s (model loaded)
-{"detail":"Send the recording as WAV audio."}
-HTTP 415 (wrong content type)

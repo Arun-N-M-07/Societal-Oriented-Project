@@ -1,9 +1,0 @@
-== main: unique rejected before 27, after 27; rejected with a numbers failure now: 1
-   (also before) failed=['length', 'numbers']
-     text:  'EPS has a contribution rate of 9.49% for employers, while EPF has a contribution rate of 12%.'
-     quote: '9.49% Contribution Rate' (chunk 568)
-   rejected now but not in the pre-change probe: 0
-   rejected before but not now (model output differs or claim now kept): 0
-== heldout: unique rejected before 4, after 4; rejected with a numbers failure now: 0
-   rejected now but not in the pre-change probe: 0
-   rejected before but not now (model output differs or claim now kept): 0

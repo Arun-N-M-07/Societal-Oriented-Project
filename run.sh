@@ -49,16 +49,16 @@ cleanup() {
 }
 trap cleanup EXIT HUP INT TERM
 
-.venv/bin/python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 &
+.venv/bin/python -m uvicorn backend.main:app --host 127.0.0.1 --port "${BACKEND_PORT:-8000}" &
 backend_pid=$!
 (
     cd frontend
-    exec ./node_modules/.bin/vite --host 127.0.0.1 --port 5173 --strictPort
+    exec ./node_modules/.bin/vite --host 127.0.0.1 --port "${FRONTEND_PORT:-5173}" --strictPort
 ) &
 frontend_pid=$!
 
-echo "Backend: http://localhost:8000"
-echo "Frontend: http://localhost:5173"
+echo "Backend: http://localhost:${BACKEND_PORT:-8000}"
+echo "Frontend: http://localhost:${FRONTEND_PORT:-5173}"
 echo "Press Ctrl+C to stop both servers."
 
 while kill -0 "$backend_pid" 2>/dev/null \

@@ -1,9 +1,0 @@
-Fri Oct 23 23:55:41 IST 2026
-database: procedureassist_staging
-pages|26
-chunks|140
-procedures_md5|8aba737fa436f74261657f7ab31eb901
-chunks_md5|93000b6936010307231b28f481faaa93
-orphan_chunks|0
-embedding_dims|1024
-pages_with_index_gaps|0

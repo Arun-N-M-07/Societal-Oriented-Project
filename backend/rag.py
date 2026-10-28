@@ -429,7 +429,7 @@ def verify_claims(claims: object, passages: dict[int, str]) -> list[dict]:
             <= set(_words(_spell_out(_normalize(f"{heading} {quote}"))).split())
             # A form or return the claim names is the one its quote, or the question the quote answers, names.
             or not _identifiers(text) <= _identifiers(f"{heading} {quote}")
-            or not _periods(quote) <= _periods(text) <= _periods(quote).union(*map(_periods, around))
+            or _periods(text) != _periods(quote).union(*map(_periods, around))
             # "No. But, when he ceases to be an apprentice he should be enrolled immediately" is quoted with its
             # "No"; a bare "Yes" or "No" is evidence only directly under its question.
             or YES_NO.match(_normalize(row)) and not YES_NO.match(quote_n)

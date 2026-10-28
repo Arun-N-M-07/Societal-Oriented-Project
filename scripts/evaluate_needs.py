@@ -10,7 +10,8 @@ asked) and verifies that each cited chunk belongs to the answering procedure.
 
 Tamil or Tamil-English messages are first normalized as /api/identify does; a case
 can also require a clarification ("clarification"), words the normalized query must
-keep ("keep", regexes) or that normalization is skipped ("bypass").
+keep ("keep", regexes), words it must not contain ("avoid", regexes) or that
+normalization is skipped ("bypass").
 """
 
 import json
@@ -93,6 +94,7 @@ with SessionLocal() as db:
             asked = [(procedures[0].id, query)] if status == "matched" else []
         understood = (clarified == case.get("clarification", False)
                       and all(re.search(word, query, re.IGNORECASE) for word in case.get("keep", []))
+                      and not any(re.search(word, query, re.IGNORECASE) for word in case.get("avoid", []))
                       and (query == message or not case.get("bypass")))
         results = {
             "single flow": len(old) == len(expected) and all(map(correct, expected, old)),

@@ -1,8 +1,0 @@
-ok   GET /health/ready reports the outage: 503 {'status': 'unavailable', 'database': 'ok', 'ollama': 'unavailable'}
-ok   GET /health (liveness) still 200
-     identify while down -> 502 {'detail': 'The search service is unavailable. Try again.'} in 0.0s (request id 61727c4363d0)
-ok   identify fails cleanly with 502 and a message, not a crash
-     guidance while down -> 502 {"detail":"The answer service is unavailable. Try again."}
-ok   guidance fails with 502
-
-0 failed check(s)

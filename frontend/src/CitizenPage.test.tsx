@@ -1,4 +1,4 @@
-import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import CitizenPage from "./CitizenPage";
@@ -32,10 +32,17 @@ function search(text = "My passport expired") {
   fireEvent.click(screen.getByRole("button", { name: "Send" }));
 }
 
+// A later question goes through the same box and the same identification as the first.
 function ask(text = "Which documents do I need?") {
-  fireEvent.change(screen.getByLabelText("Ask about this procedure"), { target: { value: text } });
-  fireEvent.click(screen.getByRole("button", { name: "Send" }));
+  search(text);
 }
+
+// The nth question-and-answer block on the page, oldest first.
+const exchange = (index: number) => document.querySelectorAll<HTMLElement>("section.exchange")[index];
+
+// The Send button is disabled while a question is being searched or answered.
+const settled = () =>
+  waitFor(() => expect(screen.getByRole("button", { name: "Send" }).hasAttribute("disabled")).toBe(false));
 
 beforeEach(() => {
   vi.resetAllMocks();
@@ -94,7 +101,7 @@ describe("citizen workflow", () => {
     expect(screen.queryByRole("heading", { name: passport.name })).toBeNull();
     expect(screen.queryByText(/does not answer this question/)).toBeNull();
     // Nothing is left open: the next question is searched afresh.
-    await waitFor(() => expect(screen.getByRole("button", { name: "Send" }).hasAttribute("disabled")).toBe(false));
+    await settled();
     search("How do I renew my passport?");
     await waitFor(() => expect(api.identifyProcedure).toHaveBeenCalledTimes(2));
   });
@@ -110,7 +117,6 @@ describe("citizen workflow", () => {
 
     expect(await screen.findByText("Register on the portal first.")).toBeTruthy();
     expect(screen.getByRole("heading", { name: passport.name })).toBeTruthy();
-    expect(screen.getByText(passport.name, { selector: "strong" })).toBeTruthy(); // open for follow-ups
   });
 
   it("lets the citizen choose between plausible procedures", async () => {
@@ -160,14 +166,15 @@ describe("citizen workflow", () => {
   });
 });
 
-describe("follow-up questions", () => {
+describe("later questions", () => {
   beforeEach(async () => {
     vi.mocked(api.identifyProcedure).mockResolvedValue({ status: "matched", candidates: [passport], named: true });
     render(<CitizenPage />);
     search();
     await screen.findByRole("heading", { name: passport.name });
-    await screen.findByRole("button", { name: "Send" });
+    await settled();
     vi.mocked(api.askGuidance).mockClear();
+    vi.mocked(api.identifyProcedure).mockClear();
   });
 
   it("shows verified answers with their official quotes", async () => {
@@ -199,7 +206,7 @@ describe("follow-up questions", () => {
     expect(await screen.findByText(/does not answer this question/)).toBeTruthy();
   });
 
-  it("appends each follow-up as a separate question and answer", async () => {
+  it("keeps the earlier exchange: each question is identified and answered on its own", async () => {
     vi.mocked(api.askGuidance).mockResolvedValueOnce({
       procedure_id: 13,
       source_url: passportDetail.source_url,
@@ -209,18 +216,21 @@ describe("follow-up questions", () => {
     });
     ask("Which documents do I need?");
     await screen.findByText("Carry proof of address.");
+    await settled();
     ask("Is there a fee?");
 
-    await waitFor(() => expect(screen.getAllByText(/does not answer this question/)).toHaveLength(2));
+    await waitFor(() => expect(screen.getByText(/does not answer this question/)).toBeTruthy());
     expect(screen.getByText("Carry proof of address.")).toBeTruthy();
     expect(screen.getByText("My passport expired")).toBeTruthy();
-    expect(screen.getByText("Which documents do I need?")).toBeTruthy();
     expect(screen.getByText("Is there a fee?")).toBeTruthy();
+    expect(document.querySelectorAll("section.exchange")).toHaveLength(3);
+    expect(api.identifyProcedure).toHaveBeenNthCalledWith(1, "Which documents do I need?", "en");
+    expect(api.identifyProcedure).toHaveBeenNthCalledWith(2, "Is there a fee?", "en");
     expect(api.askGuidance).toHaveBeenNthCalledWith(1, 13, "Which documents do I need?", "en");
     expect(api.askGuidance).toHaveBeenNthCalledWith(2, 13, "Is there a fee?", "en");
   });
 
-  it("retries a failed answer with the same question", async () => {
+  it("retries a failed answer by asking the same question again", async () => {
     vi.mocked(api.askGuidance)
       .mockRejectedValueOnce(new Error("The answer service is unavailable. Try again."))
       .mockResolvedValueOnce({
@@ -236,6 +246,9 @@ describe("follow-up questions", () => {
 
     await waitFor(() => expect(api.askGuidance).toHaveBeenCalledTimes(2));
     expect(api.askGuidance).toHaveBeenLastCalledWith(13, "Which documents do I need?", "en");
+    // The retry repeats the whole question, identification included.
+    expect(api.identifyProcedure).toHaveBeenCalledTimes(2);
+    expect(api.identifyProcedure).toHaveBeenLastCalledWith("Which documents do I need?", "en");
   });
 });
 
@@ -322,32 +335,27 @@ describe("several needs in one message", () => {
     expect((screen.getByLabelText("Your situation or question") as HTMLTextAreaElement).value).toBe("How do I get a voter ID?");
   });
 
-  it("routes follow-ups to the procedure they name, relationship questions across all, asks which one otherwise, or uses the one chosen", async () => {
+  it("identifies a later question on its own instead of routing it through the earlier procedures", async () => {
     render(<CitizenPage />);
     search("I want to renew my passport and update my Aadhaar address.");
     await screen.findByText("Answer for 30.");
-    await waitFor(() => expect(screen.getByRole("button", { name: "Send" }).hasAttribute("disabled")).toBe(false));
+    await settled();
+    vi.mocked(api.askGuidance).mockClear();
+    vi.mocked(api.askRelation).mockClear();
 
     vi.mocked(api.identifyProcedure).mockResolvedValue({ status: "matched", candidates: [aadhaar] });
     search("Tell me more about the Aadhaar update");
-    await waitFor(() => expect(api.askGuidance).toHaveBeenLastCalledWith(30, "Tell me more about the Aadhaar update", "en"));
-    await waitFor(() => expect(screen.getByRole("button", { name: "Send" }).hasAttribute("disabled")).toBe(false));
+    await waitFor(() => expect(api.askGuidance).toHaveBeenCalledWith(30, "Tell me more about the Aadhaar update", "en"));
+    await settled();
+    expect(api.identifyProcedure).toHaveBeenLastCalledWith("Tell me more about the Aadhaar update", "en");
 
+    vi.mocked(api.askGuidance).mockClear();
     vi.mocked(api.identifyProcedure).mockResolvedValue({ status: "no_match", candidates: [] });
     search("Can I reuse my documents?");
-    await waitFor(() => expect(api.askRelation).toHaveBeenLastCalledWith([13, 30], "Can I reuse my documents?"));
-    await waitFor(() => expect(screen.getByRole("button", { name: "Send" }).hasAttribute("disabled")).toBe(false));
-
-    vi.mocked(api.askRelation).mockClear();
-    search("What are the fees?");
-    expect(await screen.findByText(/Which procedure is this about\?/)).toBeTruthy();
-    expect(api.askRelation).not.toHaveBeenCalled();
-    await waitFor(() => expect(screen.getByRole("button", { name: "Send" }).hasAttribute("disabled")).toBe(false));
-
-    fireEvent.click(screen.getAllByRole("button", { name: "Ask more about this" })[0]);
-    await screen.findByRole("heading", { name: passport.name });
-    ask("What are the fees?");
-    await waitFor(() => expect(api.askGuidance).toHaveBeenLastCalledWith(13, "What are the fees?", "en"));
+    expect(await screen.findByText(/don't have an approved procedure/)).toBeTruthy();
+    await settled();
+    expect(api.askGuidance).not.toHaveBeenCalled();
+    expect(api.askRelation).not.toHaveBeenCalled(); // no relationship check from the earlier matched ids
   });
 
   it("shows a comparison point by point with each procedure named and missing details stated", async () => {
@@ -421,22 +429,20 @@ describe("Tamil questions", () => {
     expect(api.askGuidance).not.toHaveBeenCalled();
   });
 
-  it("follow-ups about the open procedure are sent with the selected language", async () => {
-    vi.mocked(api.identifyProcedure).mockResolvedValue({ status: "matched", candidates: [passport], named: true });
-    vi.mocked(api.askGuidance).mockResolvedValueOnce({
-      procedure_id: 13, source_url: passportDetail.source_url, insufficient_evidence: true, claims: [], omitted_claims: 0,
-    }).mockResolvedValueOnce({
-      procedure_id: 13, source_url: passportDetail.source_url, insufficient_evidence: true, claims: [], omitted_claims: 0,
-      normalized_query: "What documents are needed?",
-    });
+  it("identifies a later Tanglish question with the selected language and answers its English query", async () => {
+    vi.mocked(api.identifyProcedure)
+      .mockResolvedValueOnce({ status: "matched", candidates: [passport], named: true })
+      .mockResolvedValueOnce({ status: "matched", candidates: [passport], normalized_query: "What documents are needed?" });
     render(<CitizenPage />);
     search();
     await screen.findByRole("heading", { name: passport.name });
+    await settled();
     fireEvent.change(screen.getByLabelText("Language"), { target: { value: "ta" } });
     ask("Enna documents venum?");
 
-    await waitFor(() => expect(api.askGuidance).toHaveBeenLastCalledWith(13, "Enna documents venum?", "ta"));
     expect(await screen.findByText("Searched as: What documents are needed?")).toBeTruthy();
+    expect(api.identifyProcedure).toHaveBeenLastCalledWith("Enna documents venum?", "ta");
+    expect(api.askGuidance).toHaveBeenLastCalledWith(13, "What documents are needed?", "en");
   });
 });
 
@@ -495,113 +501,163 @@ describe("read aloud", () => {
   });
 });
 
-describe("follow-ups the open procedure cannot answer", () => {
-  const fees = { ...passport, id: 27, name: "Driving Licence Fees and Charges", summary: "Fee table." };
-  const refusal = { procedure_id: 13, source_url: passportDetail.source_url, insufficient_evidence: true, claims: [], omitted_claims: 0 };
-  const feeAnswer = {
-    procedure_id: 27, source_url: "https://parivahan.gov.in/fees", insufficient_evidence: false, omitted_claims: 0,
-    claims: [{ text: "Renewal costs Rs. 200.", chunk_id: 69, quote: "Renewal of driving licence Rs. 200.00/-" }],
-  };
+describe("every question is identified on its own", () => {
+  const enrolment = { ...passport, id: 40, name: "Aadhaar Enrolment", summary: "Enrol for Aadhaar." };
+  const income = { ...passport, id: 17, name: "Income Certificate", summary: "Apply for an income certificate." };
+  const detail = (p: typeof enrolment) => ({ ...passportDetail, ...p, source_url: `https://example.gov.in/${p.id}` });
+  const answer = (id: number, text: string) => ({
+    procedure_id: id, source_url: `https://example.gov.in/${id}`, insufficient_evidence: false, omitted_claims: 0,
+    claims: [{ text, chunk_id: id, quote: `${text} quoted` }],
+  });
 
-  async function openPassport() {
-    vi.mocked(api.identifyProcedure).mockResolvedValueOnce({ status: "matched", candidates: [passport], named: true });
+  beforeEach(async () => {
+    vi.mocked(api.getProcedure).mockImplementation(async (id) => detail(id === 40 ? enrolment : income));
+    vi.mocked(api.askGuidance).mockImplementation(async (id) => answer(id, `Answer for ${id}.`));
+    vi.mocked(api.identifyProcedure).mockResolvedValueOnce({ status: "matched", candidates: [enrolment], named: true });
     render(<CitizenPage />);
-    search();
-    await screen.findByRole("heading", { name: passport.name });
-  }
-
-  it("are searched again and answered by the procedure whose page has the answer", async () => {
-    await openPassport();
-    vi.mocked(api.askGuidance).mockResolvedValueOnce(refusal).mockResolvedValueOnce(feeAnswer);
-    vi.mocked(api.identifyProcedure).mockResolvedValueOnce({ status: "matched", candidates: [fees] });
-    vi.mocked(api.getProcedure).mockResolvedValueOnce({ ...fees, eligibility: null, steps: ["Pay."], source_url: feeAnswer.source_url });
-    ask("How much is the renewal fee?");
-
-    expect(await screen.findByText("Renewal costs Rs. 200.")).toBeTruthy();
-    expect(api.askGuidance).toHaveBeenNthCalledWith(2, 13, "How much is the renewal fee?", "en");
-    expect(api.askGuidance).toHaveBeenNthCalledWith(3, 27, "How much is the renewal fee?", "en");
-    expect(screen.getByRole("heading", { name: fees.name })).toBeTruthy();
-    expect(screen.getByRole("heading", { name: passport.name })).toBeTruthy(); // the earlier answer keeps its own
-    // Only the opening answer's refusal remains; the follow-up's was replaced by the fee answer.
-    expect(screen.getAllByText(/does not answer this question/)).toHaveLength(1);
+    search("How do I apply for Aadhaar?");
+    await screen.findByText("Answer for 40.");
+    await settled();
+    vi.mocked(api.askGuidance).mockClear();
   });
 
-  it("stay with the open procedure when the page the search finds cannot answer either", async () => {
-    await openPassport();
-    vi.mocked(api.askGuidance).mockResolvedValueOnce(refusal)
-      .mockResolvedValueOnce({ ...refusal, procedure_id: 27, source_url: "https://parivahan.gov.in/fees" });
-    vi.mocked(api.identifyProcedure).mockResolvedValueOnce({ status: "matched", candidates: [fees] });
-    vi.mocked(api.getProcedure).mockResolvedValueOnce({ ...fees, eligibility: null, steps: ["Pay."], source_url: "https://parivahan.gov.in/fees" });
-    ask("Can I pay in cash?");
+  it("asks for the new procedure's guidance, never the earlier one's", async () => {
+    vi.mocked(api.identifyProcedure).mockResolvedValueOnce({ status: "matched", candidates: [income], named: true });
+    ask("How do I apply for an income certificate?");
 
-    await waitFor(() => expect(api.askGuidance).toHaveBeenLastCalledWith(27, "Can I pay in cash?", "en"));
-    await waitFor(() => expect(screen.getAllByText(/does not answer this question/)).toHaveLength(2));
-    expect(screen.queryByRole("heading", { name: fees.name })).toBeNull();
-    expect(screen.getByText(passport.name, { selector: "strong" })).toBeTruthy(); // still asking about the passport
-    const links = screen.getAllByRole("link", { name: "official page" }).map((link) => link.getAttribute("href"));
-    expect(links).toEqual([passportDetail.source_url, passportDetail.source_url]);
+    expect(await screen.findByText("Answer for 17.")).toBeTruthy();
+    expect(api.identifyProcedure).toHaveBeenCalledTimes(2);
+    expect(api.identifyProcedure).toHaveBeenLastCalledWith("How do I apply for an income certificate?", "en");
+    expect(api.askGuidance).toHaveBeenCalledTimes(1);
+    expect(api.askGuidance).toHaveBeenCalledWith(17, "How do I apply for an income certificate?", "en");
+    expect(api.askGuidance).not.toHaveBeenCalledWith(40, expect.anything(), expect.anything());
+    expect(within(exchange(1)).getByRole("heading", { name: income.name })).toBeTruthy();
+    expect(within(exchange(1)).queryByRole("heading", { name: enrolment.name })).toBeNull();
   });
 
-  it("keep the refusal when the search finds the same procedure or nothing", async () => {
-    await openPassport();
-    vi.mocked(api.askGuidance).mockResolvedValue(refusal);
-    vi.mocked(api.identifyProcedure).mockResolvedValueOnce({ status: "matched", candidates: [passport] });
-    ask("What is the fee for a passport?");
-    await waitFor(() => expect(screen.getAllByText(/does not answer this question/)).toHaveLength(2));
+  it("keeps the first question and answer visible, each under its own question", async () => {
+    vi.mocked(api.identifyProcedure).mockResolvedValueOnce({ status: "matched", candidates: [income], named: true });
+    ask("How do I apply for an income certificate?");
+    await screen.findByText("Answer for 17.");
 
+    expect(document.querySelectorAll("section.exchange")).toHaveLength(2);
+    expect(within(exchange(0)).getByText("How do I apply for Aadhaar?")).toBeTruthy();
+    expect(within(exchange(0)).getByText("Answer for 40.")).toBeTruthy();
+    expect(within(exchange(0)).getByRole("heading", { name: enrolment.name })).toBeTruthy();
+    expect(within(exchange(0)).queryByText("Answer for 17.")).toBeNull();
+    expect(within(exchange(1)).getByText("How do I apply for an income certificate?")).toBeTruthy();
+    expect(within(exchange(1)).getByText("Answer for 17.")).toBeTruthy();
+    expect(within(exchange(1)).queryByText("Answer for 40.")).toBeNull();
+  });
+
+  it("resolves different questions to different procedures and never reuses an earlier id", async () => {
+    vi.mocked(api.identifyProcedure)
+      .mockResolvedValueOnce({ status: "matched", candidates: [income], named: true })
+      .mockResolvedValueOnce({ status: "no_match", candidates: [] })
+      .mockResolvedValueOnce({ status: "matched", candidates: [enrolment], named: true });
+    ask("How do I apply for an income certificate?");
+    await screen.findByText("Answer for 17.");
+    await settled();
+    expect(api.askGuidance).toHaveBeenLastCalledWith(17, "How do I apply for an income certificate?", "en");
+
+    // Nothing matches the third question, so no guidance is asked for 40 or 17, though both are on screen.
+    vi.mocked(api.askGuidance).mockClear();
+    ask("Biryani recipe");
+    expect(await screen.findByText(/don't have an approved procedure/)).toBeTruthy();
+    await settled();
+    expect(api.askGuidance).not.toHaveBeenCalled();
+
+    // The fourth question is identified afresh and is answered for what it returns, not for the previous question.
+    ask("How do I enrol for Aadhaar?");
+    await waitFor(() => expect(api.askGuidance).toHaveBeenCalledTimes(1));
+    expect(api.askGuidance).toHaveBeenCalledWith(40, "How do I enrol for Aadhaar?", "en");
+    expect(api.identifyProcedure).toHaveBeenCalledTimes(4);
+    expect(document.querySelectorAll("section.exchange")).toHaveLength(4);
+  });
+
+  it("clears the displayed history with New chat", async () => {
+    vi.mocked(api.identifyProcedure).mockResolvedValueOnce({ status: "matched", candidates: [income], named: true });
+    ask("How do I apply for an income certificate?");
+    await screen.findByText("Answer for 17.");
+    await settled();
+    expect(document.querySelectorAll("section.exchange")).toHaveLength(2);
+
+    fireEvent.click(screen.getByRole("button", { name: "New chat" }));
+
+    expect(document.querySelectorAll("section.exchange")).toHaveLength(0);
+    expect(screen.queryByText("Answer for 40.")).toBeNull();
+    expect(screen.queryByText("Answer for 17.")).toBeNull();
+    expect(screen.getByText("Find the right government procedure")).toBeTruthy();
+  });
+
+  it("does not answer an ambiguous question from the earlier procedure", async () => {
+    vi.mocked(api.identifyProcedure).mockResolvedValueOnce({ status: "ambiguous", candidates: [income, passport] });
+    ask("How do I apply for a certificate?");
+
+    expect(await screen.findByText("Which of these fits your situation?")).toBeTruthy();
+    await settled();
+    expect(api.askGuidance).not.toHaveBeenCalled();
+    expect(within(exchange(1)).queryByRole("heading", { name: enrolment.name })).toBeNull();
+
+    fireEvent.click(screen.getAllByRole("button", { name: "Choose" })[0]);
+    expect(await screen.findByText("Answer for 17.")).toBeTruthy();
+    expect(api.askGuidance).toHaveBeenCalledTimes(1);
+    expect(api.askGuidance).toHaveBeenCalledWith(17, "How do I apply for a certificate?", "en");
+    // Choosing keeps the first exchange, and answers the latest question rather than the first.
+    expect(document.querySelectorAll("section.exchange")).toHaveLength(2);
+    expect(within(exchange(0)).getByText("Answer for 40.")).toBeTruthy();
+    expect(within(exchange(1)).getByText("Answer for 17.")).toBeTruthy();
+  });
+
+  it("does not ask any guidance when the new question matches nothing", async () => {
     vi.mocked(api.identifyProcedure).mockResolvedValueOnce({ status: "no_match", candidates: [] });
-    ask("Can I pay in cash?");
-    await waitFor(() => expect(screen.getAllByText(/does not answer this question/)).toHaveLength(3));
-    expect(api.askGuidance).toHaveBeenCalledTimes(3);
+    ask("Biryani recipe");
+
+    expect(await screen.findByText(/don't have an approved procedure/)).toBeTruthy();
+    await settled();
+    expect(api.askGuidance).not.toHaveBeenCalled();
+    expect(within(exchange(1)).queryByRole("heading", { name: enrolment.name })).toBeNull();
   });
 
-  it("stay with the open procedure when it answers them and they name no other procedure", async () => {
-    await openPassport();
-    // Another page matches the words, but the follow-up does not name it ("the certificate", "the pension").
-    vi.mocked(api.identifyProcedure).mockResolvedValueOnce({ status: "matched", candidates: [fees] });
-    vi.mocked(api.askGuidance).mockResolvedValueOnce({ ...feeAnswer, procedure_id: 13 });
-    ask("Which documents do I need?");
-    expect(await screen.findByText("Renewal costs Rs. 200.")).toBeTruthy();
-    expect(api.askGuidance).toHaveBeenLastCalledWith(13, "Which documents do I need?", "en");
-    expect(api.askGuidance).toHaveBeenCalledTimes(2);
-    expect(screen.queryByRole("heading", { name: fees.name })).toBeNull();
-  });
-});
+  it("does not ask any guidance when identification of the new question fails, and retries the search", async () => {
+    vi.mocked(api.identifyProcedure)
+      .mockRejectedValueOnce(new Error("The search service is unavailable. Try again."))
+      .mockResolvedValueOnce({ status: "matched", candidates: [income], named: true });
+    ask("How do I apply for an income certificate?");
 
-describe("follow-ups that name another procedure", () => {
-  const eps = { ...passport, id: 37, name: "Employees' Pension Scheme (EPS)", summary: "Pension." };
-  const epsAnswer = {
-    procedure_id: 37, source_url: "https://www.epfo.gov.in/pension-scheme-eps", insufficient_evidence: false, omitted_claims: 0,
-    claims: [{ text: "EPS gives a monthly pension.", chunk_id: 567, quote: "monthly pension" }],
-  };
-
-  async function openPassport() {
-    vi.mocked(api.identifyProcedure).mockResolvedValueOnce({ status: "matched", candidates: [passport], named: true });
-    render(<CitizenPage />);
-    search();
-    await screen.findByRole("heading", { name: passport.name });
-  }
-
-  it("are answered by the procedure they name, never by the open one", async () => {
-    await openPassport();
-    vi.mocked(api.identifyProcedure).mockResolvedValueOnce({ status: "matched", candidates: [eps], named: true });
-    vi.mocked(api.getProcedure).mockResolvedValueOnce({ ...eps, eligibility: null, steps: ["Join."], source_url: epsAnswer.source_url });
-    vi.mocked(api.askGuidance).mockResolvedValueOnce(epsAnswer);
-    ask("What about EPS?");
-
-    expect(await screen.findByText("EPS gives a monthly pension.")).toBeTruthy();
-    expect(api.askGuidance).toHaveBeenLastCalledWith(37, "What about EPS?", "en");
-    expect(api.askGuidance).not.toHaveBeenCalledWith(13, "What about EPS?", "en");
-    expect(screen.getByRole("heading", { name: eps.name })).toBeTruthy();
+    expect((await screen.findByRole("alert")).textContent).toContain("search service is unavailable");
+    expect(api.askGuidance).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole("button", { name: "Try again" }));
+    expect(await screen.findByText("Answer for 17.")).toBeTruthy();
+    expect(api.askGuidance).not.toHaveBeenCalledWith(40, expect.anything(), expect.anything());
   });
 
-  it("stay with the open procedure when the one they name is already open", async () => {
-    await openPassport();
-    vi.mocked(api.identifyProcedure).mockResolvedValueOnce({ status: "matched", candidates: [passport], named: true });
-    ask("What is the passport fee?");
+  it("keeps a refusal for the new procedure and never falls back to the earlier one", async () => {
+    vi.mocked(api.identifyProcedure).mockResolvedValueOnce({ status: "matched", candidates: [income], named: true });
+    vi.mocked(api.askGuidance).mockResolvedValueOnce({
+      procedure_id: 17, source_url: "https://example.gov.in/17", insufficient_evidence: true, claims: [], omitted_claims: 0,
+    });
+    ask("Can an income certificate be delivered by drone?");
 
-    await waitFor(() => expect(api.askGuidance).toHaveBeenLastCalledWith(13, "What is the passport fee?", "en"));
-    expect(api.getProcedure).toHaveBeenCalledTimes(1);
+    expect(await screen.findByText(/does not answer this question/)).toBeTruthy();
+    await settled();
+    expect(api.askGuidance).toHaveBeenCalledTimes(1);
+    expect(api.askGuidance).toHaveBeenCalledWith(17, "Can an income certificate be delivered by drone?", "en");
+  });
+
+  it("does not start a new question while one is still being answered", async () => {
+    vi.mocked(api.identifyProcedure).mockReturnValueOnce(new Promise(() => {}));
+    ask("How do I apply for an income certificate?");
+    expect(screen.getByRole("button", { name: "Searching…" }).hasAttribute("disabled")).toBe(true);
+
+    // Enter in the box submits the form even while the button is disabled.
+    fireEvent.change(screen.getByLabelText("Your situation or question"), { target: { value: "How do I renew my passport?" } });
+    fireEvent.submit(screen.getByLabelText("Your situation or question").closest("form")!);
+    expect(api.identifyProcedure).toHaveBeenCalledTimes(2);
+    expect(api.askGuidance).not.toHaveBeenCalled();
+    // The blocked question is not added to the conversation.
+    expect(document.querySelectorAll("section.exchange")).toHaveLength(2);
+    expect(document.querySelector("main")!.textContent).not.toContain("How do I renew my passport?");
   });
 });
 

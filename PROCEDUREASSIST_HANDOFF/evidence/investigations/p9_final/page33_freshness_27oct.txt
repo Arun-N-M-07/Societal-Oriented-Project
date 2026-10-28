@@ -1,5 +1,0 @@
-Read-only live scrape of ID 33 (File ITR-1 (Sahaj) Online), 2026-10-27 21:35 IST
-live: 12171 chars, SHA-256 f2642a567d43cafb; staging: 12171 chars, SHA-256 f2642a567d43cafb; identical: True
-  mentions: aim under Chapter VI-A of the Income Tax Act .  Note:  From AY 2025-26 you need to provide some additional information for claimin
-  mentions: ncome Tax Returns > File Income Tax Return.  Step 3: Select Assessment Year as 2025–26 and Mode of filling as Online , then click Continue  Step 4
-  mentions: ding reason for filing ITR and click Continue.  Step 9: For AY 2025-26 New Tax Regime is the default Tax Regime. Option “No” will 

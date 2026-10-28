@@ -1,4 +1,0 @@
-Tue Oct 27 01:02:30 IST 2026
-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  backend/__init__.py
-e01ad147434de75b1faf333ee5cce7b70474269f9d1eafe8562d1242aa38d9c6  backend/auth.py
-fixture: 62361f57b92335ebb383b8007d5ba3b3292310b6ca76e58c0d3503547d737cba  /Users/arunnm/Projects/SOP/fixtures/evaluation/residence_and_documents.json

@@ -35,11 +35,6 @@ type Message = {
   sources?: Record<number, string>;
 };
 
-// A follow-up across several procedures is only sent to the relationship check
-// when it asks about order, dependencies or reusing documents.
-const ASKS_RELATION = /\b(first|before|after|order|depend\w*|reus\w*|same|both|together|affect\w*|need .* for)\b/i;
-const WHICH_ONE = "Which procedure is this about? Use “Ask more about this” on one of them, or describe a new need.";
-
 // Mirrors backend rag.COMPARISON: the backend answers these as a comparison.
 const COMPARES = /\b(differ\w*|compar\w*|versus|vs)\b/i;
 const NO_COMPARISON = "The approved official pages do not give details that compare these procedures for this question.";
@@ -50,8 +45,7 @@ const EXAMPLES = [
   "What is the difference between EPF and EPS?",
 ];
 const NO_RELATION =
-  "The approved official sources do not confirm an order, dependency or document reuse between these procedures. " +
-  "Use “Ask more about this” to ask about one procedure.";
+  "The approved official sources do not confirm an order, dependency or document reuse between these procedures.";
 const NO_MATCH =
   "We don't have an approved procedure that matches this yet. Try describing your " +
   "situation differently, for example which document or service you need.";
@@ -164,24 +158,6 @@ export default function CitizenPage() {
     return reply;
   }
 
-  // A follow-up is answered from the open procedure, unless it names another procedure
-  // ("What about EPS?" on the EPF page), which then answers it. A different procedure that
-  // only matches it answers it when the open page does not (a fee asked about on the
-  // renewal page is on the fees page).
-  async function answerFollowUp(id: number, message: Message) {
-    const result = await identifyProcedure(message.question, language);
-    const other = result.status === "matched" && result.candidates[0].id !== id ? result.candidates[0].id : undefined;
-    if (other && result.named) {
-      await showAndAnswer(other, message, true);
-      return;
-    }
-    const reply = await answer(id, message);
-    // When neither page answers, the open procedure and its own reply stay.
-    if (reply.insufficient_evidence && other && (await showAndAnswer(other, message, false)).insufficient_evidence) {
-      update(message.id, (m) => ({ ...m, answer: reply }));
-    }
-  }
-
   // Each need is answered on its own, one at a time, so one failure leaves the others intact.
   async function answerSection(id: number, index: number, procedureId: number, question: string) {
     updateSection(id, index, { procedureId, error: undefined });
@@ -228,28 +204,6 @@ export default function CitizenPage() {
     if (result.status === "multiple") await answerNeeds(message, result);
   }
 
-  // With several procedures on screen, a follow-up about one of them answers from it;
-  // a question about how they relate goes to the relationship check; anything else
-  // unclear asks the citizen which procedure they mean.
-  async function followUp(message: Message, active: number[]) {
-    const result = await identifyProcedure(message.question, language);
-    message = searchedAs(message, result);
-    const hit = result.status === "matched" ? result.candidates[0].id : undefined;
-    if (hit && active.includes(hit)) {
-      await answer(hit, message);
-      return;
-    }
-    if (result.status === "no_match" || result.status === "ambiguous") {
-      const note = result.clarification ?? WHICH_ONE;
-      if (result.clarification || !ASKS_RELATION.test(asked(message))) return update(message.id, (m) => ({ ...m, note }));
-      setPending("guidance");
-      const reply = await askRelation(active, asked(message));
-      return update(message.id, (m) => ({ ...m, answer: reply }));
-    }
-    setMessages([message]);
-    await handleResult(result, message);
-  }
-
   // A procedure the citizen named or chose is shown at once. One found only by similar words is shown with the
   // answer from its page, and not at all when that page answers nothing: it would present an unrelated procedure.
   async function showAndAnswer(id: number, message: Message, named: boolean) {
@@ -265,25 +219,24 @@ export default function CitizenPage() {
   }
 
   function openProcedure(id: number) {
-    const message = { ...newMessage(messages[0].question), query: messages[0].query };
-    setMessages([message]);
+    // Choosing answers the latest question again from a fresh message; earlier exchanges stay as they are.
+    const message = { ...newMessage(last.question), query: last.query };
+    setMessages((all) => [...all.slice(0, -1), message]);
     void run("procedure", async () => { await showAndAnswer(id, message, true); }, "Unable to load the procedure.");
   }
 
   function handleSend(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const question = situation.trim();
-    if (!question) return;
+    if (!question || busy) return;
     const message = newMessage(question);
     setSituation("");
-    const active = matchedIds(messages.find((m) => m.sections));
-    if (procedure || active.length > 1) {
-      setMessages((all) => [...all, message]);
-      void run("guidance", () => (procedure ? answerFollowUp(procedure.id, message) : followUp(message, active)),
-        "Unable to answer the question.");
-      return;
-    }
-    setMessages([message]);
+    // Earlier exchanges stay on screen, but every question is identified on its own: the procedure and choices
+    // of an earlier question are dropped, so guidance is only ever asked for a procedure this question's
+    // identification returned.
+    setProcedure(null);
+    setMatches(null);
+    setMessages((all) => [...all, message]);
     void run("identify", async () => handleResult(await identifyProcedure(question, language), message),
       "Unable to search procedures.");
   }
@@ -397,7 +350,7 @@ export default function CitizenPage() {
                   <h2>{m.opened.name}</h2>
                   <p className="field-help">
                     {m.opened.department}
-                    {matches?.status === "ambiguous" && m.opened.id === procedure?.id && (
+                    {m === last && matches?.status === "ambiguous" && m.opened.id === procedure?.id && (
                       <button className="link-button" type="button" disabled={busy} onClick={() => setProcedure(null)}>
                         Back to choices
                       </button>
@@ -451,12 +404,6 @@ export default function CitizenPage() {
                           failure(s.error, () => void run("guidance", () => answerSection(m.id, index, s.procedureId!, s.need.question), "Unable to answer the question."))
                         ) : s.answer ? renderAnswer(s.answer, refusal(s.answer)) : (
                           <p className="feedback" role="status">Waiting for the answer…</p>
-                        )}
-                        {s.procedureId && (
-                          <button className="secondary-button" type="button" disabled={busy}
-                            onClick={() => void run("procedure", async () => setProcedure(await getProcedure(s.procedureId!)), "Unable to load the procedure.")}>
-                            Ask more about this
-                          </button>
                         )}
                       </div>
                     );
@@ -530,14 +477,13 @@ export default function CitizenPage() {
       </main>
 
       <form className="composer" onSubmit={handleSend}>
-        {procedure && <p className="composer-context">Asking about: <strong>{procedure.name}</strong></p>}
         <div className="composer-box">
           <textarea
             id="situation"
             rows={1}
             maxLength={1000}
-            aria-label={procedure ? "Ask about this procedure" : "Your situation or question"}
-            placeholder={procedure ? "Ask a follow-up question…" : "Ask about a government service…"}
+            aria-label="Your situation or question"
+            placeholder="Ask about a government service…"
             value={situation}
             onChange={(event) => setSituation(event.target.value)}
             onKeyDown={sendOnEnter}

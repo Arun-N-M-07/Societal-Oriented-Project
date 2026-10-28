@@ -1,9 +1,0 @@
-Fri Oct 23 23:55:41 IST 2026
-database: procedureassist
-pages|24
-chunks|122
-procedures_md5|016980eee56654079df99cddfbabaf00
-chunks_md5|3e45c78f7b85623ad6d9468fa9b34171
-orphan_chunks|0
-embedding_dims|1024
-pages_with_index_gaps|0

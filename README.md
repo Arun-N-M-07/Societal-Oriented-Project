@@ -96,7 +96,7 @@ and transcripts are not stored or logged by ProcedureAssist. The transcript is p
 question box for the citizen to correct; nothing is sent until they press Send.
 "Read aloud" uses only voices installed on the device.
 
-`.venv/bin/python scripts/evaluate_needs.py fixtures/evaluation/tamil.json` runs 36 labelled
+`.venv/bin/python scripts/evaluate_needs.py fixtures/evaluation/tamil.json` runs 38 labelled
 questions in 12 categories (uses Ollama, writes nothing).
 
 ## Tests

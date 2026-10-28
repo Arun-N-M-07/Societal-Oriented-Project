@@ -1,8 +1,0 @@
-## I work in Saudi Arabia. How do I register to vote?	   final: abstained
-## I am an Indian citizen working in Saudi Arabia. How can I register to vote?	   final: answered
-## I moved to Singapore for work. How do I enrol as a voter?	   final: answered
-## I study in Canada. Can I still vote in Indian elections?	   final: abstained
-## My daughter studies in Australia. Can she register as a voter?	   final: answered
-## I am an NRI. How do I register as a voter?	   final: answered
-## I live abroad. How do I register to vote?	   final: answered
-## We are Indian citizens living in the USA. Can we register as voters?	   final: answered
